@@ -1,6 +1,6 @@
-package com.olson1998.authservice.application.data.repository;
+package com.olson1998.authservice.application.datasource.repository.jpa;
 
-import com.olson1998.authservice.application.data.entity.UserEntity;
+import com.olson1998.authservice.application.datasource.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

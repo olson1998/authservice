@@ -1,6 +1,7 @@
-package com.olson1998.authservice.application.data.repository;
+package com.olson1998.authservice.application.datasource.repository.wrapper;
 
-import com.olson1998.authservice.application.data.entity.UserEntity;
+import com.olson1998.authservice.application.datasource.entity.UserEntity;
+import com.olson1998.authservice.application.datasource.repository.jpa.UserJpaRepository;
 import com.olson1998.authservice.domain.model.auth.data.UserDetails;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.repository.UserRepository;
@@ -30,7 +31,7 @@ public class UserJpaRepositoryWrapper implements UserRepository {
     @Override
     @Transactional
     public User saveUser(UserDetails userDetails) {
-        var userEntity = new UserEntity(userDetails);
+        var userEntity = UserEntity.fromUserDetails(userDetails);
         return userJpaRepository.save(userEntity);
     }
 
