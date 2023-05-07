@@ -1,11 +1,16 @@
-package com.olson1998.authservice.application.data.entity;
+package com.olson1998.authservice.application.datasource.entity;
 
+import com.olson1998.authservice.domain.model.auth.data.UserDetails;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.MessageDigest;
 
+@Slf4j
 public enum PasswordDigest {
 
+    NONE,
     MD2,
     MD5,
     SHA1,
@@ -18,6 +23,12 @@ public enum PasswordDigest {
     SHA_3_384,
     SHA_3_512;
 
+    public static final PasswordDigest DEFAULT_DIGEST = SHA256;
+
+    /**
+     * Method returns Message Digest of Password digest
+     * @return resolved message digest
+     */
     public MessageDigest toMessageDigest(){
         switch (this){
             case MD2 -> {
@@ -45,4 +56,21 @@ public enum PasswordDigest {
             }default -> throw new IllegalArgumentException();
         }
     }
+
+    /**
+     * Returns Password digest of user details
+     * @param userDetails User details object
+     * @return Password digest of user details
+     */
+    public static PasswordDigest ofUserDetails(@NonNull UserDetails userDetails){
+        var alg = userDetails.getPasswordDigestAlgorithm();
+        try{
+            return PasswordDigest.valueOf(alg);
+        }catch (IllegalArgumentException e){
+            log.warn("Could not read password digest, falling to default");
+            return DEFAULT_DIGEST;
+        }
+    }
+
+
 }
