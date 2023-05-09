@@ -1,4 +1,4 @@
-package com.olson1998.authservice.application.datasource.entity;
+package com.olson1998.authservice.application.datasource.entity.utils;
 
 import com.olson1998.authservice.domain.model.auth.data.UserDetails;
 import lombok.NonNull;
@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.MessageDigest;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 public enum PasswordDigest {
@@ -29,7 +31,7 @@ public enum PasswordDigest {
      * Method returns Message Digest of Password digest
      * @return resolved message digest
      */
-    public MessageDigest toMessageDigest(){
+    private MessageDigest toMessageDigest(){
         switch (this){
             case MD2 -> {
                 return DigestUtils.getMd2Digest();
@@ -54,6 +56,16 @@ public enum PasswordDigest {
             }case SHA_3_512 -> {
                 return DigestUtils.getSha3_512Digest();
             }default -> throw new IllegalArgumentException();
+        }
+    }
+
+    public String encrypt(@NonNull String password){
+        if(!this.equals(NONE)){
+            var digest = toMessageDigest();
+            var encPassBytes = DigestUtils.digest(digest, password.getBytes(UTF_8));
+            return new String(encPassBytes, UTF_8);
+        }else {
+            return password;
         }
     }
 

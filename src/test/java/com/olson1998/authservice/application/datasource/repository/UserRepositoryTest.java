@@ -1,8 +1,8 @@
 package com.olson1998.authservice.application.datasource.repository;
 
-import com.olson1998.authservice.application.datasource.entity.UserEntity;
-import com.olson1998.authservice.application.datasource.repository.jpa.UserJpaRepository;
-import com.olson1998.authservice.application.datasource.repository.wrapper.UserJpaRepositoryWrapper;
+import com.olson1998.authservice.application.datasource.entity.independent.UserEntity;
+import com.olson1998.authservice.application.datasource.repository.jpa.independent.UserJpaRepository;
+import com.olson1998.authservice.application.datasource.repository.wrapper.independet.UserJpaRepositoryWrapper;
 import com.olson1998.authservice.domain.model.auth.data.UserDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

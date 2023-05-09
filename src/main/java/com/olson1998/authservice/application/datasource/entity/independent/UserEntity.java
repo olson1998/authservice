@@ -1,5 +1,6 @@
-package com.olson1998.authservice.application.datasource.entity;
+package com.olson1998.authservice.application.datasource.entity.independent;
 
+import com.olson1998.authservice.application.datasource.entity.utils.PasswordDigest;
 import com.olson1998.authservice.domain.model.auth.data.UserDetails;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import jakarta.persistence.*;
@@ -11,8 +12,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.olson1998.authservice.application.datasource.entity.PasswordDigest.DEFAULT_DIGEST;
-import static com.olson1998.authservice.application.datasource.entity.PasswordDigest.NONE;
+import static com.olson1998.authservice.application.datasource.entity.utils.PasswordDigest.DEFAULT_DIGEST;
+import static com.olson1998.authservice.application.datasource.entity.utils.PasswordDigest.NONE;
 import static jakarta.persistence.EnumType.ORDINAL;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -33,7 +34,7 @@ public class UserEntity implements User {
     private String password;
 
     @Column(name = "USERPASSDIG", nullable = false, updatable = false)
-    @Enumerated(value = ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     private PasswordDigest passwordDigest;
 
     @Override
@@ -48,14 +49,8 @@ public class UserEntity implements User {
 
     @Override
     public boolean verify(String password) {
-        if(!passwordDigest.equals(NONE)){
-            var digest = passwordDigest.toMessageDigest();
-            var encPassBytes = DigestUtils.digest(digest, password.getBytes(UTF_8));
-            var encPass = new String(encPassBytes, UTF_8);
-            return this.password.equals(encPass);
-        }else {
-            return this.password.equals(password);
-        }
+        var encPass = passwordDigest.encrypt(password);
+        return encPass.equals(password);
     }
 
     public static UserEntity fromUserDetails(@NonNull UserDetails userDetails) {

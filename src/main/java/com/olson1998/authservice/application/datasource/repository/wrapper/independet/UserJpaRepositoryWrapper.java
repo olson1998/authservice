@@ -1,7 +1,7 @@
-package com.olson1998.authservice.application.datasource.repository.wrapper;
+package com.olson1998.authservice.application.datasource.repository.wrapper.independet;
 
-import com.olson1998.authservice.application.datasource.entity.UserEntity;
-import com.olson1998.authservice.application.datasource.repository.jpa.UserJpaRepository;
+import com.olson1998.authservice.application.datasource.entity.independent.UserEntity;
+import com.olson1998.authservice.application.datasource.repository.jpa.independent.UserJpaRepository;
 import com.olson1998.authservice.domain.model.auth.data.UserDetails;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.repository.UserRepository;
