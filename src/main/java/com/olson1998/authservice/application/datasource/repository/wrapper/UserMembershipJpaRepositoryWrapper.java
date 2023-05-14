@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserMembershipJpaDataSourceRepositoryWrapper implements UserMembershipDataSourceRepository {
+public class UserMembershipJpaRepositoryWrapper implements UserMembershipDataSourceRepository {
 
     private final UserMembershipJpaRepository userMembershipJpaRepository;
 

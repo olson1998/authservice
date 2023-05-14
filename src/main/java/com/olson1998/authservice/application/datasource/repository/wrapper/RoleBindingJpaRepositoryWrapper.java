@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleBindingJpaDataSourceRepositoryWrapper implements RoleBindingDataSourceRepository {
+public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRepository {
 
     private final RoleBindingJpaRepository roleBindingJpaRepository;
 

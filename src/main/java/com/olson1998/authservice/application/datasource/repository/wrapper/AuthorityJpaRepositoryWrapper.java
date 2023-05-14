@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorityJpaDataSourceRepositoryWrapper implements AuthorityDataSourceRepository {
+public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceRepository {
 
     private final AuthorityJpaRepository authorityJpaRepository;
 

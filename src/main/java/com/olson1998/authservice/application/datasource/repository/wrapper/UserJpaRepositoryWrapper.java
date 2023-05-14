@@ -24,34 +24,34 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class UserJpaDataSourceRepositoryWrapper implements UserDataSourceRepository {
+public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
 
     private final UserJpaRepository userJpaRepository;
 
     @Override
     public Optional<User> getUser(@NonNull String username) {
         return userJpaRepository.selectUserByUsername(username)
-                .map(UserJpaDataSourceRepositoryWrapper::mapUser);
+                .map(UserJpaRepositoryWrapper::mapUser);
     }
 
     @Override
     public Set<Role> getUserRoles(long userId) {
         return userJpaRepository.selectUserRoles(userId).stream()
-                .map(RoleJpaDataSourceRepositoryWrapper::mapRole)
+                .map(RoleJpaRepositoryWrapper::mapRole)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Set<ExtendedAuthorityTimestamp> getAuthorityTimestamps(long userId) {
         return userJpaRepository.selectUserAuthoritiesTimestamps(userId).stream()
-                .map(UserJpaDataSourceRepositoryWrapper::mapAuthorityTimestamp)
+                .map(UserJpaRepositoryWrapper::mapAuthorityTimestamp)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Optional<PasswordEncryption> getUserPasswordDigest(@NonNull String username) {
         return userJpaRepository.selectUserPasswordDigest(username)
-                .map(UserJpaDataSourceRepositoryWrapper::mapPasswordDigest);
+                .map(UserJpaRepositoryWrapper::mapPasswordDigest);
     }
 
     @Override

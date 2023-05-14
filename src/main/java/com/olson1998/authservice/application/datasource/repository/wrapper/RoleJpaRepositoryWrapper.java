@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleJpaDataSourceRepositoryWrapper implements RoleDataSourceRepository {
+public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
 
     private final RoleJpaRepository roleJpaRepository;
 
     @Override
     public Set<RoleAuthority> getRolesAuthorities(Set<String> rolesIds) {
         return roleJpaRepository.selectRolesAuthorities(rolesIds, System.currentTimeMillis()).stream()
-                .map(AuthorityJpaDataSourceRepositoryWrapper::mapAuthority)
+                .map(AuthorityJpaRepositoryWrapper::mapAuthority)
                 .collect(Collectors.toSet());
     }
 
