@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleAuthorityData implements RoleAuthority {
+public class AuthorityData implements RoleAuthority {
 
     @Id
     @Column(name = "AUTHORITYID")
-    private String authorityId;
+    private String id;
 
     @Column(name = "AUTHORITYNM", nullable = false)
     private String authorityName;
@@ -27,8 +27,8 @@ public class RoleAuthorityData implements RoleAuthority {
     private Long expiringTime;
 
     @Override
-    public String getAuthorityId() {
-        return authorityId;
+    public String getId() {
+        return id;
     }
 
     @Override

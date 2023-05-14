@@ -12,7 +12,7 @@ import java.security.MessageDigest;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
-public enum PasswordDigest implements PasswordEncryption, PasswordAlgorithm {
+public enum SecretDigest implements PasswordEncryption, PasswordAlgorithm {
 
     NONE,
     MD2,
@@ -27,7 +27,7 @@ public enum PasswordDigest implements PasswordEncryption, PasswordAlgorithm {
     SHA_3_384,
     SHA_3_512;
 
-    public static final PasswordDigest DEFAULT_DIGEST = SHA256;
+    public static final SecretDigest DEFAULT_DIGEST = SHA256;
 
     /**
      * Method returns Message Digest of Password digest
@@ -82,21 +82,21 @@ public enum PasswordDigest implements PasswordEncryption, PasswordAlgorithm {
      * @param userDetails User details object
      * @return Password digest of user details
      */
-    public static PasswordDigest ofUserDetails(@NonNull UserDetails userDetails){
+    public static SecretDigest ofUserDetails(@NonNull UserDetails userDetails){
         var alg = userDetails.getPasswordDigestAlgorithm();
         try{
-            return PasswordDigest.valueOf(alg);
+            return SecretDigest.valueOf(alg);
         }catch (IllegalArgumentException e){
             log.warn("Could not read password digest, falling to default");
             return DEFAULT_DIGEST;
         }
     }
 
-    public static PasswordDigest ofAlgorithm(@NonNull PasswordAlgorithm encrypt){
-        if(encrypt.getClass().equals(PasswordDigest.class)){
-            return (PasswordDigest) encrypt;
+    public static SecretDigest ofAlgorithm(@NonNull PasswordAlgorithm encrypt){
+        if(encrypt.getClass().equals(SecretDigest.class)){
+            return (SecretDigest) encrypt;
         }else {
-            return PasswordDigest.valueOf(encrypt.getAlgorithm());
+            return SecretDigest.valueOf(encrypt.getAlgorithm());
         }
     }
 }
