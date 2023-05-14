@@ -2,7 +2,7 @@ package com.olson1998.authservice.domain.port.request.entity;
 
 public interface UserMembershipClaim {
 
-    long getUserId();
+    Long getUserId();
 
     long getCompanyNumber();
 

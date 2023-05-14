@@ -25,6 +25,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "LEFT OUTER JOIN RoleData r ON " +
             "(mb.junction.userId=r.userId AND r.subject='PRIVATE') OR " +
             "(mb.junction.companyNumber=r.companyNumber AND r.subject='COMPANY') OR " +
+            "(mb.junction.regionId=r.regionId AND r.subject='REGION') OR " +
             "(mb.junction.groupId=r.groupId AND r.subject='GROUP') OR " +
             "(mb.junction.teamId=r.teamId AND r.subject='TEAM') " +
             "WHERE u.id=:userId")
@@ -37,6 +38,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "LEFT OUTER JOIN RoleData r ON " +
             "(mb.junction.userId=r.userId AND r.subject='PRIVATE') OR " +
             "(mb.junction.companyNumber=r.companyNumber AND r.subject='COMPANY') OR " +
+            "(mb.junction.regionId=r.regionId AND r.subject='REGION') OR " +
             "(mb.junction.groupId=r.groupId AND r.subject='GROUP') OR " +
             "(mb.junction.teamId=r.teamId AND r.subject='TEAM') " +
             "LEFT OUTER JOIN RoleBindingData rb ON r.id=rb.junction.roleId " +
