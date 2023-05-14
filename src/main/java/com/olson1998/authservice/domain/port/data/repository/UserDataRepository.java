@@ -9,7 +9,7 @@ import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import java.util.Optional;
 import java.util.Set;
 
-public interface UserRepository {
+public interface UserDataRepository {
 
     /**
      * Search SQL database for User entity by unique username

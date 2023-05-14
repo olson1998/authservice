@@ -4,7 +4,7 @@ import com.olson1998.authservice.application.datasource.entity.RoleData;
 import com.olson1998.authservice.application.datasource.repository.jpa.RoleJpaRepository;
 import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.RoleAuthority;
-import com.olson1998.authservice.domain.port.data.repository.RoleRepository;
+import com.olson1998.authservice.domain.port.data.repository.RoleDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleJpaRepositoryWrapper implements RoleRepository {
+public class RoleJpaDataRepositoryWrapper implements RoleDataRepository {
 
     private final RoleJpaRepository roleJpaRepository;
 
     @Override
     public Set<RoleAuthority> getRolesAuthorities(Set<String> rolesIds) {
         return roleJpaRepository.selectRolesAuthorities(rolesIds, System.currentTimeMillis()).stream()
-                .map(AuthorityJpaRepositoryWrapper::mapAuthority)
+                .map(AuthorityJpaDataRepositoryWrapper::mapAuthority)
                 .collect(Collectors.toSet());
     }
 

@@ -1,4 +1,4 @@
 package com.olson1998.authservice.domain.port.data.repository;
 
-public interface AuthorityRepository {
+public interface AuthorityDataRepository {
 }
