@@ -2,18 +2,16 @@ package com.olson1998.authservice.application.requesting.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authservice.application.requesting.entity.RoleDetailsForm;
 import com.olson1998.authservice.domain.port.request.entity.RoleDetails;
 import com.olson1998.authservice.domain.port.request.model.RoleSavingRequest;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.*;
+import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.ID;
 
 @Getter
 public class RoleSavingAdapterRequest implements RoleSavingRequest {
