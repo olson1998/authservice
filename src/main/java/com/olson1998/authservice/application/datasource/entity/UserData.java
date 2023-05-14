@@ -1,6 +1,6 @@
 package com.olson1998.authservice.application.datasource.entity;
 
-import com.olson1998.authservice.application.datasource.entity.utils.PasswordDigest;
+import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.NonNull;
 
 import java.util.Objects;
 
-import static com.olson1998.authservice.application.datasource.entity.utils.PasswordDigest.DEFAULT_DIGEST;
+import static com.olson1998.authservice.application.datasource.entity.utils.SecretDigest.DEFAULT_DIGEST;
 
 @Entity
 @Table(name = "AUTHUSER")
@@ -31,7 +31,7 @@ public class UserData implements User {
 
     @Column(name = "USERPASSALG", nullable = false, updatable = false)
     @Enumerated(value = EnumType.STRING)
-    private PasswordDigest passwordDigest;
+    private SecretDigest secretDigest;
 
     @Override
     public Long getId() {
@@ -46,23 +46,23 @@ public class UserData implements User {
     @Override
     public boolean verify(String password) {
         return this.password.equals(
-                passwordDigest.encrypt(password)
+                secretDigest.encrypt(password)
         );
     }
 
     public UserData(@NonNull UserDetails userDetails) {
         var digest = Objects.requireNonNullElse(
-                PasswordDigest.ofUserDetails(userDetails),
+                SecretDigest.ofUserDetails(userDetails),
                 DEFAULT_DIGEST
         );
         this.username = userDetails.getUsername();
         this.password = digest.encrypt(userDetails.getPassword());
-        this.passwordDigest = digest;
+        this.secretDigest = digest;
     }
 
-    public UserData(String username, String password, PasswordDigest passwordDigest) {
+    public UserData(String username, String password, SecretDigest secretDigest) {
         this.username = username;
         this.password = password;
-        this.passwordDigest = passwordDigest;
+        this.secretDigest = secretDigest;
     }
 }
