@@ -19,13 +19,11 @@ public class UserMembershipJpaRepositoryWrapper implements UserMembershipDataSou
     private final UserMembershipJpaRepository userMembershipJpaRepository;
 
     @Override
-    @Transactional
     public int deleteUserMembership(long userId) {
         return userMembershipJpaRepository.deleteUserMembership(userId);
     }
 
     @Override
-    @Transactional
     public void saveUserMemberships(Set<UserMembershipClaim> claims) {
         var dataSet = createMembershipDataSet(claims);
         userMembershipJpaRepository.saveAll(dataSet);

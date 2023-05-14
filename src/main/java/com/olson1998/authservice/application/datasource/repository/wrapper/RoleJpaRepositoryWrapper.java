@@ -24,6 +24,11 @@ public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public int deleteAllPrivateRolesByUserId(long userId) {
+        return roleJpaRepository.deleteAllPrivateRolesByUserId(userId);
+    }
+
     protected static Role mapRole(RoleData roleData){
         return roleData;
     }

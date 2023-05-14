@@ -17,7 +17,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
     @Query("SELECT u FROM UserData u WHERE u.username=:username")
     Optional<UserData> selectUserByUsername(String username);
 
-    @Query("SELECT u.passwordDigest FROM UserData u WHERE u.username=:username")
+    @Query("SELECT u.secretDigest FROM UserData u WHERE u.username=:username")
     Optional<SecretDigest> selectUserPasswordDigest(String username);
 
     @Query("SELECT r FROM UserData u " +
@@ -46,6 +46,6 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "WHERE u.id=:userId")
     Set<ExtendedAuthorityTimestampData> selectUserAuthoritiesTimestamps(long userId);
 
-    @Query("DELETE FROM UserData u WHERE u.username=:username")
-    int deleteUserByUsername(String username);
+    @Query("DELETE FROM UserData u WHERE u.id=:id")
+    int deleteUserById(long id);
 }

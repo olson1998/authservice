@@ -42,8 +42,8 @@ public interface UserDataSourceRepository {
 
     /**
      * Delete data related to User with given username
-     * @param username User's username
+     * @param userId User's id
      * @return number of deleted rows
      */
-    int deleteUser(String username);
+    int deleteUser(long userId);
 }
