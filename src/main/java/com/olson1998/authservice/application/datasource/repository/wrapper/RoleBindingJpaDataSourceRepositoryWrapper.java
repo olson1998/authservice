@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 
 import com.olson1998.authservice.application.datasource.entity.RoleBindingData;
 import com.olson1998.authservice.application.datasource.repository.jpa.RoleBindingJpaRepository;
-import com.olson1998.authservice.domain.port.data.repository.RoleBindingDataRepository;
+import com.olson1998.authservice.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authservice.domain.port.request.entity.RoleBindingClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleBindingJpaDataRepositoryWrapper implements RoleBindingDataRepository {
+public class RoleBindingJpaDataSourceRepositoryWrapper implements RoleBindingDataSourceRepository {
 
     private final RoleBindingJpaRepository roleBindingJpaRepository;
 

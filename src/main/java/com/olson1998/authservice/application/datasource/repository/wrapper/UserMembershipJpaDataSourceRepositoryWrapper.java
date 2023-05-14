@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 
 import com.olson1998.authservice.application.datasource.entity.UserMembershipData;
 import com.olson1998.authservice.application.datasource.repository.jpa.UserMembershipJpaRepository;
-import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataRepository;
+import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
 import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserMembershipJpaDataRepositoryWrapper implements UserMembershipDataRepository {
+public class UserMembershipJpaDataSourceRepositoryWrapper implements UserMembershipDataSourceRepository {
 
     private final UserMembershipJpaRepository userMembershipJpaRepository;
 

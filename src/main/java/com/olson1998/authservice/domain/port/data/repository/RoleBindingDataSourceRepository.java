@@ -4,7 +4,7 @@ import com.olson1998.authservice.domain.port.request.entity.RoleBindingClaim;
 
 import java.util.Set;
 
-public interface RoleBindingDataRepository {
+public interface RoleBindingDataSourceRepository {
 
     /**
      * Checks if there is more than one tenant of given authority

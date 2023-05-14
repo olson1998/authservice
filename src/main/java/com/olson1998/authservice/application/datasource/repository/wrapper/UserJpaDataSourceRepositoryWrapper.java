@@ -6,7 +6,7 @@ import com.olson1998.authservice.application.datasource.entity.utils.SecretDiges
 import com.olson1998.authservice.application.datasource.repository.jpa.UserJpaRepository;
 import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.User;
-import com.olson1998.authservice.domain.port.data.repository.UserDataRepository;
+import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
@@ -24,34 +24,34 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class UserJpaDataRepositoryWrapper implements UserDataRepository {
+public class UserJpaDataSourceRepositoryWrapper implements UserDataSourceRepository {
 
     private final UserJpaRepository userJpaRepository;
 
     @Override
     public Optional<User> getUser(@NonNull String username) {
         return userJpaRepository.selectUserByUsername(username)
-                .map(UserJpaDataRepositoryWrapper::mapUser);
+                .map(UserJpaDataSourceRepositoryWrapper::mapUser);
     }
 
     @Override
     public Set<Role> getUserRoles(long userId) {
         return userJpaRepository.selectUserRoles(userId).stream()
-                .map(RoleJpaDataRepositoryWrapper::mapRole)
+                .map(RoleJpaDataSourceRepositoryWrapper::mapRole)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Set<ExtendedAuthorityTimestamp> getAuthorityTimestamps(long userId) {
         return userJpaRepository.selectUserAuthoritiesTimestamps(userId).stream()
-                .map(UserJpaDataRepositoryWrapper::mapAuthorityTimestamp)
+                .map(UserJpaDataSourceRepositoryWrapper::mapAuthorityTimestamp)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Optional<PasswordEncryption> getUserPasswordDigest(@NonNull String username) {
         return userJpaRepository.selectUserPasswordDigest(username)
-                .map(UserJpaDataRepositoryWrapper::mapPasswordDigest);
+                .map(UserJpaDataSourceRepositoryWrapper::mapPasswordDigest);
     }
 
     @Override

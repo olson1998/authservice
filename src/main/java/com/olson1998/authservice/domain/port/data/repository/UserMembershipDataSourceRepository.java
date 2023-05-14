@@ -4,7 +4,7 @@ import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
 
 import java.util.Set;
 
-public interface UserMembershipDataRepository {
+public interface UserMembershipDataSourceRepository {
 
     int deleteUserMembership(long userId);
 
