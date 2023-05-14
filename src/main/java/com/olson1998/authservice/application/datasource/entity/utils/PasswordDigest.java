@@ -1,6 +1,8 @@
 package com.olson1998.authservice.application.datasource.entity.utils;
 
-import com.olson1998.authservice.domain.model.auth.data.UserDetails;
+import com.olson1998.authservice.domain.port.data.utils.PasswordAlgorithm;
+import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
+import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -10,7 +12,7 @@ import java.security.MessageDigest;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
-public enum PasswordDigest {
+public enum PasswordDigest implements PasswordEncryption, PasswordAlgorithm {
 
     NONE,
     MD2,
@@ -59,6 +61,12 @@ public enum PasswordDigest {
         }
     }
 
+    @Override
+    public String getAlgorithm() {
+        return this.name();
+    }
+
+    @Override
     public String encrypt(@NonNull String password){
         if(!this.equals(NONE)){
             var digest = toMessageDigest();
@@ -84,5 +92,11 @@ public enum PasswordDigest {
         }
     }
 
-
+    public static PasswordDigest ofAlgorithm(@NonNull PasswordAlgorithm encrypt){
+        if(encrypt.getClass().equals(PasswordDigest.class)){
+            return (PasswordDigest) encrypt;
+        }else {
+            return PasswordDigest.valueOf(encrypt.getAlgorithm());
+        }
+    }
 }
