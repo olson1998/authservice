@@ -1,18 +1,19 @@
 package com.olson1998.authservice.application.datasource.entity.utils;
 
-import com.olson1998.authservice.domain.port.data.utils.PasswordAlgorithm;
-import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
+import com.olson1998.authservice.domain.port.data.utils.SecretAlgorithm;
+import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.MessageDigest;
+import java.util.Objects;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
-public enum SecretDigest implements PasswordEncryption, PasswordAlgorithm {
+public enum SecretDigest implements SecretEncryption, SecretAlgorithm {
 
     NONE,
     MD2,
@@ -83,7 +84,9 @@ public enum SecretDigest implements PasswordEncryption, PasswordAlgorithm {
      * @return Password digest of user details
      */
     public static SecretDigest ofUserDetails(@NonNull UserDetails userDetails){
-        var alg = userDetails.getPasswordDigestAlgorithm();
+        var alg = Objects.
+                requireNonNullElse(userDetails.getSecretDigestAlgorithm(), NONE)
+                .getAlgorithm();
         try{
             return SecretDigest.valueOf(alg);
         }catch (IllegalArgumentException e){
@@ -92,7 +95,7 @@ public enum SecretDigest implements PasswordEncryption, PasswordAlgorithm {
         }
     }
 
-    public static SecretDigest ofAlgorithm(@NonNull PasswordAlgorithm encrypt){
+    public static SecretDigest ofAlgorithm(@NonNull SecretAlgorithm encrypt){
         if(encrypt.getClass().equals(SecretDigest.class)){
             return (SecretDigest) encrypt;
         }else {

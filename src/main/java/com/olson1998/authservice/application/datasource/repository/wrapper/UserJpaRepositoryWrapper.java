@@ -8,7 +8,7 @@ import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
-import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
+import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
     }
 
     @Override
-    public Optional<PasswordEncryption> getUserPasswordDigest(@NonNull String username) {
+    public Optional<SecretEncryption> getUserPasswordDigest(@NonNull String username) {
         return userJpaRepository.selectUserPasswordDigest(username)
                 .map(UserJpaRepositoryWrapper::mapPasswordDigest);
     }
@@ -75,7 +75,7 @@ public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
         return data;
     }
 
-    private static PasswordEncryption mapPasswordDigest(SecretDigest digest){
+    private static SecretEncryption mapPasswordDigest(SecretDigest digest){
         return digest;
     }
 }
