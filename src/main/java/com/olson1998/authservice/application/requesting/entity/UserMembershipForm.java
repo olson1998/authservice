@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.*;
-import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.TEAM_ID;
 
 @Getter
 public class UserMembershipForm implements UserMembershipClaim {

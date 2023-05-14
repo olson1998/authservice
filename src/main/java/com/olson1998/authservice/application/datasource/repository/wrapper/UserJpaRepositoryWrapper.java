@@ -61,8 +61,8 @@ public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
     }
 
     @Override
-    public int deleteUser(@NonNull String username) {
-        return userJpaRepository.deleteUserByUsername(username);
+    public int deleteUser(long userId) {
+        return userJpaRepository.deleteUserById(userId);
     }
 
     private static User mapUser(UserData userData){

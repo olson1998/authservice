@@ -4,6 +4,7 @@ import com.olson1998.authservice.application.datasource.entity.utils.SecretDiges
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -16,6 +17,7 @@ import static com.olson1998.authservice.application.datasource.entity.utils.Secr
 @SequenceGenerator(name = "AUTH_USER_NUM_SEQ", sequenceName = "AUTH_USER_NUM_SEQ", allocationSize = 1)
 
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserData implements User {
 
     @Id
