@@ -3,7 +3,7 @@ package com.olson1998.authservice.domain.port.data.repository;
 import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
-import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
+import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 
 import java.util.Optional;
@@ -32,7 +32,7 @@ public interface UserDataSourceRepository {
      * @param username User's username
      * @return PasswordDigest wrapped in Optional interface, if digest not found returns Optional.empty()
      */
-    Optional<PasswordEncryption> getUserPasswordDigest(String username);
+    Optional<SecretEncryption> getUserPasswordDigest(String username);
 
     /**
      * Insert data in Sql database from UserDetails form
