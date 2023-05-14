@@ -1,30 +1,24 @@
 package com.olson1998.authservice.application.requesting.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDetailsForm implements UserDetails {
 
-    @JsonProperty(value = "username", required = true)
-    private String username;
+    private final String username;
 
-    @JsonProperty(value = "password", required = true)
-    private String password;
+    private final String password;
 
-    @JsonProperty(value = "digest")
-    private SecretDigest passwordDigest;
+    private final SecretDigest passwordDigest;
 
     @Override
     public SecretAlgorithm getSecretDigestAlgorithm() {
         return passwordDigest;
     }
+
 }

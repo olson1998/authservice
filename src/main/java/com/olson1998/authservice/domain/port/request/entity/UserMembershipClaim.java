@@ -11,4 +11,6 @@ public interface UserMembershipClaim {
     Long getGroupId();
 
     Long getTeamId();
+
+    void setUserId(long userId);
 }
