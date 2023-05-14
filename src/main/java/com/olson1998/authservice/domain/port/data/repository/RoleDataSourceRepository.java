@@ -7,4 +7,6 @@ import java.util.Set;
 public interface RoleDataSourceRepository {
 
     Set<RoleAuthority> getRolesAuthorities(Set<String> rolesIds);
+
+    int deleteAllPrivateRolesByUserId(long userId);
 }
