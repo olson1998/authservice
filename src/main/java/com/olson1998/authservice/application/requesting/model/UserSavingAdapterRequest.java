@@ -22,7 +22,7 @@ import static com.olson1998.authservice.application.requesting.model.AbstractCom
 @Getter
 
 @RequiredArgsConstructor
-public class ApplicationUserSavingRequest implements UserSavingRequest {
+public class UserSavingAdapterRequest implements UserSavingRequest {
 
     private final UUID id;
 
@@ -31,11 +31,11 @@ public class ApplicationUserSavingRequest implements UserSavingRequest {
     private final Set<UserMembershipClaim> membershipClaims;
 
     @JsonCreator
-    public ApplicationUserSavingRequest(@JsonProperty(value = ID, required = true) UUID id,
-                                        @JsonProperty(value = "username", required = true) String username,
-                                        @JsonProperty(value = "password", required = true) String password,
-                                        @JsonProperty(value = "digest", required = true) SecretDigest passwordDigest,
-                                        @JsonProperty(value = "membership") Set<UserMembershipForm> membershipClaimsForm) {
+    public UserSavingAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
+                                    @JsonProperty(value = "username", required = true) String username,
+                                    @JsonProperty(value = "password", required = true) String password,
+                                    @JsonProperty(value = "digest", required = true) SecretDigest passwordDigest,
+                                    @JsonProperty(value = "membership") Set<UserMembershipForm> membershipClaimsForm) {
         this.id=id;
         this.userDetails = new UserDetailsForm(
                 username,
