@@ -1,14 +1,18 @@
-package com.olson1998.authservice.application.datasource.entity;
+package com.olson1998.authservice.application.datasource.entity.utils;
 
-import com.olson1998.authservice.domain.model.auth.data.UserDetails;
+import com.olson1998.authservice.domain.port.data.utils.PasswordAlgorithm;
+import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
+import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.MessageDigest;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Slf4j
-public enum PasswordDigest {
+public enum SecretDigest implements PasswordEncryption, PasswordAlgorithm {
 
     NONE,
     MD2,
@@ -23,13 +27,13 @@ public enum PasswordDigest {
     SHA_3_384,
     SHA_3_512;
 
-    public static final PasswordDigest DEFAULT_DIGEST = SHA256;
+    public static final SecretDigest DEFAULT_DIGEST = SHA256;
 
     /**
      * Method returns Message Digest of Password digest
      * @return resolved message digest
      */
-    public MessageDigest toMessageDigest(){
+    private MessageDigest toMessageDigest(){
         switch (this){
             case MD2 -> {
                 return DigestUtils.getMd2Digest();
@@ -57,20 +61,42 @@ public enum PasswordDigest {
         }
     }
 
+    @Override
+    public String getAlgorithm() {
+        return this.name();
+    }
+
+    @Override
+    public String encrypt(@NonNull String password){
+        if(!this.equals(NONE)){
+            var digest = toMessageDigest();
+            var encPassBytes = DigestUtils.digest(digest, password.getBytes(UTF_8));
+            return new String(encPassBytes, UTF_8);
+        }else {
+            return password;
+        }
+    }
+
     /**
      * Returns Password digest of user details
      * @param userDetails User details object
      * @return Password digest of user details
      */
-    public static PasswordDigest ofUserDetails(@NonNull UserDetails userDetails){
+    public static SecretDigest ofUserDetails(@NonNull UserDetails userDetails){
         var alg = userDetails.getPasswordDigestAlgorithm();
         try{
-            return PasswordDigest.valueOf(alg);
+            return SecretDigest.valueOf(alg);
         }catch (IllegalArgumentException e){
             log.warn("Could not read password digest, falling to default");
             return DEFAULT_DIGEST;
         }
     }
 
-
+    public static SecretDigest ofAlgorithm(@NonNull PasswordAlgorithm encrypt){
+        if(encrypt.getClass().equals(SecretDigest.class)){
+            return (SecretDigest) encrypt;
+        }else {
+            return SecretDigest.valueOf(encrypt.getAlgorithm());
+        }
+    }
 }

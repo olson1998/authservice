@@ -1,14 +1,12 @@
 package com.olson1998.authservice.application.datasource.properties;
 
-import com.olson1998.authservice.application.datasource.entity.PasswordDigest;
+import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import static com.olson1998.authservice.application.datasource.entity.PasswordDigest.DEFAULT_DIGEST;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static com.olson1998.authservice.application.datasource.entity.utils.SecretDigest.DEFAULT_DIGEST;
 
 @Setter
 
@@ -24,7 +22,7 @@ public class MainDatasourceProperties {
 
     private String password = null;
 
-    private PasswordDigest passwordDigest = DEFAULT_DIGEST;
+    private SecretDigest secretDigest = DEFAULT_DIGEST;
 
     @Getter
     private String url ="main-datasource";
@@ -36,16 +34,15 @@ public class MainDatasourceProperties {
     private String database ="db";
 
     @Getter
+    private String schema;
+
+    @Getter
     private boolean trustCertificate = true;
 
     @Getter
     private int loginTimeout = 30;
 
     public String getEncryptedPassword(){
-        var encPassBytes = DigestUtils.digest(
-                passwordDigest.toMessageDigest(),
-                password.getBytes(UTF_8)
-        );
-        return new String(encPassBytes, UTF_8);
+        return secretDigest.encrypt(password);
     }
 }
