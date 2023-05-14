@@ -55,14 +55,12 @@ public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
     }
 
     @Override
-    @Transactional
-    public void saveUser(UserDetails userDetails) {
+    public User saveUser(UserDetails userDetails) {
         var userData = new UserData(userDetails);
-        userJpaRepository.save(userData);
+        return userJpaRepository.save(userData);
     }
 
     @Override
-    @Transactional
     public int deleteUser(@NonNull String username) {
         return userJpaRepository.deleteUserByUsername(username);
     }

@@ -38,7 +38,7 @@ public interface UserDataSourceRepository {
      * Insert data in Sql database from UserDetails form
      * @param userDetails form containing crucial data such username password and password digest
      */
-    void saveUser(UserDetails userDetails);
+    User saveUser(UserDetails userDetails);
 
     /**
      * Delete data related to User with given username
