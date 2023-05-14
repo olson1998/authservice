@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +32,8 @@ public class UserMembershipJpaRepositoryWrapper implements UserMembershipReposit
     }
 
     private Set<UserMembershipData> createMembershipDataSet(@NonNull Set<UserMembershipClaim> claims){
-        var dataSet = new HashSet<UserMembershipData>();
-        claims.forEach(claim ->{
-            if(claim != null){
-                dataSet.add(new UserMembershipData(claim));
-            }
-        });
-        return dataSet;
+        return claims.stream()
+                .map(UserMembershipData::new)
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

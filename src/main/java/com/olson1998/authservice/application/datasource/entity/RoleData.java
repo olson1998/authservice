@@ -25,7 +25,7 @@ public class RoleData implements Role {
     private RoleSubject subject;
 
     @Column(name = "ROLETMP", nullable = false)
-    private Long timestamp;
+    private Long timestamp = System.currentTimeMillis();
 
     @Column(name = "ROLESUBUSERID")
     private Long userId;

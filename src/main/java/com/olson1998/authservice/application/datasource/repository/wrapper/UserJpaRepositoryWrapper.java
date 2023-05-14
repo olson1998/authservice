@@ -1,12 +1,13 @@
 package com.olson1998.authservice.application.datasource.repository.wrapper;
 
-import com.olson1998.authservice.application.datasource.entity.RoleData;
 import com.olson1998.authservice.application.datasource.entity.UserData;
-import com.olson1998.authservice.application.datasource.entity.utils.PasswordDigest;
+import com.olson1998.authservice.application.datasource.entity.utils.ExtendedAuthorityTimestampData;
+import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.application.datasource.repository.jpa.UserJpaRepository;
 import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.repository.UserRepository;
+import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 import lombok.NonNull;
@@ -14,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,9 +35,16 @@ public class UserJpaRepositoryWrapper implements UserRepository {
     }
 
     @Override
-    public Set<Role> getUserRoles(@NonNull String username) {
-        return userJpaRepository.selectUserRoles(username).stream()
-                .map(UserJpaRepositoryWrapper::mapRole)
+    public Set<Role> getUserRoles(long userId) {
+        return userJpaRepository.selectUserRoles(userId).stream()
+                .map(RoleJpaRepositoryWrapper::mapRole)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<ExtendedAuthorityTimestamp> getAuthorityTimestamps(long userId) {
+        return userJpaRepository.selectUserAuthoritiesTimestamps(userId).stream()
+                .map(UserJpaRepositoryWrapper::mapAuthorityTimestamp)
                 .collect(Collectors.toSet());
     }
 
@@ -61,14 +68,14 @@ public class UserJpaRepositoryWrapper implements UserRepository {
     }
 
     private static User mapUser(UserData userData){
-        return Objects.requireNonNullElseGet(userData, null);
+        return userData;
     }
 
-    protected static Role mapRole(RoleData roleData){
-        return Objects.requireNonNullElse(roleData, null);
+    private static ExtendedAuthorityTimestamp mapAuthorityTimestamp(ExtendedAuthorityTimestampData data){
+        return data;
     }
 
-    private static PasswordEncryption mapPasswordDigest(PasswordDigest digest){
-        return Objects.requireNonNullElse(digest, null);
+    private static PasswordEncryption mapPasswordDigest(SecretDigest digest){
+        return digest;
     }
 }

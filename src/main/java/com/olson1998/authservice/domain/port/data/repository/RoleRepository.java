@@ -1,6 +1,10 @@
 package com.olson1998.authservice.domain.port.data.repository;
 
+import com.olson1998.authservice.domain.port.data.entity.RoleAuthority;
+
+import java.util.Set;
+
 public interface RoleRepository {
 
-    boolean isTimestampTopical(String roleId, long timestamp);
+    Set<RoleAuthority> getRolesAuthorities(Set<String> rolesIds);
 }

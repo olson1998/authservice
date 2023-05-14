@@ -2,6 +2,7 @@ package com.olson1998.authservice.domain.port.data.repository;
 
 import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.User;
+import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
 import com.olson1998.authservice.domain.port.request.entity.UserDetails;
 
@@ -22,7 +23,9 @@ public interface UserRepository {
      * @param username User's username
      * @return Set of user roles, empty set if no roles find
      */
-    Set<Role> getUserRoles(String username);
+    Set<Role> getUserRoles(long userId);
+
+    Set<ExtendedAuthorityTimestamp> getAuthorityTimestamps(long userId);
 
     /**
      * Search SQL database for User's password digest by unique username
