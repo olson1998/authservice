@@ -18,6 +18,6 @@ public interface UserRequestProcessor {
     User saveUser(UserSavingRequest request);
 
     @Transactional(rollbackFor = RollbackRequiredException.class)
-    UserDeletingReport deleteUser(UserDeletingRequest request) throws RollbackRequiredException;
+    UserDeletingReport deleteUser(UserDeletingRequest request);
 
 }

@@ -12,6 +12,8 @@ public interface RoleDetails {
 
     String getRegionId();
 
+    Long getGroupId();
+
     Long getTeamId();
 
 }

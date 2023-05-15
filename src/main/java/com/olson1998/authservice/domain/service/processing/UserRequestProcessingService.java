@@ -1,6 +1,7 @@
 package com.olson1998.authservice.domain.service.processing;
 
 import com.olson1998.authservice.domain.model.exception.data.NoUserDeletedException;
+import com.olson1998.authservice.domain.model.exception.request.UserPolicyViolationException;
 import com.olson1998.authservice.domain.model.processing.report.SimpleUserDeletingReport;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
@@ -30,8 +31,8 @@ public class UserRequestProcessingService implements UserRequestProcessor {
 
     @Override
     public User saveUser(@NonNull UserSavingRequest request) {
+        checkUserReq(request);
         var details = request.getUserDetails();
-        var username = details.getUsername();
         var membershipClaims = request.getMembershipClaims();
         log.trace("saving new user...");
         var user = userDataSourceRepository.saveUser(details);
@@ -45,13 +46,13 @@ public class UserRequestProcessingService implements UserRequestProcessor {
     }
 
     @Override
-    public UserDeletingReport deleteUser(@NonNull UserDeletingRequest request) throws RollbackRequiredException {
+    public UserDeletingReport deleteUser(@NonNull UserDeletingRequest request) {
         var userId = request.getUserId();
         var deletedMembershipsQty = userMembershipDataSourceRepository.deleteUserMembership(userId);
         var deletedPrivateRolesQty = roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);
         var deletedUsers = userDataSourceRepository.deleteUser(userId);
         if(deletedUsers == 0){
-            throw new NoUserDeletedException();
+            throw new NoUserDeletedException(request.getId());
         }
         log.debug(
                 "deleted {} memberships and {} private roles of user: '{}'",
@@ -69,5 +70,23 @@ public class UserRequestProcessingService implements UserRequestProcessor {
 
     private void updateMembershipClaimsWithUserId(Set<UserMembershipClaim> membershipClaims, long userId){
         membershipClaims.forEach(claim -> claim.setUserId(userId));
+    }
+
+    private void checkUserReq(UserSavingRequest request) throws RollbackRequiredException {
+        var id = request.getId();
+        var username = request.getUserDetails().getUsername();
+        var pass = request.getUserDetails().getPassword();
+        if(username == null){
+            throw new UserPolicyViolationException(id, 0);
+        }
+        if(pass == null){
+            throw new UserPolicyViolationException(id, 1);
+        }
+        if(username.length() < 8){
+            throw new UserPolicyViolationException(id, 2);
+        }
+        if(pass.length() < 6){
+            throw new UserPolicyViolationException(id, 3);
+        }
     }
 }

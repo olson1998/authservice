@@ -6,6 +6,8 @@ public interface RoleAuthority {
 
     String getAuthorityName();
 
+    Integer getLevel();
+
     String getAuthorityToken();
 
 }

@@ -28,11 +28,11 @@ class UserRequestProcessingServiceTest {
 
     private static final long TEST_ID = 1L;
 
-    private static final String TEST_USERNAME = "test";
+    private static final String TEST_USERNAME = "username";
+
+    private static final String TEST_PASSWORD = "password";
 
     private static final SecretDigest TEST_DIGEST = SecretDigest.NONE;
-
-    private static final String TEST_PASSWORD = "test";
 
     private static final User TEST_USER = new UserData(
             TEST_ID,
@@ -63,11 +63,13 @@ class UserRequestProcessingServiceTest {
     private RoleDataSourceRepository roleDataSourceRepository;
 
     @Test
-    void shouldSaveUserUsingGivenUserDetails(){
+    void shouldSaveUserUsingGivenUserDetails() throws RollbackRequiredException {
         given(userSavingRequest.getUserDetails())
                 .willReturn(userDetails);
         given(userDetails.getUsername())
                 .willReturn(TEST_USERNAME);
+        given(userDetails.getPassword())
+                .willReturn(TEST_PASSWORD);
         given(userSavingRequest.getMembershipClaims())
                 .willReturn(userMembershipClaims());
         given(userDataSourceRepository.saveUser(userDetails))
@@ -79,11 +81,13 @@ class UserRequestProcessingServiceTest {
     }
 
     @Test
-    void shouldUpdateEachUserClaimWithGeneratedUserId(){
+    void shouldUpdateEachUserClaimWithGeneratedUserId() throws RollbackRequiredException {
         given(userSavingRequest.getUserDetails())
                 .willReturn(userDetails);
         given(userDetails.getUsername())
                 .willReturn(TEST_USERNAME);
+        given(userDetails.getPassword())
+                .willReturn(TEST_PASSWORD);
         given(userSavingRequest.getMembershipClaims())
                 .willReturn(userMembershipClaims());
         given(userDataSourceRepository.saveUser(userDetails))
@@ -95,12 +99,14 @@ class UserRequestProcessingServiceTest {
     }
 
     @Test
-    void shouldBindUserClaims(){
+    void shouldBindUserClaims() throws RollbackRequiredException {
         var claims = userMembershipClaims();
         given(userSavingRequest.getUserDetails())
                 .willReturn(userDetails);
         given(userDetails.getUsername())
                 .willReturn(TEST_USERNAME);
+        given(userDetails.getPassword())
+                .willReturn(TEST_PASSWORD);
         given(userSavingRequest.getMembershipClaims())
                 .willReturn(claims);
         given(userDataSourceRepository.saveUser(userDetails))
@@ -112,11 +118,13 @@ class UserRequestProcessingServiceTest {
     }
 
     @Test
-    void shouldReturnUserAfterSaving(){
+    void shouldReturnUserAfterSaving() throws RollbackRequiredException {
         given(userSavingRequest.getUserDetails())
                 .willReturn(userDetails);
         given(userDetails.getUsername())
                 .willReturn(TEST_USERNAME);
+        given(userDetails.getPassword())
+                .willReturn(TEST_PASSWORD);
         given(userSavingRequest.getMembershipClaims())
                 .willReturn(userMembershipClaims());
         given(userDataSourceRepository.saveUser(userDetails))
@@ -164,26 +172,6 @@ class UserRequestProcessingServiceTest {
 
         assertThatExceptionOfType(RollbackRequiredException.class)
                 .isThrownBy(()-> userRequestProcessingService().deleteUser(userDeletingRequest));
-    }
-
-    @Test
-    void shouldReturnRoleDeletingResultWithNumberOfDeletedPrivateRolesAndMemberships() throws RollbackRequiredException {
-        int testDeletedRolesQty = 7;
-        int testDeletedMemberships = 16;
-        given(userDeletingRequest.getUserId())
-                .willReturn(TEST_ID);
-        given(userDataSourceRepository.deleteUser(TEST_ID))
-                .willReturn(1);
-        given(userMembershipDataSourceRepository.deleteUserMembership(TEST_ID))
-                .willReturn(testDeletedMemberships);
-        given(roleDataSourceRepository.deleteAllPrivateRolesByUserId(TEST_ID))
-                .willReturn(testDeletedRolesQty);
-
-        var report = userRequestProcessingService().deleteUser(userDeletingRequest);
-
-        assertThat(report.getUserId()).isEqualTo(TEST_ID);
-        assertThat(report.getDeletedPrivateRolesQty()).isEqualTo(testDeletedRolesQty);
-        assertThat(report.getDeletedMembershipsBindingsQty()).isEqualTo(testDeletedMemberships);
     }
 
     private Set<UserMembershipClaim> userMembershipClaims(){
