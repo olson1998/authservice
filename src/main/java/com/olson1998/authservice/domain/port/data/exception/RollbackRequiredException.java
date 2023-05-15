@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public abstract class NoBindingEntityRowsDeletedException extends Exception {
+public abstract class RollbackRequiredException extends Exception {
 
     @Override
     public abstract String getMessage();

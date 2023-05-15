@@ -3,14 +3,14 @@ package com.olson1998.authservice.domain.service.processing;
 import com.olson1998.authservice.application.datasource.entity.UserData;
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.domain.port.data.entity.User;
-import com.olson1998.authservice.domain.port.data.exception.NoBindingEntityRowsDeletedException;
+import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.entity.UserDetails;
-import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
-import com.olson1998.authservice.domain.port.request.model.UserDeletingRequest;
-import com.olson1998.authservice.domain.port.request.model.UserSavingRequest;
+import com.olson1998.authservice.domain.port.request.data.UserDetails;
+import com.olson1998.authservice.domain.port.request.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.request.stereotype.UserDeletingRequest;
+import com.olson1998.authservice.domain.port.request.stereotype.UserSavingRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -128,7 +128,7 @@ class UserRequestProcessingServiceTest {
     }
 
     @Test
-    void shouldDeleteUserWithGivenId() throws NoBindingEntityRowsDeletedException {
+    void shouldDeleteUserWithGivenId() throws RollbackRequiredException {
         given(userDeletingRequest.getUserId()).willReturn(TEST_ID);
         given(userDataSourceRepository.deleteUser(TEST_ID)).willReturn(1);
 
@@ -138,7 +138,7 @@ class UserRequestProcessingServiceTest {
     }
 
     @Test
-    void shouldDeleteAllUserMemberships() throws NoBindingEntityRowsDeletedException {
+    void shouldDeleteAllUserMemberships() throws RollbackRequiredException {
         given(userDeletingRequest.getUserId()).willReturn(TEST_ID);
         given(userDataSourceRepository.deleteUser(TEST_ID)).willReturn(1);
 
@@ -148,7 +148,7 @@ class UserRequestProcessingServiceTest {
     }
 
     @Test
-    void shouldDeleteAllUserPrivateRolesByUserId() throws NoBindingEntityRowsDeletedException {
+    void shouldDeleteAllUserPrivateRolesByUserId() throws RollbackRequiredException {
         given(userDeletingRequest.getUserId()).willReturn(TEST_ID);
         given(userDataSourceRepository.deleteUser(TEST_ID)).willReturn(1);
 
@@ -162,12 +162,12 @@ class UserRequestProcessingServiceTest {
         given(userDeletingRequest.getUserId()).willReturn(TEST_ID);
         given(userDataSourceRepository.deleteUser(TEST_ID)).willReturn(0);
 
-        assertThatExceptionOfType(NoBindingEntityRowsDeletedException.class)
+        assertThatExceptionOfType(RollbackRequiredException.class)
                 .isThrownBy(()-> userRequestProcessingService().deleteUser(userDeletingRequest));
     }
 
     @Test
-    void shouldReturnRoleDeletingResultWithNumberOfDeletedPrivateRolesAndMemberships() throws NoBindingEntityRowsDeletedException {
+    void shouldReturnRoleDeletingResultWithNumberOfDeletedPrivateRolesAndMemberships() throws RollbackRequiredException {
         int testDeletedRolesQty = 7;
         int testDeletedMemberships = 16;
         given(userDeletingRequest.getUserId())

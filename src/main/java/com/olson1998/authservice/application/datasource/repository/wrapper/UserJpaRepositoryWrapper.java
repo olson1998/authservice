@@ -9,11 +9,10 @@ import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
-import com.olson1998.authservice.domain.port.request.entity.UserDetails;
+import com.olson1998.authservice.domain.port.request.data.UserDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;

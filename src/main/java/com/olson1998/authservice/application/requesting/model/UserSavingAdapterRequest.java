@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.application.requesting.entity.UserDetailsForm;
 import com.olson1998.authservice.application.requesting.entity.UserMembershipForm;
-import com.olson1998.authservice.domain.port.request.entity.UserDetails;
-import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
-import com.olson1998.authservice.domain.port.request.model.UserSavingRequest;
+import com.olson1998.authservice.domain.port.request.data.UserDetails;
+import com.olson1998.authservice.domain.port.request.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.request.stereotype.UserSavingRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

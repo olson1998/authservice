@@ -1,10 +1,10 @@
 package com.olson1998.authservice.domain.port.processing.repository;
 
 import com.olson1998.authservice.domain.port.data.entity.User;
-import com.olson1998.authservice.domain.port.data.exception.NoBindingEntityRowsDeletedException;
+import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authservice.domain.port.processing.report.UserDeletingReport;
-import com.olson1998.authservice.domain.port.request.model.UserDeletingRequest;
-import com.olson1998.authservice.domain.port.request.model.UserSavingRequest;
+import com.olson1998.authservice.domain.port.request.stereotype.UserDeletingRequest;
+import com.olson1998.authservice.domain.port.request.stereotype.UserSavingRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRequestProcessor {
@@ -17,6 +17,7 @@ public interface UserRequestProcessor {
     @Transactional
     User saveUser(UserSavingRequest request);
 
-    @Transactional(rollbackFor = NoBindingEntityRowsDeletedException.class)
-    UserDeletingReport deleteUser(UserDeletingRequest request) throws NoBindingEntityRowsDeletedException;
+    @Transactional(rollbackFor = RollbackRequiredException.class)
+    UserDeletingReport deleteUser(UserDeletingRequest request) throws RollbackRequiredException;
+
 }

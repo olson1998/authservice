@@ -1,4 +1,4 @@
-package com.olson1998.authservice.domain.port.mapping.entity;
+package com.olson1998.authservice.domain.port.mapping.stereotype;
 
 public interface AuthorityTimestamp {
 

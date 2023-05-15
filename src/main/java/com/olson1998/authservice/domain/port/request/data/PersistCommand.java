@@ -1,4 +1,4 @@
-package com.olson1998.authservice.domain.port.request.entity;
+package com.olson1998.authservice.domain.port.request.data;
 
 import com.olson1998.authservice.domain.port.request.utils.PersistType;
 

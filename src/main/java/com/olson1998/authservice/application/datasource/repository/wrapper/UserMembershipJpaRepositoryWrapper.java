@@ -3,11 +3,10 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 import com.olson1998.authservice.application.datasource.entity.UserMembershipData;
 import com.olson1998.authservice.application.datasource.repository.jpa.UserMembershipJpaRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.request.data.UserMembershipClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;

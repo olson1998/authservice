@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.requesting.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.requesting.utils.PersistTypeName;
-import com.olson1998.authservice.domain.port.request.entity.PersistCommand;
+import com.olson1998.authservice.domain.port.request.data.PersistCommand;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

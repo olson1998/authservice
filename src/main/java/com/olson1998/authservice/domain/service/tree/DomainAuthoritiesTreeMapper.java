@@ -5,9 +5,9 @@ import com.olson1998.authservice.domain.model.mapping.entity.SimpleAuthorityTime
 import com.olson1998.authservice.domain.model.mapping.entity.SimpleRoleTimestamp;
 import com.olson1998.authservice.domain.port.data.entity.User;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
-import com.olson1998.authservice.domain.port.mapping.entity.AuthoritiesTree;
-import com.olson1998.authservice.domain.port.mapping.entity.AuthorityTimestamp;
-import com.olson1998.authservice.domain.port.mapping.entity.RoleTimestamp;
+import com.olson1998.authservice.domain.port.mapping.stereotype.AuthoritiesTree;
+import com.olson1998.authservice.domain.port.mapping.stereotype.AuthorityTimestamp;
+import com.olson1998.authservice.domain.port.mapping.stereotype.RoleTimestamp;
 import com.olson1998.authservice.domain.port.mapping.repository.AuthoritiesTreeMapper;
 import lombok.NoArgsConstructor;
 

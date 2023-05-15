@@ -3,8 +3,8 @@ package com.olson1998.authservice.application.requesting.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.requesting.entity.RoleDetailsForm;
-import com.olson1998.authservice.domain.port.request.entity.RoleDetails;
-import com.olson1998.authservice.domain.port.request.model.RoleSavingRequest;
+import com.olson1998.authservice.domain.port.request.data.RoleDetails;
+import com.olson1998.authservice.domain.port.request.stereotype.RoleSavingRequest;
 import lombok.Getter;
 
 import java.util.Set;

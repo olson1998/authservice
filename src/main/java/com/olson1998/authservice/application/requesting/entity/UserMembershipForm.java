@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.requesting.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authservice.domain.port.request.entity.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.request.data.UserMembershipClaim;
 import lombok.Getter;
 
 import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.*;
