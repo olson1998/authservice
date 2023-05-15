@@ -20,4 +20,7 @@ public interface RoleJpaRepository extends JpaRepository<RoleData, String> {
 
     @Query("UPDATE RoleData r SET r.timestamp=:timestamp WHERE r.id=:roleId")
     int updateRoleTimestamp(String roleId, long timestamp);
+
+    @Query("DELETE FROM RoleData r WHERE r.subject='PRIVATE' AND r.userId=:userId")
+    int deleteAllPrivateRolesByUserId(long userId);
 }

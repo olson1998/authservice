@@ -4,6 +4,7 @@ public enum RoleSubject {
 
     PRIVATE,
     COMPANY,
+    REGION,
     GROUP,
     TEAM
 }

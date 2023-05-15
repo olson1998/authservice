@@ -1,6 +1,6 @@
 package com.olson1998.authservice.domain.port.request.repository;
 
-import com.olson1998.authservice.domain.port.request.entity.UserDetails;
+import com.olson1998.authservice.domain.port.request.data.UserDetails;
 
 public interface UserRepository {
 

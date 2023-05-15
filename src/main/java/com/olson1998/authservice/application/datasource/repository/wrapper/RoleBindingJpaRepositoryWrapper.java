@@ -2,8 +2,8 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 
 import com.olson1998.authservice.application.datasource.entity.RoleBindingData;
 import com.olson1998.authservice.application.datasource.repository.jpa.RoleBindingJpaRepository;
-import com.olson1998.authservice.domain.port.data.repository.RoleBindingRepository;
-import com.olson1998.authservice.domain.port.request.entity.RoleBindingClaim;
+import com.olson1998.authservice.domain.port.data.repository.RoleBindingDataSourceRepository;
+import com.olson1998.authservice.domain.port.request.data.RoleBindingClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleBindingJpaRepositoryWrapper implements RoleBindingRepository {
+public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRepository {
 
     private final RoleBindingJpaRepository roleBindingJpaRepository;
 

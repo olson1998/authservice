@@ -4,6 +4,7 @@ import com.olson1998.authservice.domain.port.data.entity.RoleAuthority;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 
 @Entity
 @Table(name = "ROLEAUTHORITY")
@@ -23,6 +24,9 @@ public class AuthorityData implements RoleAuthority {
     @Column(name = "AUTHORITYTOKEN")
     private String authorityToken;
 
+    @Column(name = "AUTHORITYLVL")
+    private Integer level;
+
     @Column(name = "AUTHORITYEXP")
     private Long expiringTime;
 
@@ -37,7 +41,19 @@ public class AuthorityData implements RoleAuthority {
     }
 
     @Override
+    public Integer getLevel() {
+        return level;
+    }
+
+    @Override
     public String getAuthorityToken() {
         return authorityToken;
+    }
+
+    @PrePersist
+    public void generateId(){
+        this.id = new StringBuilder("ROLE_")
+                .append(RandomStringUtils.randomAlphabetic(8).toUpperCase())
+                .toString();
     }
 }

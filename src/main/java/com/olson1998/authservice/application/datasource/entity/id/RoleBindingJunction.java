@@ -1,6 +1,6 @@
 package com.olson1998.authservice.application.datasource.entity.id;
 
-import com.olson1998.authservice.domain.port.request.entity.RoleBindingClaim;
+import com.olson1998.authservice.domain.port.request.data.RoleBindingClaim;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;

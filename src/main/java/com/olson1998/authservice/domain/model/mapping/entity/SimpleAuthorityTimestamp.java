@@ -1,7 +1,7 @@
 package com.olson1998.authservice.domain.model.mapping.entity;
 
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
-import com.olson1998.authservice.domain.port.mapping.entity.AuthorityTimestamp;
+import com.olson1998.authservice.domain.port.mapping.stereotype.AuthorityTimestamp;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

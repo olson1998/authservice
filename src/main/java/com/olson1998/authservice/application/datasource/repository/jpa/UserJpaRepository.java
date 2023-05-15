@@ -17,7 +17,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
     @Query("SELECT u FROM UserData u WHERE u.username=:username")
     Optional<UserData> selectUserByUsername(String username);
 
-    @Query("SELECT u.passwordDigest FROM UserData u WHERE u.username=:username")
+    @Query("SELECT u.secretDigest FROM UserData u WHERE u.username=:username")
     Optional<SecretDigest> selectUserPasswordDigest(String username);
 
     @Query("SELECT r FROM UserData u " +
@@ -25,6 +25,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "LEFT OUTER JOIN RoleData r ON " +
             "(mb.junction.userId=r.userId AND r.subject='PRIVATE') OR " +
             "(mb.junction.companyNumber=r.companyNumber AND r.subject='COMPANY') OR " +
+            "(mb.junction.regionId=r.regionId AND r.subject='REGION') OR " +
             "(mb.junction.groupId=r.groupId AND r.subject='GROUP') OR " +
             "(mb.junction.teamId=r.teamId AND r.subject='TEAM') " +
             "WHERE u.id=:userId")
@@ -37,6 +38,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "LEFT OUTER JOIN RoleData r ON " +
             "(mb.junction.userId=r.userId AND r.subject='PRIVATE') OR " +
             "(mb.junction.companyNumber=r.companyNumber AND r.subject='COMPANY') OR " +
+            "(mb.junction.regionId=r.regionId AND r.subject='REGION') OR " +
             "(mb.junction.groupId=r.groupId AND r.subject='GROUP') OR " +
             "(mb.junction.teamId=r.teamId AND r.subject='TEAM') " +
             "LEFT OUTER JOIN RoleBindingData rb ON r.id=rb.junction.roleId " +
@@ -44,6 +46,6 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "WHERE u.id=:userId")
     Set<ExtendedAuthorityTimestampData> selectUserAuthoritiesTimestamps(long userId);
 
-    @Query("DELETE FROM UserData u WHERE u.username=:username")
-    int deleteUserByUsername(String username);
+    @Query("DELETE FROM UserData u WHERE u.id=:id")
+    int deleteUserById(long id);
 }

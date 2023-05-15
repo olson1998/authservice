@@ -6,14 +6,13 @@ import com.olson1998.authservice.application.datasource.entity.utils.SecretDiges
 import com.olson1998.authservice.application.datasource.repository.jpa.UserJpaRepository;
 import com.olson1998.authservice.domain.port.data.entity.Role;
 import com.olson1998.authservice.domain.port.data.entity.User;
-import com.olson1998.authservice.domain.port.data.repository.UserRepository;
+import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
-import com.olson1998.authservice.domain.port.data.utils.PasswordEncryption;
-import com.olson1998.authservice.domain.port.request.entity.UserDetails;
+import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
+import com.olson1998.authservice.domain.port.request.data.UserDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class UserJpaRepositoryWrapper implements UserRepository {
+public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
 
     private final UserJpaRepository userJpaRepository;
 
@@ -49,22 +48,20 @@ public class UserJpaRepositoryWrapper implements UserRepository {
     }
 
     @Override
-    public Optional<PasswordEncryption> getUserPasswordDigest(@NonNull String username) {
+    public Optional<SecretEncryption> getUserPasswordDigest(@NonNull String username) {
         return userJpaRepository.selectUserPasswordDigest(username)
                 .map(UserJpaRepositoryWrapper::mapPasswordDigest);
     }
 
     @Override
-    @Transactional
-    public void saveUser(UserDetails userDetails) {
+    public User saveUser(UserDetails userDetails) {
         var userData = new UserData(userDetails);
-        userJpaRepository.save(userData);
+        return userJpaRepository.save(userData);
     }
 
     @Override
-    @Transactional
-    public int deleteUser(@NonNull String username) {
-        return userJpaRepository.deleteUserByUsername(username);
+    public int deleteUser(long userId) {
+        return userJpaRepository.deleteUserById(userId);
     }
 
     private static User mapUser(UserData userData){
@@ -75,7 +72,7 @@ public class UserJpaRepositoryWrapper implements UserRepository {
         return data;
     }
 
-    private static PasswordEncryption mapPasswordDigest(SecretDigest digest){
+    private static SecretEncryption mapPasswordDigest(SecretDigest digest){
         return digest;
     }
 }
