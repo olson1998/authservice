@@ -1,9 +1,11 @@
 package com.olson1998.authservice.application.datasource.entity;
 
-import com.olson1998.authservice.domain.port.data.entity.RoleAuthority;
+import com.olson1998.authservice.domain.port.data.entity.Authority;
+import com.olson1998.authservice.domain.port.request.data.AuthorityDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @Entity
@@ -12,7 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorityData implements RoleAuthority {
+public class AuthorityData implements Authority {
 
     @Id
     @Column(name = "AUTHORITYID")
@@ -55,5 +57,12 @@ public class AuthorityData implements RoleAuthority {
         this.id = new StringBuilder("ROLE_")
                 .append(RandomStringUtils.randomAlphabetic(8).toUpperCase())
                 .toString();
+    }
+
+    public AuthorityData(@NonNull AuthorityDetails authorityDetails) {
+        this.authorityName = authorityDetails.getName();
+        this.authorityToken = authorityDetails.getToken();
+        this.level = authorityDetails.getLevel();
+        this.expiringTime = authorityDetails.getExpiringTime();
     }
 }
