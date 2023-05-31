@@ -1,7 +1,7 @@
 package com.olson1998.authservice.application.datasource.entity;
 
-import com.olson1998.authservice.domain.port.data.entity.Authority;
-import com.olson1998.authservice.domain.port.request.data.AuthorityDetails;
+import com.olson1998.authservice.domain.port.data.stereotype.Authority;
+import com.olson1998.authservice.domain.port.request.stereotype.data.AuthorityDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

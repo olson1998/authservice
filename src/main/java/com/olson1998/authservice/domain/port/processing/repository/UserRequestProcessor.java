@@ -1,6 +1,6 @@
 package com.olson1998.authservice.domain.port.processing.repository;
 
-import com.olson1998.authservice.domain.port.data.entity.User;
+import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authservice.domain.port.processing.report.UserDeletingReport;
 import com.olson1998.authservice.domain.port.request.stereotype.UserDeletingRequest;

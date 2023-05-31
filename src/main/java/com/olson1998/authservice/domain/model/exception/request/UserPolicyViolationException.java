@@ -1,6 +1,6 @@
 package com.olson1998.authservice.domain.model.exception.request;
 
-import com.olson1998.authservice.domain.port.data.entity.User;
+import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.request.exception.DataPolicyViolationException;
 import lombok.Getter;
 

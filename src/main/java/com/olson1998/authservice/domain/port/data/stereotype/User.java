@@ -1,4 +1,4 @@
-package com.olson1998.authservice.domain.port.data.entity;
+package com.olson1998.authservice.domain.port.data.stereotype;
 
 public interface User {
 

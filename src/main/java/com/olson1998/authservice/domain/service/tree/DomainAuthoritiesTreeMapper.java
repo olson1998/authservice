@@ -3,7 +3,7 @@ package com.olson1998.authservice.domain.service.tree;
 import com.olson1998.authservice.domain.model.mapping.entity.SimpleAuthoritiesTree;
 import com.olson1998.authservice.domain.model.mapping.entity.SimpleAuthorityTimestamp;
 import com.olson1998.authservice.domain.model.mapping.entity.SimpleRoleTimestamp;
-import com.olson1998.authservice.domain.port.data.entity.User;
+import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.mapping.stereotype.AuthoritiesTree;
 import com.olson1998.authservice.domain.port.mapping.stereotype.AuthorityTimestamp;

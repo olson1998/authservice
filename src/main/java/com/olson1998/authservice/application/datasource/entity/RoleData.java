@@ -1,10 +1,11 @@
 package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
-import com.olson1998.authservice.domain.port.data.entity.Role;
-import com.olson1998.authservice.domain.port.request.data.RoleDetails;
+import com.olson1998.authservice.domain.port.data.stereotype.Role;
+import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @Entity
 @Table(name = "AUTHROLE")
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleData implements Role {
@@ -77,11 +79,13 @@ public class RoleData implements Role {
         }
     }
 
+
+
     @PrePersist
     public void generateId(){
-        var idBuilder = new StringBuilder("ROLE_")
+        var idBuilder = new StringBuilder("ROLE&")
                 .append(subject)
-                .append('_');
+                .append('&');
         switch (subject){
             case PRIVATE -> idBuilder.append(userId);
             case COMPANY -> idBuilder.append(companyNumber);
@@ -89,7 +93,7 @@ public class RoleData implements Role {
             case REGION -> idBuilder.append(regionId);
             case GROUP -> idBuilder.append(groupId);
         }
-        idBuilder.append('_')
+        idBuilder.append('&')
                 .append(RandomStringUtils.randomAlphabetic(6).toUpperCase());
         this.id = idBuilder.toString();
     }

@@ -2,10 +2,10 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 
 import com.olson1998.authservice.application.datasource.entity.RoleData;
 import com.olson1998.authservice.application.datasource.repository.jpa.RoleJpaRepository;
-import com.olson1998.authservice.domain.port.data.entity.Authority;
-import com.olson1998.authservice.domain.port.data.entity.Role;
+import com.olson1998.authservice.domain.port.data.stereotype.Authority;
+import com.olson1998.authservice.domain.port.data.stereotype.Role;
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.data.RoleDetails;
+import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

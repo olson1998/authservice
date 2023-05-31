@@ -1,12 +1,12 @@
-package com.olson1998.authservice.application.requesting.model;
+package com.olson1998.authservice.application.requesting.entity.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.application.requesting.entity.UserDetailsForm;
 import com.olson1998.authservice.application.requesting.entity.UserMembershipForm;
-import com.olson1998.authservice.domain.port.request.data.UserDetails;
-import com.olson1998.authservice.domain.port.request.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
+import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
 import com.olson1998.authservice.domain.port.request.stereotype.UserSavingRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.*;
+import static com.olson1998.authservice.application.requesting.entity.data.AbstractCommonJsonValues.*;
 
 @Getter
 

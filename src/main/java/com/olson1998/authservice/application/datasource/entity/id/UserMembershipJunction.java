@@ -1,6 +1,6 @@
 package com.olson1998.authservice.application.datasource.entity.id;
 
-import com.olson1998.authservice.domain.port.request.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -18,16 +18,16 @@ public class UserMembershipJunction implements Serializable {
     @Column(name = "AUTHUSERID", nullable = false, updatable = false)
     private Long userId;
 
-    @Column(name = "MEMCONO", nullable = false, updatable = false)
+    @Column(name = "MEMCONO", updatable = false)
     private Long companyNumber;
 
-    @Column(name = "MEMREGID", nullable = false, updatable = false)
+    @Column(name = "MEMREGID", updatable = false)
     private String regionId;
 
-    @Column(name = "MEMGRPID", nullable = false)
+    @Column(name = "MEMGRPID")
     private Long groupId;
 
-    @Column(name = "MEMTMID", nullable = false)
+    @Column(name = "MEMTMID")
     private Long teamId;
 
     public UserMembershipJunction(@NonNull UserMembershipClaim claim) {

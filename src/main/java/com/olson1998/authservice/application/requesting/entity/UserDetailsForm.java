@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.requesting.entity;
 
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.domain.port.data.utils.SecretAlgorithm;
-import com.olson1998.authservice.domain.port.request.data.UserDetails;
+import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

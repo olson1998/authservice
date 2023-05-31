@@ -1,7 +1,7 @@
 package com.olson1998.authservice.application.requesting.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authservice.domain.port.request.data.RoleBindingClaim;
+import com.olson1998.authservice.domain.port.request.stereotype.data.RoleBindingClaim;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

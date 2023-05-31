@@ -1,10 +1,10 @@
 package com.olson1998.authservice.domain.port.data.repository;
 
-import com.olson1998.authservice.domain.port.data.entity.Role;
-import com.olson1998.authservice.domain.port.data.entity.User;
+import com.olson1998.authservice.domain.port.data.stereotype.Role;
+import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
-import com.olson1998.authservice.domain.port.request.data.UserDetails;
+import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
 
 import java.util.Optional;
 import java.util.Set;

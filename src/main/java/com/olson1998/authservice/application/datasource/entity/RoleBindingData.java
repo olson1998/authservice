@@ -1,7 +1,7 @@
 package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.id.RoleBindingJunction;
-import com.olson1998.authservice.domain.port.request.data.RoleBindingClaim;
+import com.olson1998.authservice.domain.port.request.stereotype.data.RoleBindingClaim;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.IdClass;

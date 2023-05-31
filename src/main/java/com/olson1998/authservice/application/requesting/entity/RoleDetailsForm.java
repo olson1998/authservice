@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authservice.application.mapping.exception.RoleDetailsMappingException;
 import com.olson1998.authservice.domain.port.mapping.exception.DtoMappingException;
-import com.olson1998.authservice.domain.port.request.data.RoleDetails;
+import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.*;
+import static com.olson1998.authservice.application.requesting.entity.data.AbstractCommonJsonValues.*;
 
 @RequiredArgsConstructor
 public class RoleDetailsForm implements RoleDetails {

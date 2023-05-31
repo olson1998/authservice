@@ -1,8 +1,8 @@
 package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
-import com.olson1998.authservice.domain.port.data.entity.User;
-import com.olson1998.authservice.domain.port.request.data.UserDetails;
+import com.olson1998.authservice.domain.port.data.stereotype.User;
+import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,6 @@ import static com.olson1998.authservice.application.datasource.entity.utils.Secr
 @SequenceGenerator(name = "AUTH_USER_NUM_SEQ", sequenceName = "AUTH_USER_NUM_SEQ", allocationSize = 1)
 
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserData implements User {
 
     @Id
@@ -62,9 +61,10 @@ public class UserData implements User {
         this.secretDigest = digest;
     }
 
-    public UserData(String username, String password, SecretDigest secretDigest) {
+    public UserData(Long id, String username, String password, SecretDigest secretDigest) {
+        this.id = id;
         this.username = username;
-        this.password = password;
+        this.password = secretDigest.encrypt(password);
         this.secretDigest = secretDigest;
     }
 }
