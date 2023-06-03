@@ -7,9 +7,14 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @RequiredArgsConstructor
 public class DomainUserSavingReport implements UserSavingReport {
+
+    @JsonProperty(value = "request_id")
+    private final UUID requestId;
 
     @JsonProperty(value = "user_id")
     private final long userId;
@@ -17,7 +22,8 @@ public class DomainUserSavingReport implements UserSavingReport {
     @JsonProperty(value = "username")
     private final String username;
 
-    public DomainUserSavingReport(@NonNull User user) {
+    public DomainUserSavingReport(@NonNull UUID requestId, @NonNull User user) {
+        this.requestId = requestId;
         this.userId = user.getId();
         this.username = user.getUsername();
     }

@@ -43,7 +43,10 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         log.debug("binding {} memberships of user: '{}'", size, userId);
         userMembershipDataSourceRepository.saveUserMemberships(membershipClaims);
         log.debug("successfully saved user: '{}'", userId);
-        return new DomainUserSavingReport(user);
+        return new DomainUserSavingReport(
+                request.getId(),
+                user
+        );
     }
 
     @Override
