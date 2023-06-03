@@ -1,7 +1,9 @@
 package com.olson1998.authservice.application.requesting.model.payload;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authservice.application.mapping.exception.RoleDetailsMappingException;
 import com.olson1998.authservice.domain.port.processing.tree.exception.DtoMappingException;
@@ -15,23 +17,35 @@ import static com.olson1998.authservice.application.requesting.model.AbstractCom
 public class RoleDetailsForm implements RoleDetails {
 
     @Getter
+    @JsonProperty(value = NAME, required = true)
     private final String name;
 
+    @JsonProperty(value = "subject", required = true)
     private final RoleSubject subject;
 
     @Getter
+    @JsonProperty(value = USER_ID)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long userId;
 
     @Getter
+    @JsonProperty(value = COMPANY_NUMBER)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long companyNumber;
 
     @Getter
+    @JsonProperty(value = REGION_ID)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String regionId;
 
     @Getter
+    @JsonProperty(value = GROUP_ID)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long groupId;
 
     @Getter
+    @JsonProperty(value = TEAM_ID)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long teamId;
 
     @JsonCreator
@@ -41,7 +55,7 @@ public class RoleDetailsForm implements RoleDetails {
                            @JsonProperty(value = COMPANY_NUMBER) Long companyNumber,
                            @JsonProperty(value = REGION_ID) String regionId,
                            @JsonProperty(value = GROUP_ID) Long groupId,
-                           @JsonProperty(value = TEAM_ID) Long teamId) throws DtoMappingException {
+                           @JsonProperty(value = TEAM_ID) Long teamId) {
         this.name = name;
         this.subject = subject;
         setValueOrThrow(

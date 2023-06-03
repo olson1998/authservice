@@ -6,7 +6,17 @@ public interface Role {
 
     String getName();
 
+    Long getUserId();
+
+    Long getCompanyNumber();
+
     String getSubject();
+
+    String getRegionId();
+
+    Long getGroupId();
+
+    Long getTeamId();
 
     Long getTimestamp();
 }

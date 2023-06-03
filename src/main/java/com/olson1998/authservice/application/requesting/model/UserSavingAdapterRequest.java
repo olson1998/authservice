@@ -5,20 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.application.requesting.model.payload.UserDetailsForm;
 import com.olson1998.authservice.application.requesting.model.payload.UserMembershipForm;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.UserSavingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
-import com.olson1998.authservice.domain.port.processing.request.stereotype.UserSavingRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.*;
+import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.ID;
 
 @Getter
 
@@ -43,9 +40,11 @@ public class UserSavingAdapterRequest implements UserSavingRequest {
                 password,
                 passwordDigest
         );
-        var membershipClaimsRef = new AtomicReference<Set<UserMembershipClaim>>();
-        Optional.ofNullable(membershipClaimsForm).ifPresent(forms -> membershipClaimsRef.set(mapUserMembershipClaims(forms)));
-        this.membershipClaims = membershipClaimsRef.get();
+        if(membershipClaimsForm != null){
+            this.membershipClaims = mapUserMembershipClaims(membershipClaimsForm);
+        }else {
+            this.membershipClaims = null;
+        }
     }
 
     private Set<UserMembershipClaim> mapUserMembershipClaims(Set<UserMembershipForm> membershipClaimsForm){

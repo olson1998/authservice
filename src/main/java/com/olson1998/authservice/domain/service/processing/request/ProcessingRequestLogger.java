@@ -2,7 +2,6 @@ package com.olson1998.authservice.domain.service.processing.request;
 
 import com.olson1998.authservice.domain.port.processing.request.stereotype.Request;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

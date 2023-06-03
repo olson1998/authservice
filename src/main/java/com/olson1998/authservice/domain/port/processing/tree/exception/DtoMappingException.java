@@ -3,7 +3,7 @@ package com.olson1998.authservice.domain.port.processing.tree.exception;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class DtoMappingException extends Exception {
+public abstract class DtoMappingException extends IllegalArgumentException {
 
     private final Class<?> entityClass;
 

@@ -58,8 +58,33 @@ public class RoleData implements Role {
     }
 
     @Override
+    public Long getUserId() {
+        return userId;
+    }
+
+    @Override
+    public Long getCompanyNumber() {
+        return companyNumber;
+    }
+
+    @Override
     public String getSubject() {
         return subject.name();
+    }
+
+    @Override
+    public String getRegionId() {
+        return regionId;
+    }
+
+    @Override
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    @Override
+    public Long getTeamId() {
+        return teamId;
     }
 
     @Override
@@ -70,8 +95,8 @@ public class RoleData implements Role {
     public RoleData(@NonNull RoleDetails roleDetails) {
         this.subject = RoleSubject.valueOf(roleDetails.getSubject());
         this.name = roleDetails.getName();
+        this.userId = roleDetails.getUserId();
         switch (this.subject){
-            case PRIVATE -> this.userId = roleDetails.getUserId();
             case COMPANY -> this.companyNumber = roleDetails.getCompanyNumber();
             case TEAM -> this.teamId = roleDetails.getTeamId();
             case REGION -> this.regionId = roleDetails.getRegionId();

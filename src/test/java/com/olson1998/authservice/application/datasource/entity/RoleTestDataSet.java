@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 
+import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.TEST_USER_ID;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class RoleTestDataSet {
 
@@ -18,6 +20,7 @@ public abstract class RoleTestDataSet {
     public static String TEST_ROLE_4_ID;
 
     public static String TEST_ROLE_5_ID;
+
     public static final long TEST_ROLE_2_CONO = 1L;
 
     public static final long TEST_ROLE_3_GROUP = 1L;
@@ -32,9 +35,9 @@ public abstract class RoleTestDataSet {
 
     public static final String TEST_ROLE_3_NAME = "test-group-role";
 
-    private static final String TEST_ROLE_4_NAME = "test-region-role";
+    public static final String TEST_ROLE_4_NAME = "test-region-role";
 
-    private static final String TEST_ROLE_5_NAME = "test-team-role";
+    public static final String TEST_ROLE_5_NAME = "test-team-role";
 
     public static final RoleSubject TEST_ROLE_1_SUB = RoleSubject.PRIVATE;
 
@@ -51,6 +54,7 @@ public abstract class RoleTestDataSet {
             RoleData.builder()
                     .name(TEST_ROLE_1_NAME)
                     .subject(TEST_ROLE_1_SUB)
+                    .userId(TEST_USER_ID)
     );
 
     public static final RoleData TEST_ROLE_DATA_2 = createTestRole(
