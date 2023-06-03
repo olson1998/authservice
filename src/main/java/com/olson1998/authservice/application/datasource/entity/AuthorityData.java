@@ -61,8 +61,8 @@ public class AuthorityData implements Authority {
 
     @PrePersist
     public void generateId(){
-        this.id = new StringBuilder("ROLE&AUTH&")
-                .append(RandomStringUtils.randomAlphabetic(8).toUpperCase())
+        this.id = new StringBuilder("AUTH&")
+                .append(RandomStringUtils.randomAlphanumeric(12).toUpperCase())
                 .toString();
     }
 

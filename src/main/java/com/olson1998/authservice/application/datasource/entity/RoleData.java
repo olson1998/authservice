@@ -119,7 +119,7 @@ public class RoleData implements Role {
             case GROUP -> idBuilder.append(groupId);
         }
         idBuilder.append('&')
-                .append(RandomStringUtils.randomAlphabetic(6).toUpperCase());
+                .append(RandomStringUtils.randomAlphanumeric(6).toUpperCase());
         this.id = idBuilder.toString();
     }
 }
