@@ -1,5 +1,6 @@
 package com.olson1998.authservice.domain.service.processing.request;
 
+import com.olson1998.authservice.domain.port.data.stereotype.Authority;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.processing.request.repository.RoleRequestProcessor;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
+
 @Slf4j
 @RequiredArgsConstructor
 public class RoleRequestProcessingService implements RoleRequestProcessor {
@@ -18,9 +21,8 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
 
     @Override
     public List<Role> saveNewRoles(@NonNull RoleSavingRequest request) {
-        var persistedData = roleDataSourceRepository.saveRoles(request.getDetails());
-        log.debug("saved new {} roles", persistedData.size());
-        return persistedData;
+        ProcessingRequestLogger.log(log, request, SAVE, Role.class);
+        return roleDataSourceRepository.saveRoles(request.getDetails());
     }
 
     @Override

@@ -4,38 +4,33 @@ import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredExce
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
-import com.olson1998.authservice.domain.port.processing.request.stereotype.UserDeletingRequest;
-import com.olson1998.authservice.domain.port.processing.request.stereotype.UserSavingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import com.olson1998.authservice.domain.service.processing.request.UserRequestProcessingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
 
-import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.TEST_USER_DATA;
+import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.TEST_USER_ID;
+import static com.olson1998.authservice.application.requesting.model.UserRequestDataSet.*;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class UserRequestProcessingServiceTest {
 
-    @Mock
-    private UserMembershipClaim userMembershipClaim;
+    private static final UserDetails TEST_USER_SAVE_REQUEST_DETAILS =
+            TEST_USER_SAVING_REQUEST.getUserDetails();
 
-    @Mock
-    private UserDetails userDetails;
-
-    @Mock
-    private UserSavingRequest userSavingRequest;
-
-    @Mock
-    private UserDeletingRequest userDeletingRequest;
+    private static final Set<UserMembershipClaim> TEST_USER_MEMBERSHIP_CLAIMS =
+            TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM.getMembershipClaims();
 
     @Mock
     private UserDataSourceRepository userDataSourceRepository;
@@ -46,125 +41,49 @@ class UserRequestProcessingServiceTest {
     @Mock
     private RoleDataSourceRepository roleDataSourceRepository;
 
+    @InjectMocks
+    private UserRequestProcessingService userRequestProcessingService;
+
     @Test
     void shouldSaveUserUsingGivenUserDetails() throws RollbackRequiredException {
-        given(userSavingRequest.getUserDetails())
-                .willReturn(userDetails);
-        given(userDetails.getUsername())
-                .willReturn(TEST_USER_USERNAME);
-        given(userDetails.getPassword())
-                .willReturn(TEST_USER_PASSWORD);
-        given(userSavingRequest.getMembershipClaims())
-                .willReturn(userMembershipClaims());
-        given(userDataSourceRepository.saveUser(userDetails))
+        given(userDataSourceRepository.saveUser(TEST_USER_SAVE_REQUEST_DETAILS))
                 .willReturn(TEST_USER_DATA);
 
-        userRequestProcessingService().saveUser(userSavingRequest);
+        userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST);
 
-        then(userDataSourceRepository).should().saveUser(userDetails);
+        then(userDataSourceRepository).should().saveUser(TEST_USER_SAVE_REQUEST_DETAILS);
     }
 
     @Test
-    void shouldUpdateEachUserClaimWithGeneratedUserId() throws RollbackRequiredException {
-        given(userSavingRequest.getUserDetails())
-                .willReturn(userDetails);
-        given(userDetails.getUsername())
-                .willReturn(TEST_USER_USERNAME);
-        given(userDetails.getPassword())
-                .willReturn(TEST_USER_PASSWORD);
-        given(userSavingRequest.getMembershipClaims())
-                .willReturn(userMembershipClaims());
-        given(userDataSourceRepository.saveUser(userDetails))
+    void shouldSaveUserMembershipClaims(){
+        given(userDataSourceRepository.saveUser(any()))
                 .willReturn(TEST_USER_DATA);
 
-        userRequestProcessingService().saveUser(userSavingRequest);
+        userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
 
-        then(userMembershipClaim).should().setUserId(TEST_USER_ID);
+        then(userMembershipDataSourceRepository).should().saveUserMemberships(TEST_USER_MEMBERSHIP_CLAIMS);
     }
 
     @Test
-    void shouldBindUserClaims() throws RollbackRequiredException {
-        var claims = userMembershipClaims();
-        given(userSavingRequest.getUserDetails())
-                .willReturn(userDetails);
-        given(userDetails.getUsername())
-                .willReturn(TEST_USER_USERNAME);
-        given(userDetails.getPassword())
-                .willReturn(TEST_USER_PASSWORD);
-        given(userSavingRequest.getMembershipClaims())
-                .willReturn(claims);
-        given(userDataSourceRepository.saveUser(userDetails))
-                .willReturn(TEST_USER_DATA);
+    void shouldDeleteUserMembershipsAllPrivateRolesForAndUserDetailsGivenUserId(){
+        given(userDataSourceRepository.deleteUser(TEST_USER_ID))
+                .willReturn(1);
 
-        userRequestProcessingService().saveUser(userSavingRequest);
+        userRequestProcessingService.deleteUser(TEST_USER_DELETING_REQUEST);
 
-        then(userMembershipDataSourceRepository).should().saveUserMemberships(claims);
-    }
-
-    @Test
-    void shouldReturnUserAfterSaving() throws RollbackRequiredException {
-        given(userSavingRequest.getUserDetails())
-                .willReturn(userDetails);
-        given(userDetails.getUsername())
-                .willReturn(TEST_USER_USERNAME);
-        given(userDetails.getPassword())
-                .willReturn(TEST_USER_PASSWORD);
-        given(userDataSourceRepository.saveUser(userDetails))
-                .willReturn(TEST_USER_DATA);
-
-        var user = userRequestProcessingService().saveUser(userSavingRequest);
-
-        assertThat(user).isEqualTo(TEST_USER_DATA);
-    }
-
-    @Test
-    void shouldDeleteUserWithGivenId() throws RollbackRequiredException {
-        given(userDeletingRequest.getUserId()).willReturn(TEST_USER_ID);
-        given(userDataSourceRepository.deleteUser(TEST_USER_ID)).willReturn(1);
-
-        userRequestProcessingService().deleteUser(userDeletingRequest);
-
+        then(userMembershipDataSourceRepository).should().deleteUserMembership(TEST_USER_ID);
+        then(roleDataSourceRepository).should().deleteAllPrivateRolesByUserId(TEST_USER_ID);
         then(userDataSourceRepository).should().deleteUser(TEST_USER_ID);
     }
 
     @Test
-    void shouldDeleteAllUserMemberships() throws RollbackRequiredException {
-        given(userDeletingRequest.getUserId()).willReturn(TEST_USER_ID);
-        given(userDataSourceRepository.deleteUser(TEST_USER_ID)).willReturn(1);
+    void shouldThrowRollbackRequiredExceptionIfRepositoryReturnedZeroDeletedUsers(){
+        given(userDataSourceRepository.deleteUser(TEST_USER_ID))
+                .willReturn(0);
 
-        userRequestProcessingService().deleteUser(userDeletingRequest);
-
-        then(userMembershipDataSourceRepository).should().deleteUserMembership(TEST_USER_ID);
+        assertThatExceptionOfType(RollbackRequiredException.class).isThrownBy(()->{
+            userRequestProcessingService.deleteUser(TEST_USER_DELETING_REQUEST);
+        });
     }
 
-    @Test
-    void shouldDeleteAllUserPrivateRolesByUserId() throws RollbackRequiredException {
-        given(userDeletingRequest.getUserId()).willReturn(TEST_USER_ID);
-        given(userDataSourceRepository.deleteUser(TEST_USER_ID)).willReturn(1);
-
-        userRequestProcessingService().deleteUser(userDeletingRequest);
-
-        then(roleDataSourceRepository).should().deleteAllPrivateRolesByUserId(TEST_USER_ID);
-    }
-
-    @Test
-    void shouldThrowNoBindingsEntityRowsDeletedExceptionIfNoUserHasBeenDeleted(){
-        given(userDeletingRequest.getUserId()).willReturn(TEST_USER_ID);
-        given(userDataSourceRepository.deleteUser(TEST_USER_ID)).willReturn(0);
-
-        assertThatExceptionOfType(RollbackRequiredException.class)
-                .isThrownBy(()-> userRequestProcessingService().deleteUser(userDeletingRequest));
-    }
-
-    private Set<UserMembershipClaim> userMembershipClaims(){
-        return Set.of(userMembershipClaim);
-    }
-
-    private UserRequestProcessingService userRequestProcessingService(){
-        return new UserRequestProcessingService(
-                userDataSourceRepository,
-                userMembershipDataSourceRepository,
-                roleDataSourceRepository
-        );
-    }
 }

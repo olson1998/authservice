@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
+
 @Slf4j
 @RequiredArgsConstructor
 public class AuthorityRequestProcessingService implements AuthorityRequestProcessor {
@@ -22,6 +24,7 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
 
     @Override
     public AuthoritySavingReport saveAuthorities(@NonNull AuthoritySavingRequest authoritySavingRequest) {
+        ProcessingRequestLogger.log(log, authoritySavingRequest, SAVE, Authority.class);
         var authoritiesDetails = authoritySavingRequest.getAuthoritiesDetails();
         var persistedAuthorities = authorityDataSourceRepository.saveAuthorities(authoritiesDetails);
         var persistedAuthoritiesMap = createPersistedAuthoritiesMap(

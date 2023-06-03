@@ -8,6 +8,8 @@ import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredExce
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
+import com.olson1998.authservice.domain.port.data.stereotype.Authority;
+import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authservice.domain.port.processing.report.stereotype.UserSavingReport;
 import com.olson1998.authservice.domain.port.processing.request.repository.UserRequestProcessor;
@@ -19,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
+
+import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.DELETE;
+import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,15 +38,20 @@ public class UserRequestProcessingService implements UserRequestProcessor {
     @Override
     public UserSavingReport saveUser(@NonNull UserSavingRequest request) {
         checkUserReq(request);
+        ProcessingRequestLogger.log(log, request, SAVE, User.class);
         var details = request.getUserDetails();
         var membershipClaims = request.getMembershipClaims();
         log.trace("saving new user...");
         var user = userDataSourceRepository.saveUser(details);
         var userId = user.getId();
-        updateMembershipClaimsWithUserId(membershipClaims, userId);
-        var size = membershipClaims.size();
-        log.debug("binding {} memberships of user: '{}'", size, userId);
-        userMembershipDataSourceRepository.saveUserMemberships(membershipClaims);
+        if(request.getMembershipClaims() != null){
+            updateMembershipClaimsWithUserId(membershipClaims, userId);
+            var size = membershipClaims.size();
+            log.debug("binding {} memberships of user: '{}'", size, userId);
+            userMembershipDataSourceRepository.saveUserMemberships(membershipClaims);
+        }else {
+            log.trace("no membership claim to bind for user: '{}'", userId);
+        }
         log.debug("successfully saved user: '{}'", userId);
         return new DomainUserSavingReport(
                 request.getId(),
@@ -51,6 +61,7 @@ public class UserRequestProcessingService implements UserRequestProcessor {
 
     @Override
     public UserDeletingReport deleteUser(@NonNull UserDeletingRequest request) {
+        ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var userId = request.getUserId();
         var deletedMembershipsQty = userMembershipDataSourceRepository.deleteUserMembership(userId);
         var deletedPrivateRolesQty = roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);

@@ -11,6 +11,7 @@ import com.olson1998.authservice.domain.port.processing.request.stereotype.UserS
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
