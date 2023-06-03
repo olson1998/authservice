@@ -15,9 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
 
-import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.TEST_USER_DATA;
-import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.TEST_USER_ID;
+import static com.olson1998.authservice.application.datasource.entity.UserTestDataSet.*;
 import static com.olson1998.authservice.application.requesting.model.UserRequestDataSet.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -62,6 +62,19 @@ class UserRequestProcessingServiceTest {
         userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
 
         then(userMembershipDataSourceRepository).should().saveUserMemberships(TEST_USER_MEMBERSHIP_CLAIMS);
+    }
+
+    @Test
+    void shouldIncludePersistedDataIntoReport(){
+        given(userDataSourceRepository.saveUser(any()))
+                .willReturn(TEST_USER_DATA);
+
+        var report =
+                userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
+
+        assertThat(report.getUserId()).isEqualTo(TEST_USER_ID);
+        assertThat(report.getUsername()).isEqualTo(TEST_USER_USERNAME);
+        assertThat(report.getRequestId()).isEqualTo(TEST_USER_SAVING_REQUEST_ID );
     }
 
     @Test
