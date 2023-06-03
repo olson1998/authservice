@@ -1,6 +1,6 @@
 package com.olson1998.authservice.application.requesting.utils;
 
-import com.olson1998.authservice.domain.port.request.utils.PersistType;
+import com.olson1998.authservice.domain.port.processing.request.utils.PersistType;
 
 public enum PersistTypeName implements PersistType {
 

@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.requesting.entity.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authservice.domain.port.request.stereotype.UserDeletingRequest;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.UserDeletingRequest;
 import lombok.Getter;
 
 import java.util.UUID;

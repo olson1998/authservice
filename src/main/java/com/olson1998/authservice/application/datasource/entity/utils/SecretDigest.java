@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.datasource.entity.utils;
 
 import com.olson1998.authservice.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;

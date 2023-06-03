@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authservice.application.mapping.exception.RoleDetailsMappingException;
-import com.olson1998.authservice.domain.port.mapping.exception.DtoMappingException;
-import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
+import com.olson1998.authservice.domain.port.processing.tree.exception.DtoMappingException;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

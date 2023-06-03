@@ -1,6 +1,6 @@
 package com.olson1998.authservice.domain.port.data.repository;
 
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 
 import java.util.Set;
 

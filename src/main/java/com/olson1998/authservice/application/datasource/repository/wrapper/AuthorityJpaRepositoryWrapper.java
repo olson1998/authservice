@@ -4,7 +4,7 @@ import com.olson1998.authservice.application.datasource.entity.AuthorityData;
 import com.olson1998.authservice.application.datasource.repository.jpa.AuthorityJpaRepository;
 import com.olson1998.authservice.domain.port.data.stereotype.Authority;
 import com.olson1998.authservice.domain.port.data.repository.AuthorityDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.stereotype.data.AuthorityDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

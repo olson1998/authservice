@@ -5,7 +5,7 @@ import com.olson1998.authservice.application.datasource.repository.jpa.RoleJpaRe
 import com.olson1998.authservice.domain.port.data.stereotype.Authority;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.olson1998.authservice.application.datasource.entity.id;
 
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

@@ -2,7 +2,7 @@ package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
-import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

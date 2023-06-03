@@ -1,7 +1,7 @@
 package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.id.UserMembershipJunction;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.IdClass;

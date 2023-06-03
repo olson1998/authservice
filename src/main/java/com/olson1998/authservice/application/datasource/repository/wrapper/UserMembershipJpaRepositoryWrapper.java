@@ -3,7 +3,7 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 import com.olson1998.authservice.application.datasource.entity.UserMembershipData;
 import com.olson1998.authservice.application.datasource.repository.jpa.UserMembershipJpaRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

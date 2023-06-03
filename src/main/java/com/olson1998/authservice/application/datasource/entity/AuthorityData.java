@@ -1,9 +1,10 @@
 package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.domain.port.data.stereotype.Authority;
-import com.olson1998.authservice.domain.port.request.stereotype.data.AuthorityDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @Table(name = "ROLEAUTHORITY")
 @SequenceGenerator(name = "AUTHORITY_ID_SEQ", sequenceName = "AUTHORITY_ID_SEQ", allocationSize = 1)
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorityData implements Authority {
@@ -54,7 +56,7 @@ public class AuthorityData implements Authority {
 
     @PrePersist
     public void generateId(){
-        this.id = new StringBuilder("ROLE_")
+        this.id = new StringBuilder("ROLE&AUTH&")
                 .append(RandomStringUtils.randomAlphabetic(8).toUpperCase())
                 .toString();
     }

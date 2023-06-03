@@ -4,10 +4,11 @@ import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredExce
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
-import com.olson1998.authservice.domain.port.request.stereotype.UserDeletingRequest;
-import com.olson1998.authservice.domain.port.request.stereotype.UserSavingRequest;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserMembershipClaim;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.UserDeletingRequest;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.UserSavingRequest;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
+import com.olson1998.authservice.domain.service.processing.request.UserRequestProcessingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

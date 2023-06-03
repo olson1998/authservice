@@ -1,6 +1,6 @@
 package com.olson1998.authservice.application.mapping.exception;
 
-import com.olson1998.authservice.domain.port.mapping.exception.DtoMappingException;
+import com.olson1998.authservice.domain.port.processing.tree.exception.DtoMappingException;
 
 public class RoleDetailsMappingException extends DtoMappingException {
 

@@ -2,7 +2,7 @@ package com.olson1998.authservice.domain.port.data.repository;
 
 import com.olson1998.authservice.domain.port.data.stereotype.Authority;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
-import com.olson1998.authservice.domain.port.request.stereotype.data.RoleDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
 
 import java.util.List;
 import java.util.Set;

@@ -2,9 +2,8 @@ package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.domain.port.data.stereotype.User;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 

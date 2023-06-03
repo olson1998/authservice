@@ -4,7 +4,7 @@ import com.olson1998.authservice.domain.port.data.stereotype.Role;
 import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authservice.domain.port.data.utils.SecretEncryption;
-import com.olson1998.authservice.domain.port.request.stereotype.data.UserDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
 
 import java.util.Optional;
 import java.util.Set;

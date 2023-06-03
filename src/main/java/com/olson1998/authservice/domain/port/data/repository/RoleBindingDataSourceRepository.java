@@ -1,6 +1,6 @@
 package com.olson1998.authservice.domain.port.data.repository;
 
-import com.olson1998.authservice.domain.port.request.stereotype.data.RoleBindingClaim;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 
 import java.util.Set;
 

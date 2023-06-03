@@ -1,6 +1,7 @@
 package com.olson1998.authservice.application.datasource.entity.utils;
 
 import com.olson1998.authservice.domain.port.data.utils.ExtendedAuthorityTimestamp;
+import com.olson1998.authservice.domain.port.processing.tree.stereotype.AuthorityTimestamp;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,27 @@ public class ExtendedAuthorityTimestampData implements ExtendedAuthorityTimestam
     @Override
     public Long getExpireTime() {
         return authorityExpireTime;
+    }
+
+    @Override
+    public boolean equals(AuthorityTimestamp authorityTimestamp) {
+        boolean timestampMatch;
+        if(authorityTimestamp != null) {
+            if(authorityExpireTime != null && authorityTimestamp.getExpireTime() != null){
+                timestampMatch = authorityExpireTime.equals(authorityTimestamp.getExpireTime());
+                return timestampMatch && authorityId.equals(authorityTimestamp.getId());
+            }else {
+                return authorityId.equals(authorityTimestamp.getId());
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof AuthorityTimestamp authorityTimestamp){
+            return equals(authorityTimestamp);
+        }
+        return false;
     }
 }
