@@ -15,7 +15,7 @@ public interface UserRequestProcessor {
      * @param request Request containing all required data to perform persisting
      * @return save user
      */
-    @Transactional
+    @Transactional(rollbackFor = RollbackRequiredException.class)
     UserSavingReport saveUser(UserSavingRequest request);
 
     @Transactional(rollbackFor = RollbackRequiredException.class)
