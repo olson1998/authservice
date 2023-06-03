@@ -1,7 +1,7 @@
 package com.olson1998.authservice.domain.model.processing.report;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authservice.domain.port.processing.report.UserDeletingReport;
+import com.olson1998.authservice.domain.port.processing.report.stereotype.UserDeletingReport;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor
-public class SimpleUserDeletingReport implements UserDeletingReport {
+public class DomainUserDeletingReport implements UserDeletingReport {
 
     @JsonProperty(value = "request_id")
     private final UUID requestId;

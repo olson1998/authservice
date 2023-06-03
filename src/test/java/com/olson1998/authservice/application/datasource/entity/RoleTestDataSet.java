@@ -1,9 +1,10 @@
 package com.olson1998.authservice.application.datasource.entity;
 
-import com.olson1998.authservice.application.datasource.entity.RoleData;
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.time.Duration;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class RoleTestDataSet {
@@ -17,7 +18,6 @@ public abstract class RoleTestDataSet {
     public static String TEST_ROLE_4_ID;
 
     public static String TEST_ROLE_5_ID;
-
     public static final long TEST_ROLE_2_CONO = 1L;
 
     public static final long TEST_ROLE_3_GROUP = 1L;
@@ -98,4 +98,5 @@ public abstract class RoleTestDataSet {
         }
         return role;
     }
+
 }
