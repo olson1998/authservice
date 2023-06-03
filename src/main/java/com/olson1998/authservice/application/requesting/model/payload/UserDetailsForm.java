@@ -1,4 +1,4 @@
-package com.olson1998.authservice.application.requesting.entity;
+package com.olson1998.authservice.application.requesting.model.payload;
 
 import com.olson1998.authservice.application.datasource.entity.utils.SecretDigest;
 import com.olson1998.authservice.domain.port.data.utils.SecretAlgorithm;

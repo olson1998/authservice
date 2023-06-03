@@ -1,6 +1,5 @@
 package com.olson1998.authservice.application.requesting.model.payload;
 
-import com.olson1998.authservice.application.requesting.entity.AuthorityDetailsForm;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

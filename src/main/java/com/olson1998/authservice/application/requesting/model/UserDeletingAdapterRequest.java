@@ -1,4 +1,4 @@
-package com.olson1998.authservice.application.requesting.entity.data;
+package com.olson1998.authservice.application.requesting.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,8 +7,8 @@ import lombok.Getter;
 
 import java.util.UUID;
 
-import static com.olson1998.authservice.application.requesting.entity.data.AbstractCommonJsonValues.ID;
-import static com.olson1998.authservice.application.requesting.entity.data.AbstractCommonJsonValues.USER_ID;
+import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.ID;
+import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.USER_ID;
 
 @Getter
 public class UserDeletingAdapterRequest implements UserDeletingRequest {

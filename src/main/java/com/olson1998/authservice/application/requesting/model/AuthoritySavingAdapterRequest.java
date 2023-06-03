@@ -1,8 +1,8 @@
-package com.olson1998.authservice.application.requesting.entity.data;
+package com.olson1998.authservice.application.requesting.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authservice.application.requesting.entity.AuthorityDetailsForm;
+import com.olson1998.authservice.application.requesting.model.payload.AuthorityDetailsForm;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.AuthoritySavingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.olson1998.authservice.application.requesting.entity.data.AbstractCommonJsonValues.ID;
+import static com.olson1998.authservice.application.requesting.model.AbstractCommonJsonValues.ID;
 
 @Getter
 public class AuthoritySavingAdapterRequest implements AuthoritySavingRequest {

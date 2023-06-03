@@ -1,4 +1,4 @@
-package com.olson1998.authservice.application.requesting.entity;
+package com.olson1998.authservice.application.requesting.model.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;

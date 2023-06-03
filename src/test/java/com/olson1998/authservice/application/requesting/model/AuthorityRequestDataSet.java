@@ -1,7 +1,6 @@
 package com.olson1998.authservice.application.requesting.model;
 
-import com.olson1998.authservice.application.requesting.entity.AuthorityDetailsForm;
-import com.olson1998.authservice.application.requesting.entity.data.AuthoritySavingAdapterRequest;
+import com.olson1998.authservice.application.requesting.model.payload.AuthorityDetailsForm;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

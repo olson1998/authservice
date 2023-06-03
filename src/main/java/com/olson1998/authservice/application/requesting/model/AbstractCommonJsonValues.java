@@ -1,4 +1,4 @@
-package com.olson1998.authservice.application.requesting.entity.data;
+package com.olson1998.authservice.application.requesting.model;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
