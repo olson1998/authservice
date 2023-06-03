@@ -1,19 +1,31 @@
 package com.olson1998.authservice.domain.service.processing.request;
 
+import com.olson1998.authservice.domain.model.processing.report.DomainRoleBindingReport;
 import com.olson1998.authservice.domain.model.processing.report.DomainRoleSavingReport;
+import com.olson1998.authservice.domain.model.processing.request.LinkedAuthoritySavingRequest;
+import com.olson1998.authservice.domain.model.processing.request.LinkedRoleBindingClaim;
+import com.olson1998.authservice.domain.port.data.repository.AuthorityDataSourceRepository;
+import com.olson1998.authservice.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
+import com.olson1998.authservice.domain.port.data.stereotype.RoleBinding;
+import com.olson1998.authservice.domain.port.processing.report.stereotype.AuthoritySavingReport;
+import com.olson1998.authservice.domain.port.processing.report.stereotype.RoleBindingReport;
 import com.olson1998.authservice.domain.port.processing.report.stereotype.RoleSavingReport;
+import com.olson1998.authservice.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authservice.domain.port.processing.request.repository.RoleRequestProcessor;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.AuthoritySavingRequest;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.RoleBindingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.RoleSavingRequest;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
 
@@ -21,7 +33,11 @@ import static com.olson1998.authservice.domain.service.processing.request.Proces
 @RequiredArgsConstructor
 public class RoleRequestProcessingService implements RoleRequestProcessor {
 
+    private final AuthorityRequestProcessor authorityRequestProcessor;
+
     private final RoleDataSourceRepository roleDataSourceRepository;
+
+    private final RoleBindingDataSourceRepository roleBindingDataSourceRepository;
 
     @Override
     public RoleSavingReport saveNewRoles(@NonNull RoleSavingRequest request) {
@@ -38,9 +54,40 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
     }
 
     @Override
-    public int deleteUserPrivateRoles(long userId) {
-        roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);
-        return 0;
+    public RoleBindingReport saveNewRoleBounds(@NonNull RoleBindingRequest request) {
+        var roleBindingClaims = new HashSet<>(request.getRolesBindingsClaims());
+        Map<String, AuthorityDetails> savedRoleDetails = null;
+        if(request.getRoleIdAuthoritySavingRequestMap().size() > 0){
+            var linkedRequest = new LinkedAuthoritySavingRequest(request);
+            var report = authorityRequestProcessor.saveAuthorities(linkedRequest);
+            savedRoleDetails = report.getPersistedAuthoritiesDetailsMap();
+            var roleBindingsClaims = createLinkedRoleBindingClaimsSet(request, report);
+            roleBindingsClaims.addAll(roleBindingClaims);
+        }
+        var savedRoleBindingsEntries = roleBindingDataSourceRepository.saveRoleBindings(roleBindingClaims);
+        var savedRoleBindingsMap = new HashMap<String, String>();
+        savedRoleBindingsEntries.forEach(roleBinding -> {
+            savedRoleBindingsMap.put(roleBinding.getRoleId(), roleBinding.getAuthorityId());
+        });
+        return new DomainRoleBindingReport(
+                request.getId(),
+                savedRoleBindingsMap,
+                savedRoleDetails
+        );
+    }
+
+    private Set<RoleBindingClaim> createLinkedRoleBindingClaimsSet(RoleBindingRequest request, AuthoritySavingReport report){
+        var roleBindingsClaims = new HashSet<RoleBindingClaim>();
+        request.getRoleIdAuthoritySavingRequestMap().forEach((roleId, requestedAuthoritiesDetails) ->{
+            requestedAuthoritiesDetails.forEach(authorityDetail -> {
+                report.getPersistedAuthoritiesDetailsMap().forEach((authorityId, savedAuthorityDetails) ->{
+                    if(savedAuthorityDetails.equals(authorityDetail)){
+                        roleBindingsClaims.add(new LinkedRoleBindingClaim(roleId, authorityId));
+                    }
+                });
+            });
+        });
+        return roleBindingsClaims;
     }
 
     private Map<String, RoleDetails> createPersistedRolesDetailsMap(RoleSavingRequest request,

@@ -1,0 +1,14 @@
+package com.olson1998.authservice.domain.port.processing.request.stereotype;
+
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
+
+import java.util.Map;
+import java.util.Set;
+
+public interface RoleBindingRequest extends Request {
+
+    Set<RoleBindingClaim> getRolesBindingsClaims();
+
+    Map<String, Set<AuthorityDetails>> getRoleIdAuthoritySavingRequestMap();
+}

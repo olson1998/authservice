@@ -2,7 +2,9 @@ package com.olson1998.authservice.domain.port.processing.request.repository;
 
 import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
+import com.olson1998.authservice.domain.port.processing.report.stereotype.RoleBindingReport;
 import com.olson1998.authservice.domain.port.processing.report.stereotype.RoleSavingReport;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.RoleBindingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.RoleSavingRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,6 @@ public interface RoleRequestProcessor {
     RoleSavingReport saveNewRoles(RoleSavingRequest request);
 
     @Transactional(rollbackFor = RollbackRequiredException.class)
-    int deleteUserPrivateRoles(long userId);
+    RoleBindingReport saveNewRoleBounds(RoleBindingRequest request);
 
 }

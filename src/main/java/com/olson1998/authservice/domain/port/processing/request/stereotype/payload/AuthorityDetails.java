@@ -10,4 +10,5 @@ public interface AuthorityDetails {
 
     Long getExpiringTime();
 
+    boolean equals(AuthorityDetails authorityDetails);
 }

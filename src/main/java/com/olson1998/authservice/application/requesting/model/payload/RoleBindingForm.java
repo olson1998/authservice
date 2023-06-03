@@ -14,7 +14,7 @@ public class RoleBindingForm implements RoleBindingClaim {
     @JsonProperty(value = "role_id")
     private String roleId;
 
-    @JsonProperty(value = "authorityId")
+    @JsonProperty(value = "authority_d")
     private String authorityId;
 
     public RoleBindingForm(String roleId) {

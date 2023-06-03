@@ -1,7 +1,9 @@
 package com.olson1998.authservice.domain.port.data.repository;
 
+import com.olson1998.authservice.domain.port.data.stereotype.RoleBinding;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 
+import java.util.List;
 import java.util.Set;
 
 public interface RoleBindingDataSourceRepository {
@@ -26,5 +28,5 @@ public interface RoleBindingDataSourceRepository {
      * Inserts role binding into table
      * @param claims set of claims containg binding data
      */
-    void saveRoleBindings(Set<RoleBindingClaim> claims);
+    List<RoleBinding> saveRoleBindings(Set<RoleBindingClaim> claims);
 }

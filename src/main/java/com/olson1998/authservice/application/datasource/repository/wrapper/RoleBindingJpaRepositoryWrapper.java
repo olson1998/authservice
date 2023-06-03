@@ -3,12 +3,14 @@ package com.olson1998.authservice.application.datasource.repository.wrapper;
 import com.olson1998.authservice.application.datasource.entity.RoleBindingData;
 import com.olson1998.authservice.application.datasource.repository.jpa.RoleBindingJpaRepository;
 import com.olson1998.authservice.domain.port.data.repository.RoleBindingDataSourceRepository;
+import com.olson1998.authservice.domain.port.data.stereotype.RoleBinding;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,9 +39,12 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
 
     @Override
     @Transactional
-    public void saveRoleBindings(@NonNull Set<RoleBindingClaim> claims) {
+    public List<RoleBinding> saveRoleBindings(@NonNull Set<RoleBindingClaim> claims) {
         var roleBindingsData = createRoleBindingDataFromClaims(claims);
-        roleBindingJpaRepository.saveAll(roleBindingsData);
+        var savedRoleBindings = roleBindingJpaRepository.saveAll(roleBindingsData);
+        return savedRoleBindings.stream()
+                .map(this::mapRoleBinding)
+                .toList();
     }
 
     private Set<RoleBindingData> createRoleBindingDataFromClaims(Set<RoleBindingClaim> claims){
@@ -48,4 +53,7 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
                 .collect(Collectors.toUnmodifiableSet());
     }
 
+    private RoleBinding mapRoleBinding(RoleBindingData roleBindingData){
+        return roleBindingData;
+    }
 }
