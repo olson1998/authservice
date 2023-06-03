@@ -9,4 +9,5 @@ public interface AuthorityDetails {
     Integer getLevel();
 
     Long getExpiringTime();
+
 }

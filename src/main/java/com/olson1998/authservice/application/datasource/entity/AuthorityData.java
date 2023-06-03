@@ -50,6 +50,11 @@ public class AuthorityData implements Authority {
     }
 
     @Override
+    public Long getExpiringTime() {
+        return expiringTime;
+    }
+
+    @Override
     public String getAuthorityToken() {
         return authorityToken;
     }

@@ -8,6 +8,8 @@ public interface Authority {
 
     Integer getLevel();
 
+    Long getExpiringTime();
+
     String getAuthorityToken();
 
 }
