@@ -3,6 +3,7 @@ package com.olson1998.authdata.domain.service.processing.request;
 import com.olson1998.authdata.domain.model.exception.data.NoUserDeletedException;
 import com.olson1998.authdata.domain.model.exception.processing.UserPolicyViolationException;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserDeletingReport;
+import com.olson1998.authdata.domain.model.processing.report.DomainUserMembershipDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserMembershipSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserSavingReport;
 import com.olson1998.authdata.domain.port.data.exception.RollbackRequiredException;
@@ -12,11 +13,13 @@ import com.olson1998.authdata.domain.port.data.stereotype.User;
 import com.olson1998.authdata.domain.port.data.stereotype.UserMembership;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipBindReport;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipBindRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import lombok.NonNull;
@@ -62,7 +65,7 @@ public class UserRequestProcessingService implements UserRequestProcessor {
     public UserDeletingReport deleteUser(@NonNull UserDeletingRequest request) {
         var userId = request.getUserId();
         ProcessingRequestLogger.log(log, request, DELETE, UserMembershipClaim.class);
-        var deletedMembershipsQty = userMembershipDataSourceRepository.deleteUserMembership(userId);
+        var deletedMembershipsQty = userMembershipDataSourceRepository.deleteAllUserMemberships(userId);
         var deletedPrivateRolesQty = roleRequestProcessor.deleteUserRoles(request);
         ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var deletedUsers = userDataSourceRepository.deleteUser(userId);
@@ -84,13 +87,38 @@ public class UserRequestProcessingService implements UserRequestProcessor {
     }
 
     @Override
-    public UserMembershipBindReport bindMemberships(UserMembershipBindRequest request) {
+    public UserMembershipBindReport bindMemberships(@NonNull UserMembershipBindRequest request) {
         ProcessingRequestLogger.log(log, request, SAVE, UserMembership.class);
         var id = request.getId();
         var userId = request.getUserId();
         var claims = request.getUserMembershipClaims();
         var persistedMemberships = userMembershipDataSourceRepository.saveUserMemberships(userId, claims);
         return new DomainUserMembershipSavingReport(id, request.getUserId(), persistedMemberships);
+    }
+
+    @Override
+    public UserMembershipDeletingReport deleteMemberships(@NonNull UserMembershipDeletingRequest request) {
+        ProcessingRequestLogger.log(log, request, DELETE, UserMembership.class);
+        var userId = request.getUserId();
+        var reportBuilder = DomainUserMembershipDeletingReport.builder();
+        reportBuilder.requestId(request.getId());
+        reportBuilder.userId(userId);
+        if(!request.getRegionMemberships().isEmpty()){
+            var regionsIds= request.getRegionMemberships();
+            var deleted = userMembershipDataSourceRepository.deleteUserRegionMembership(userId, regionsIds);
+            reportBuilder.deletedRegionMemberships(deleted);
+        }
+        if(!request.getGroupMemberships().isEmpty()){
+            var groupIds = request.getGroupMemberships();
+            var deleted = userMembershipDataSourceRepository.deleteUserGroupMembership(userId, groupIds);
+            reportBuilder.deletedGroupMemberships(deleted);
+        }
+        if(!request.getTeamMemberships().isEmpty()){
+            var teamIds = request.getTeamMemberships();
+            var deleted = userMembershipDataSourceRepository.deleteUserTeamMembership(userId, teamIds);
+            reportBuilder.deletedTeamMemberships(deleted);
+        }
+        return reportBuilder.build();
     }
 
     private void checkUserReq(UserSavingRequest request) throws RollbackRequiredException {

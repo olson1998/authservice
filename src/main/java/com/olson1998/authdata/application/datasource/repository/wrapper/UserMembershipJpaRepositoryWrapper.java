@@ -20,15 +20,30 @@ public class UserMembershipJpaRepositoryWrapper implements UserMembershipDataSou
     private final UserMembershipJpaRepository userMembershipJpaRepository;
 
     @Override
-    public int deleteUserMembership(long userId) {
-        return userMembershipJpaRepository.deleteUserMembership(userId);
-    }
-
-    @Override
     public List<UserMembership> saveUserMemberships(Long userId, Set<UserMembershipClaim> claims) {
         var dataSet = createMembershipDataSet(userId, claims);
         var persistedData = userMembershipJpaRepository.saveAll(dataSet);
         return castUserMembershipDataList(persistedData);
+    }
+
+    @Override
+    public int deleteAllUserMemberships(long userId) {
+        return userMembershipJpaRepository.deleteAllUserMemberships(userId);
+    }
+
+    @Override
+    public int deleteUserRegionMembership(Long userId, Set<String> regionIdsSet) {
+        return userMembershipJpaRepository.deleteUserRegionMemberships(userId, regionIdsSet);
+    }
+
+    @Override
+    public int deleteUserGroupMembership(Long userId, Set<Long> groupIdsSet) {
+        return userMembershipJpaRepository.deleteUserGroupMemberships(userId, groupIdsSet);
+    }
+
+    @Override
+    public int deleteUserTeamMembership(Long userId, Set<Long> teamIdsSet) {
+        return userMembershipJpaRepository.deleteUserTeamMemberships(userId, teamIdsSet);
     }
 
     private Set<UserMembershipData> createMembershipDataSet(@NonNull Long userId, @NonNull Set<UserMembershipClaim> claims){
