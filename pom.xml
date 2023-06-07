@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.olson1998</groupId>
-    <artifactId>authservice</artifactId>
+    <artifactId>authdata-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>authservice</name>
+    <name>authdata-service</name>
     <description>authservice</description>
     <properties>
         <java.version>20</java.version>
