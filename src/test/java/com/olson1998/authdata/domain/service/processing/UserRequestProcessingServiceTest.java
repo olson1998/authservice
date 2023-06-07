@@ -63,7 +63,7 @@ class UserRequestProcessingServiceTest {
 
         userRequestProcessingService().saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
 
-        then(userMembershipDataSourceRepository).should().saveUserMemberships(TEST_USER_MEMBERSHIP_CLAIMS);
+        then(userMembershipDataSourceRepository).should().saveUserMemberships(TEST_USER_DATA.getId(), TEST_USER_MEMBERSHIP_CLAIMS);
     }
 
     @Test

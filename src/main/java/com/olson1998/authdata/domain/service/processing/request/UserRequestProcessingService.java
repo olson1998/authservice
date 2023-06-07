@@ -15,15 +15,13 @@ import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembe
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipBindRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipBindRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Set;
 
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.DELETE;
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;

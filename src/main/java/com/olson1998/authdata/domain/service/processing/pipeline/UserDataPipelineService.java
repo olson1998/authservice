@@ -29,6 +29,6 @@ public class UserDataPipelineService implements UserDatabaseOperationsPipeline {
 
     @Override
     public CompletableFuture<UserMembershipBindReport> runUserMembershipBindPipeline(UserMembershipBindRequest request) {
-        return null;
+        return CompletableFuture.supplyAsync(()-> userRequestProcessor.bindMemberships(request));
     }
 }
