@@ -1,5 +1,7 @@
 package com.olson1998.authservice.application.requesting.model.payload;
 
+import com.olson1998.authservice.application.datasource.entity.AuthorityData;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +30,10 @@ public abstract class AuthorityDetailsTestDataSet {
             TEST_AUTHORITY_DATA_3.getLevel(),
             TEST_AUTHORITY_DATA_3.getExpiringTime()
     );
+
+    public static AuthorityData fromAuthorityDetails(AuthorityDetails authorityDetails){
+        var authData =new AuthorityData(authorityDetails);
+        authData.generateId();
+        return authData;
+    }
 }

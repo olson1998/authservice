@@ -5,13 +5,12 @@ import com.olson1998.authservice.domain.model.exception.processing.UserPolicyVio
 import com.olson1998.authservice.domain.model.processing.report.DomainUserDeletingReport;
 import com.olson1998.authservice.domain.model.processing.report.DomainUserSavingReport;
 import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
-import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
-import com.olson1998.authservice.domain.port.data.stereotype.Authority;
 import com.olson1998.authservice.domain.port.data.stereotype.User;
 import com.olson1998.authservice.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authservice.domain.port.processing.report.stereotype.UserSavingReport;
+import com.olson1998.authservice.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authservice.domain.port.processing.request.repository.UserRequestProcessor;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.UserDeletingRequest;
@@ -29,11 +28,11 @@ import static com.olson1998.authservice.domain.service.processing.request.Proces
 @RequiredArgsConstructor
 public class UserRequestProcessingService implements UserRequestProcessor {
 
+    private final RoleRequestProcessor roleRequestProcessor;
+
     private final UserDataSourceRepository userDataSourceRepository;
 
     private final UserMembershipDataSourceRepository userMembershipDataSourceRepository;
-
-    private final RoleDataSourceRepository roleDataSourceRepository;
 
     @Override
     public UserSavingReport saveUser(@NonNull UserSavingRequest request) {
@@ -61,10 +60,11 @@ public class UserRequestProcessingService implements UserRequestProcessor {
 
     @Override
     public UserDeletingReport deleteUser(@NonNull UserDeletingRequest request) {
-        ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var userId = request.getUserId();
+        ProcessingRequestLogger.log(log, request, DELETE, UserMembershipClaim.class);
         var deletedMembershipsQty = userMembershipDataSourceRepository.deleteUserMembership(userId);
-        var deletedPrivateRolesQty = roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);
+        var deletedPrivateRolesQty = roleRequestProcessor.deleteUserRoles(request);
+        ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var deletedUsers = userDataSourceRepository.deleteUser(userId);
         if(deletedUsers == 0){
             throw new NoUserDeletedException(request.getId());

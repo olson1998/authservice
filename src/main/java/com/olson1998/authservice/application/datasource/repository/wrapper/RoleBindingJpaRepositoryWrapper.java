@@ -38,6 +38,11 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     }
 
     @Override
+    public int deleteRoleBindings(Set<String> rolesIdSet) {
+        return 0;
+    }
+
+    @Override
     @Transactional
     public List<RoleBinding> saveRoleBindings(@NonNull Set<RoleBindingClaim> claims) {
         var roleBindingsData = createRoleBindingDataFromClaims(claims);

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 @Repository
 public interface RoleBindingJpaRepository extends JpaRepository<RoleBindingData, RoleBindingJunction> {
 
@@ -17,4 +19,7 @@ public interface RoleBindingJpaRepository extends JpaRepository<RoleBindingData,
 
     @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.authorityId=:authorityId")
     int deleteRoleBindingsByAuthorityId(String authorityId);
+
+    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId IN :roleIdSet")
+    int deleteRoleBindingByRolesIdSet(Set<String> roleIdSet);
 }

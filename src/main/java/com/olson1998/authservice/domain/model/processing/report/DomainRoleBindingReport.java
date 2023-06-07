@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -14,7 +15,7 @@ public class DomainRoleBindingReport implements RoleBindingReport {
 
     private final UUID requestId;
 
-    private final Map<String, String> savedRoleBindings;
+    private final Map<String, Set<String>> savedRoleBindings;
 
     private final Map<String, AuthorityDetails> persistedAuthoritiesDetailsMap;
 }

@@ -8,34 +8,34 @@ import static com.olson1998.authservice.application.datasource.entity.AuthorityT
 import static com.olson1998.authservice.application.datasource.entity.RoleTestDataSet.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public abstract class RoleBindingTestDataSet {
+public abstract class RoleBindingClaimTestDataSet {
 
-    public static final RoleBindingForm TEST_ROLE_BINDING_1 = new RoleBindingForm(
+    public static final RoleBindingForm TEST_ROLE_BINDING_CLAIM_1 = new RoleBindingForm(
             TEST_ROLE_1_ID,
             TEST_AUTHORITY_1_ID
     );
 
-    public static final RoleBindingForm TEST_ROLE_BINDING_2 = new RoleBindingForm(
+    public static final RoleBindingForm TEST_ROLE_BINDING_CLAIM_2 = new RoleBindingForm(
             TEST_ROLE_1_ID,
             TEST_AUTHORITY_2_ID
     );
 
-    public static final RoleBindingForm TEST_ROLE_BINDING_3 = new RoleBindingForm(
+    public static final RoleBindingForm TEST_ROLE_BINDING_CLAIM_3 = new RoleBindingForm(
             TEST_ROLE_2_ID,
             TEST_AUTHORITY_1_ID
     );
 
-    public static final RoleBindingForm TEST_ROLE_BINDING_4 = new RoleBindingForm(
+    public static final RoleBindingForm TEST_ROLE_BINDING_CLAIM_4 = new RoleBindingForm(
             TEST_ROLE_2_ID,
             TEST_AUTHORITY_2_ID
     );
 
-    public static final RoleBindingForm TEST_ROLE_BINDING_5 = new RoleBindingForm(
+    public static final RoleBindingForm TEST_ROLE_BINDING_CLAIM_5 = new RoleBindingForm(
             TEST_ROLE_3_ID,
             TEST_AUTHORITY_1_ID
     );
 
-    public static final RoleBindingForm TEST_ROLE_BINDING_6 = new RoleBindingForm(
+    public static final RoleBindingForm TEST_ROLE_BINDING_CLAIM_6 = new RoleBindingForm(
             TEST_ROLE_3_ID,
             TEST_AUTHORITY_2_ID
     );

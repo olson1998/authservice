@@ -1,11 +1,12 @@
 package com.olson1998.authservice.domain.service.processing;
 
 import com.olson1998.authservice.domain.port.data.exception.RollbackRequiredException;
-import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
-import com.olson1998.authservice.domain.port.data.repository.UserDataSourceRepository;
-import com.olson1998.authservice.domain.port.data.repository.UserMembershipDataSourceRepository;
+import com.olson1998.authservice.domain.port.data.repository.*;
+import com.olson1998.authservice.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserDetails;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
+import com.olson1998.authservice.domain.service.processing.request.AuthorityRequestProcessingService;
+import com.olson1998.authservice.domain.service.processing.request.RoleRequestProcessingService;
 import com.olson1998.authservice.domain.service.processing.request.UserRequestProcessingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,15 +42,18 @@ class UserRequestProcessingServiceTest {
     @Mock
     private RoleDataSourceRepository roleDataSourceRepository;
 
-    @InjectMocks
-    private UserRequestProcessingService userRequestProcessingService;
+    @Mock
+    private RoleBindingDataSourceRepository roleBindingDataSourceRepository;
+
+    @Mock
+    private AuthorityDataSourceRepository authorityDataSourceRepository;
 
     @Test
     void shouldSaveUserUsingGivenUserDetails() throws RollbackRequiredException {
         given(userDataSourceRepository.saveUser(TEST_USER_SAVE_REQUEST_DETAILS))
                 .willReturn(TEST_USER_DATA);
 
-        userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST);
+        userRequestProcessingService().saveUser(TEST_USER_SAVING_REQUEST);
 
         then(userDataSourceRepository).should().saveUser(TEST_USER_SAVE_REQUEST_DETAILS);
     }
@@ -59,7 +63,7 @@ class UserRequestProcessingServiceTest {
         given(userDataSourceRepository.saveUser(any()))
                 .willReturn(TEST_USER_DATA);
 
-        userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
+        userRequestProcessingService().saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
 
         then(userMembershipDataSourceRepository).should().saveUserMemberships(TEST_USER_MEMBERSHIP_CLAIMS);
     }
@@ -70,7 +74,7 @@ class UserRequestProcessingServiceTest {
                 .willReturn(TEST_USER_DATA);
 
         var report =
-                userRequestProcessingService.saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
+                userRequestProcessingService().saveUser(TEST_USER_SAVING_REQUEST_WITH_MEMBERSHIP_CLAIM);
 
         assertThat(report.getUserId()).isEqualTo(TEST_USER_ID);
         assertThat(report.getUsername()).isEqualTo(TEST_USER_USERNAME);
@@ -82,7 +86,7 @@ class UserRequestProcessingServiceTest {
         given(userDataSourceRepository.deleteUser(TEST_USER_ID))
                 .willReturn(1);
 
-        userRequestProcessingService.deleteUser(TEST_USER_DELETING_REQUEST);
+        userRequestProcessingService().deleteUser(TEST_USER_DELETING_REQUEST);
 
         then(userMembershipDataSourceRepository).should().deleteUserMembership(TEST_USER_ID);
         then(roleDataSourceRepository).should().deleteAllPrivateRolesByUserId(TEST_USER_ID);
@@ -95,8 +99,27 @@ class UserRequestProcessingServiceTest {
                 .willReturn(0);
 
         assertThatExceptionOfType(RollbackRequiredException.class).isThrownBy(()->{
-            userRequestProcessingService.deleteUser(TEST_USER_DELETING_REQUEST);
+            userRequestProcessingService().deleteUser(TEST_USER_DELETING_REQUEST);
         });
     }
 
+    private AuthorityRequestProcessingService authorityRequestProcessingService(){
+        return new AuthorityRequestProcessingService(authorityDataSourceRepository);
+    }
+
+    private RoleRequestProcessingService roleRequestProcessingService(){
+        return new RoleRequestProcessingService(
+                authorityRequestProcessingService(),
+                roleDataSourceRepository,
+                roleBindingDataSourceRepository
+        );
+    }
+
+    private UserRequestProcessingService userRequestProcessingService(){
+        return new UserRequestProcessingService(
+                roleRequestProcessingService(),
+                userDataSourceRepository,
+                userMembershipDataSourceRepository
+        );
+    }
 }

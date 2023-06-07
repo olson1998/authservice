@@ -24,6 +24,8 @@ public interface RoleBindingDataSourceRepository {
 
     int deleteRoleAuthorityBindingsByAuthorityId(String authorityId);
 
+    int deleteRoleBindings(Set<String> rolesIdSet);
+
     /**
      * Inserts role binding into table
      * @param claims set of claims containg binding data

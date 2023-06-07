@@ -1,6 +1,8 @@
 package com.olson1998.authservice.application.datasource.entity;
 
 import com.olson1998.authservice.application.datasource.entity.utils.RoleSubject;
+import com.olson1998.authservice.application.requesting.model.payload.RoleDetailsForm;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -88,6 +90,12 @@ public abstract class RoleTestDataSet {
                     .subject(TEST_ROLE_5_SUB)
                     .teamId(TEST_ROLE_5_TEAM)
     );
+
+    public static RoleData fromRoleDetails(RoleDetails roleDetails){
+        var roleData = new RoleData(roleDetails);
+        roleData.generateId();
+        return roleData;
+    }
 
     private static RoleData createTestRole(int roleNumber, RoleData.RoleDataBuilder builder){
         var role = builder.build();

@@ -4,7 +4,6 @@ import com.olson1998.authservice.domain.model.processing.report.DomainRoleBindin
 import com.olson1998.authservice.domain.model.processing.report.DomainRoleSavingReport;
 import com.olson1998.authservice.domain.model.processing.request.LinkedAuthoritySavingRequest;
 import com.olson1998.authservice.domain.model.processing.request.LinkedRoleBindingClaim;
-import com.olson1998.authservice.domain.port.data.repository.AuthorityDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authservice.domain.port.data.stereotype.Role;
@@ -14,9 +13,9 @@ import com.olson1998.authservice.domain.port.processing.report.stereotype.RoleBi
 import com.olson1998.authservice.domain.port.processing.report.stereotype.RoleSavingReport;
 import com.olson1998.authservice.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authservice.domain.port.processing.request.repository.RoleRequestProcessor;
-import com.olson1998.authservice.domain.port.processing.request.stereotype.AuthoritySavingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.RoleBindingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.RoleSavingRequest;
+import com.olson1998.authservice.domain.port.processing.request.stereotype.UserDeletingRequest;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import com.olson1998.authservice.domain.port.processing.request.stereotype.payload.RoleDetails;
@@ -25,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.DELETE;
 import static com.olson1998.authservice.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
 
 @Slf4j
@@ -55,25 +54,41 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
 
     @Override
     public RoleBindingReport saveNewRoleBounds(@NonNull RoleBindingRequest request) {
+        ProcessingRequestLogger.log(log, request, SAVE, RoleBinding.class);
         var roleBindingClaims = new HashSet<>(request.getRolesBindingsClaims());
-        Map<String, AuthorityDetails> savedRoleDetails = null;
+        Map<String, AuthorityDetails> savedAuthorityDetails = null;
         if(request.getRoleIdAuthoritySavingRequestMap().size() > 0){
             var linkedRequest = new LinkedAuthoritySavingRequest(request);
             var report = authorityRequestProcessor.saveAuthorities(linkedRequest);
-            savedRoleDetails = report.getPersistedAuthoritiesDetailsMap();
+            savedAuthorityDetails = report.getPersistedAuthoritiesDetailsMap();
             var roleBindingsClaims = createLinkedRoleBindingClaimsSet(request, report);
             roleBindingsClaims.addAll(roleBindingClaims);
         }
         var savedRoleBindingsEntries = roleBindingDataSourceRepository.saveRoleBindings(roleBindingClaims);
-        var savedRoleBindingsMap = new HashMap<String, String>();
+        var savedRoleBindingsMap = new HashMap<String, Set<String>>();
         savedRoleBindingsEntries.forEach(roleBinding -> {
-            savedRoleBindingsMap.put(roleBinding.getRoleId(), roleBinding.getAuthorityId());
+            var roleId = roleBinding.getRoleId();
+            var authId= roleBinding.getAuthorityId();
+            if(savedRoleBindingsMap.containsKey(roleId)){
+                savedRoleBindingsMap.get(roleId).add(authId);
+            }else {
+                var authSet = new HashSet<String>();
+                authSet.add(authId);
+                savedRoleBindingsMap.put(roleId, authSet);
+            }
         });
         return new DomainRoleBindingReport(
                 request.getId(),
                 savedRoleBindingsMap,
-                savedRoleDetails
+                savedAuthorityDetails
         );
+    }
+
+    @Override
+    public int deleteUserRoles(@NonNull UserDeletingRequest request) {
+        ProcessingRequestLogger.log(log, request, DELETE, Role.class);
+        var userId = request.getUserId();
+        return roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);
     }
 
     private Set<RoleBindingClaim> createLinkedRoleBindingClaimsSet(RoleBindingRequest request, AuthoritySavingReport report){
