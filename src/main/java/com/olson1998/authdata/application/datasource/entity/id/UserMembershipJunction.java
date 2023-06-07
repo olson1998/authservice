@@ -4,6 +4,7 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Embeddable
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserMembershipJunction implements Serializable {
@@ -30,8 +32,8 @@ public class UserMembershipJunction implements Serializable {
     @Column(name = "MEMTMID")
     private Long teamId;
 
-    public UserMembershipJunction(@NonNull UserMembershipClaim claim) {
-        this.userId = claim.getUserId();
+    public UserMembershipJunction(@NonNull Long userId, @NonNull UserMembershipClaim claim) {
+        this.userId = userId;
         this.companyNumber = claim.getCompanyNumber();
         this.regionId = claim.getRegionId();
         this.groupId = claim.getGroupId();

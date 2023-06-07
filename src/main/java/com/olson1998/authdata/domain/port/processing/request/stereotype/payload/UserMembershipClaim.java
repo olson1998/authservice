@@ -2,8 +2,6 @@ package com.olson1998.authdata.domain.port.processing.request.stereotype.payload
 
 public interface UserMembershipClaim {
 
-    Long getUserId();
-
     long getCompanyNumber();
 
     String getRegionId();
@@ -12,5 +10,4 @@ public interface UserMembershipClaim {
 
     Long getTeamId();
 
-    void setUserId(long userId);
 }

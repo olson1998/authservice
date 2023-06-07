@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import lombok.Getter;
+import lombok.Setter;
 
 import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.*;
 
 @Getter
 public class UserMembershipForm implements UserMembershipClaim {
-
-    private Long userId = 1L;
 
     private final long companyNumber;
 
@@ -19,11 +18,6 @@ public class UserMembershipForm implements UserMembershipClaim {
     private final Long groupId;
 
     private final Long teamId;
-
-    @Override
-    public void setUserId(long userId) {
-        this.userId=userId;
-    }
 
     @JsonCreator
     public UserMembershipForm(@JsonProperty(value = COMPANY_NUMBER, required = true) long companyNumber,
