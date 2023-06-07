@@ -3,15 +3,19 @@ package com.olson1998.authdata.domain.service.processing.request;
 import com.olson1998.authdata.domain.model.exception.data.NoUserDeletedException;
 import com.olson1998.authdata.domain.model.exception.processing.UserPolicyViolationException;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserDeletingReport;
+import com.olson1998.authdata.domain.model.processing.report.DomainUserMembershipSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserSavingReport;
 import com.olson1998.authdata.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authdata.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.UserMembershipDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
+import com.olson1998.authdata.domain.port.data.stereotype.UserMembership;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipBindReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipBindRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
@@ -40,14 +44,12 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         ProcessingRequestLogger.log(log, request, SAVE, User.class);
         var details = request.getUserDetails();
         var membershipClaims = request.getMembershipClaims();
-        log.trace("saving new user...");
         var user = userDataSourceRepository.saveUser(details);
         var userId = user.getId();
         if(request.getMembershipClaims() != null){
-            updateMembershipClaimsWithUserId(membershipClaims, userId);
             var size = membershipClaims.size();
             log.debug("binding {} memberships of user: '{}'", size, userId);
-            userMembershipDataSourceRepository.saveUserMemberships(membershipClaims);
+            userMembershipDataSourceRepository.saveUserMemberships(userId, membershipClaims);
         }else {
             log.trace("no membership claim to bind for user: '{}'", userId);
         }
@@ -83,8 +85,14 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         );
     }
 
-    private void updateMembershipClaimsWithUserId(Set<UserMembershipClaim> membershipClaims, long userId){
-        membershipClaims.forEach(claim -> claim.setUserId(userId));
+    @Override
+    public UserMembershipBindReport bindMemberships(UserMembershipBindRequest request) {
+        ProcessingRequestLogger.log(log, request, SAVE, UserMembership.class);
+        var id = request.getId();
+        var userId = request.getUserId();
+        var claims = request.getUserMembershipClaims();
+        var persistedMemberships = userMembershipDataSourceRepository.saveUserMemberships(userId, claims);
+        return new DomainUserMembershipSavingReport(id, request.getUserId(), persistedMemberships);
     }
 
     private void checkUserReq(UserSavingRequest request) throws RollbackRequiredException {
