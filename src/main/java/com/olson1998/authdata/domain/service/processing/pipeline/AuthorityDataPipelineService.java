@@ -2,8 +2,10 @@ package com.olson1998.authdata.domain.service.processing.pipeline;
 
 import com.olson1998.authdata.domain.port.processing.pipeline.AuthorityDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.pipeline.PipelineFactory;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthorityDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthoritySavingRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -20,5 +22,11 @@ public class AuthorityDataPipelineService implements AuthorityDatabaseOperations
     public CompletableFuture<AuthoritySavingReport> runAuthoritySavingPipeline(AuthoritySavingRequest request) {
         return pipelineFactory.fabricate(request)
                 .thenApply(authorityRequestProcessor::saveAuthorities);
+    }
+
+    @Override
+    public CompletableFuture<AuthorityDeletingReport> runAuthorityDeletingPipeline(AuthorityDeletingRequest request) {
+        return pipelineFactory.fabricate(request)
+                .thenApply(authorityRequestProcessor::deleteAuthorities);
     }
 }

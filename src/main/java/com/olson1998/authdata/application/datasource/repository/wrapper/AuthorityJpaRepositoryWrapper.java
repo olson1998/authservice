@@ -2,8 +2,8 @@ package com.olson1998.authdata.application.datasource.repository.wrapper;
 
 import com.olson1998.authdata.application.datasource.entity.AuthorityData;
 import com.olson1998.authdata.application.datasource.repository.jpa.AuthorityJpaRepository;
-import com.olson1998.authdata.domain.port.data.stereotype.Authority;
 import com.olson1998.authdata.domain.port.data.repository.AuthorityDataSourceRepository;
+import com.olson1998.authdata.domain.port.data.stereotype.Authority;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,6 @@ import java.util.stream.Collectors;
 public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceRepository {
 
     private final AuthorityJpaRepository authorityJpaRepository;
-
-    @Override
-    public Set<String> getAllRolesAuthorities(Set<String> rolesIdSet) {
-        return authorityJpaRepository.selectAuthorityFromIdSet(rolesIdSet);
-    }
 
     @Override
     public List<Authority> saveAuthorities(@NonNull Set<AuthorityDetails> authorityDetailsSet) {

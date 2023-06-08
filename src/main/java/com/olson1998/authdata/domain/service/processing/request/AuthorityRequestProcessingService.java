@@ -1,11 +1,15 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthoritiesSavingReport;
+import com.olson1998.authdata.domain.model.processing.report.DomainAuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.data.exception.NoAuthorityDetailsFoundForPersistedEntity;
 import com.olson1998.authdata.domain.port.data.repository.AuthorityDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Authority;
+import com.olson1998.authdata.domain.port.data.stereotype.Role;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthorityDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthoritySavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.NonNull;
@@ -14,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.DELETE;
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
 
 @Slf4j
@@ -34,6 +39,16 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
         return new DomainAuthoritiesSavingReport(
                 authoritySavingRequest.getId(),
                 persistedAuthoritiesMap
+        );
+    }
+
+    @Override
+    public AuthorityDeletingReport deleteAuthorities(AuthorityDeletingRequest authorityDeletingRequest) {
+        ProcessingRequestLogger.log(log, authorityDeletingRequest, DELETE, Role.class);
+        var deleted = authorityDataSourceRepository.deleteAuthorities(authorityDeletingRequest.getAuthoritiesIds());
+        return new DomainAuthorityDeletingReport(
+                authorityDeletingRequest.getId(),
+                deleted
         );
     }
 
