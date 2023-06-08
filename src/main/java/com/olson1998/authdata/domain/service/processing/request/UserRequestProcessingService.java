@@ -70,7 +70,7 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var deletedUsers = userDataSourceRepository.deleteUser(userId);
         if(deletedUsers == 0){
-            throw new NoUserDeletedException(request.getId());
+            throw new NoUserDeletedException(log, request.getId());
         }
         log.debug(
                 "deleted {} memberships and {} private roles of user: '{}'",
