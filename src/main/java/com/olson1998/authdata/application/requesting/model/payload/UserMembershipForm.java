@@ -3,11 +3,13 @@ package com.olson1998.authdata.application.requesting.model.payload;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.*;
 
 @Getter
+@EqualsAndHashCode
 public class UserMembershipForm implements UserMembershipClaim {
 
     private final Long companyNumber;

@@ -7,11 +7,13 @@ import com.olson1998.authdata.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authdata.application.mapping.exception.RoleDetailsMappingException;
 import com.olson1998.authdata.domain.port.processing.tree.exception.DtoMappingException;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.*;
 
+@EqualsAndHashCode
 @RequiredArgsConstructor
 public class RoleDetailsForm implements RoleDetails {
 

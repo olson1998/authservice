@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode
 public class AuthorityDetailsForm implements AuthorityDetails {
 
     @JsonProperty(value = "name")
