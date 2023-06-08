@@ -22,7 +22,7 @@ public interface Checkpoint {
 
     boolean isUsageCount();
 
-    List<String> getLogs();
+    List<String> getLogs(String token, String sign);
 
     String writeCheckpointToken(String sign);
 

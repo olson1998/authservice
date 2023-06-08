@@ -70,6 +70,16 @@ public class DomainCheckpoint implements Checkpoint {
     }
 
     @Override
+    public List<String> getLogs(@NonNull String token,@NonNull String sign) {
+        var expected = writeCheckpointToken(sign);
+        if(expected.equals(token)){
+            return logs;
+        }else {
+            throw new CheckpointTokenVerificationException();
+        }
+    }
+
+    @Override
     public String writeCheckpointToken(@NonNull String sign) {
         var rawToken = String.format(
                 CHECKPOINT_TOKEN_FORMAT,
