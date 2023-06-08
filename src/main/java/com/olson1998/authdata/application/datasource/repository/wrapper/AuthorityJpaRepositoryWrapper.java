@@ -20,6 +20,11 @@ public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceReposit
     private final AuthorityJpaRepository authorityJpaRepository;
 
     @Override
+    public Set<String> getAllRolesAuthorities(Set<String> rolesIdSet) {
+        return authorityJpaRepository.selectAuthorityFromIdSet(rolesIdSet);
+    }
+
+    @Override
     public List<Authority> saveAuthorities(@NonNull Set<AuthorityDetails> authorityDetailsSet) {
         var dataSet = mapAuthorityDetailsToDataSet(authorityDetailsSet);
         var persistedData = authorityJpaRepository.saveAll(dataSet);

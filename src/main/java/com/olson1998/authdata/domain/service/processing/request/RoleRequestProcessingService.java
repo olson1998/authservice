@@ -88,10 +88,17 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
     }
 
     @Override
-    public RoleDeletingReport deleteRoles(RoleDeletingRequest request) {
+    public RoleDeletingReport deleteRoles(@NonNull RoleDeletingRequest request) {
+        var rolesIds = request.getRoleIdSet();
+        ProcessingRequestLogger.log(log, request, DELETE, RoleBinding.class);
+        var deletedBounds = roleBindingDataSourceRepository.deleteRoleBindings(rolesIds);
         ProcessingRequestLogger.log(log, request, DELETE, Role.class);
         var deleted = roleDataSourceRepository.deleteRoles(request.getRoleIdSet());
-        return new DomainRoleDeletingReport(request.getId(), deleted);
+        return new DomainRoleDeletingReport(
+                request.getId(),
+                deleted,
+                deletedBounds
+        );
     }
 
     @Override

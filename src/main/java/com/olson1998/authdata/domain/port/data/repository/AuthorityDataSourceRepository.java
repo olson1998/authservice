@@ -11,4 +11,5 @@ public interface AuthorityDataSourceRepository {
     List<Authority> saveAuthorities(Set<AuthorityDetails> authorityDetailsSet);
 
     int deleteAuthorities(Set<String> authoritiesIdSet);
+
 }

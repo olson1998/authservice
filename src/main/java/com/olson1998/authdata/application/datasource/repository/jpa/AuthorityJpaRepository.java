@@ -10,6 +10,9 @@ import java.util.Set;
 @Repository
 public interface AuthorityJpaRepository extends JpaRepository<AuthorityData, String> {
 
+    @Query("SELECT DISTINCT a.id FROM AuthorityData a LEFT OUTER JOIN RoleBindingData rb ON a.id=rb.junction.authorityId WHERE rb.junction.roleId IN :roleIdsSet")
+    Set<String> selectAuthorityFromIdSet(Set<String> roleIdsSet);
+
     @Query("DELETE FROM AuthorityData a WHERE a.id IN :authorityIdSet")
     int deleteAuthorityFromIdSet(Set<String> authorityIdSet);
 }

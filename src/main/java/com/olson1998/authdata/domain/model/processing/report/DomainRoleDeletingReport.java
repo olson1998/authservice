@@ -16,4 +16,7 @@ public class DomainRoleDeletingReport implements RoleDeletingReport {
 
     @JsonProperty(value = "del_private_roles")
     private final int deletedPrivateRolesQty;
+
+    @JsonProperty(value = "del_bounds")
+    private final int deletedBoundsQty;
 }
