@@ -31,7 +31,7 @@ public abstract class RoleRequestDataSet {
             )
     );
 
-    public static final RoleBindingAdapterRequest TEST_ROLE_BINDING_REQUEST = new RoleBindingAdapterRequest(
+    public static final RoleBoundSavingAdapterRequest TEST_ROLE_BINDING_REQUEST = new RoleBoundSavingAdapterRequest(
             TEST_ROLE_BINDING_REQUEST_ID,
             Set.of(
                     TEST_ROLE_BINDING_CLAIM_1,
@@ -44,7 +44,7 @@ public abstract class RoleRequestDataSet {
             null
     );
 
-    public static final RoleBindingAdapterRequest TEST_ROLE_BINDING_REQUEST_WITH_SAVE_CLAIM = new RoleBindingAdapterRequest(
+    public static final RoleBoundSavingAdapterRequest TEST_ROLE_BINDING_REQUEST_WITH_SAVE_CLAIM = new RoleBoundSavingAdapterRequest(
             TEST_ROLE_BINDING_REQUEST_ID,
             Set.of(
                     TEST_ROLE_BINDING_CLAIM_1,

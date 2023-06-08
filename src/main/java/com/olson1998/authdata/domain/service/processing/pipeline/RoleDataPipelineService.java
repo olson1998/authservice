@@ -6,7 +6,7 @@ import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindi
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBindingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleSavingRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class RoleDataPipelineService implements RoleDatabaseOperationsPipeline {
     }
 
     @Override
-    public CompletableFuture<RoleBindingReport> runRoleBindingPipeline(RoleBindingRequest request) {
+    public CompletableFuture<RoleBindingReport> runRoleBindingPipeline(RoleBoundSavingRequest request) {
         return pipelineFactory.fabricate(request)
                 .thenApply(roleRequestProcessor::saveNewRoleBounds);
     }

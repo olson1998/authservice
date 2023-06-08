@@ -4,7 +4,7 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 
 import java.util.Set;
 
-public interface UserMembershipBindRequest extends Request{
+public interface UserMembershipSavingRequest extends Request{
 
     Long getUserId();
 

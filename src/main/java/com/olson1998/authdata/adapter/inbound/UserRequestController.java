@@ -1,7 +1,7 @@
 package com.olson1998.authdata.adapter.inbound;
 
 import com.olson1998.authdata.application.requesting.model.UserDeletingAdapterRequest;
-import com.olson1998.authdata.application.requesting.model.UserMembershipBindAdapterRequest;
+import com.olson1998.authdata.application.requesting.model.UserMembershipSavingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.UserMembershipDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.UserSavingAdapterRequest;
 import com.olson1998.authdata.domain.port.processing.pipeline.UserDatabaseOperationsPipeline;
@@ -30,7 +30,7 @@ public class UserRequestController {
     }
 
     @PostMapping(path = "/save/membership")
-    public CompletableFuture<UserMembershipBindReport> interceptUserMembershipSavingReport(@RequestBody UserMembershipBindAdapterRequest request){
+    public CompletableFuture<UserMembershipBindReport> interceptUserMembershipSavingReport(@RequestBody UserMembershipSavingAdapterRequest request){
         return userDatabaseOperationsPipeline.runUserMembershipBindPipeline(request);
     }
 

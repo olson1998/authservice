@@ -5,6 +5,7 @@ import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDelet
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -18,5 +19,5 @@ public class DomainRoleDeletingReport implements RoleDeletingReport {
     private final int deletedPrivateRolesQty;
 
     @JsonProperty(value = "del_bounds")
-    private final int deletedBoundsQty;
+    private final Map<String, Integer> roleDeletedBounds;
 }

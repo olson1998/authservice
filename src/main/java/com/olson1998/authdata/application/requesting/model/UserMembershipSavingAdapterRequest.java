@@ -3,7 +3,7 @@ package com.olson1998.authdata.application.requesting.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.application.requesting.model.payload.UserMembershipForm;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipBindRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ import static com.olson1998.authdata.application.requesting.model.AbstractCommon
 import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.USER_ID;
 
 @Getter
-public class UserMembershipBindAdapterRequest implements UserMembershipBindRequest {
+public class UserMembershipSavingAdapterRequest implements UserMembershipSavingRequest {
 
     private final UUID id;
 
@@ -24,9 +24,9 @@ public class UserMembershipBindAdapterRequest implements UserMembershipBindReque
     private final Set<UserMembershipClaim> userMembershipClaims;
 
     @JsonCreator
-    public UserMembershipBindAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
-                                            @JsonProperty(value = USER_ID, required = true) Long userId,
-                                            @JsonProperty(value = "claims", required = true)Set<UserMembershipForm> userMembershipForms) {
+    public UserMembershipSavingAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
+                                              @JsonProperty(value = USER_ID, required = true) Long userId,
+                                              @JsonProperty(value = "claims", required = true)Set<UserMembershipForm> userMembershipForms) {
         this.id = id;
         this.userId = userId;
         this.userMembershipClaims = userMembershipForms.stream()

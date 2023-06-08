@@ -1,7 +1,7 @@
 package com.olson1998.authdata.domain.model.processing.request;
 
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthoritySavingRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBindingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.Getter;
 import lombok.NonNull;
@@ -17,10 +17,10 @@ public class LinkedAuthoritySavingRequest implements AuthoritySavingRequest {
 
     private final Set<AuthorityDetails> authoritiesDetails;
 
-    public LinkedAuthoritySavingRequest(@NonNull RoleBindingRequest roleBindingRequest) {
-        this.id = roleBindingRequest.getId();
+    public LinkedAuthoritySavingRequest(@NonNull RoleBoundSavingRequest roleBoundSavingRequest) {
+        this.id = roleBoundSavingRequest.getId();
         this.authoritiesDetails = new HashSet<>();
-        roleBindingRequest.getRoleIdAuthoritySavingRequestMap()
+        roleBoundSavingRequest.getRoleIdAuthoritySavingRequestMap()
                 .values()
                 .forEach(this.authoritiesDetails::addAll);
     }

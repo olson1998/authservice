@@ -5,7 +5,7 @@ import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembe
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipBindRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
 
@@ -17,7 +17,7 @@ public interface UserDatabaseOperationsPipeline {
 
     CompletableFuture<UserDeletingReport> runUserDeletePipeline(UserDeletingRequest request);
 
-    CompletableFuture<UserMembershipBindReport> runUserMembershipBindPipeline(UserMembershipBindRequest request);
+    CompletableFuture<UserMembershipBindReport> runUserMembershipBindPipeline(UserMembershipSavingRequest request);
 
     CompletableFuture<UserMembershipDeletingReport> runUserMembershipDeletingPipeline(UserMembershipDeletingRequest request);
 }

@@ -1,8 +1,10 @@
 package com.olson1998.authdata.domain.port.processing.report.stereotype;
 
+import java.util.Map;
+
 public interface RoleDeletingReport extends ProcessingReport {
 
     int getDeletedPrivateRolesQty();
 
-    int getDeletedBoundsQty();
+    Map<String, Integer> getRoleDeletedBounds();
 }

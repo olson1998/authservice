@@ -1,24 +1,21 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
+import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleSavingReport;
 import com.olson1998.authdata.domain.model.processing.request.LinkedAuthoritySavingRequest;
 import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBindingClaim;
+import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBoundsDeletingRequest;
+import com.olson1998.authdata.domain.port.data.exception.DeletedRolesQtyDoesntMuchRequestedQty;
 import com.olson1998.authdata.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.data.stereotype.RoleBinding;
-import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
-import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
-import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;
-import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleSavingReport;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.*;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBindingRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleDeletingRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleSavingRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.*;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
@@ -56,7 +53,7 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
     }
 
     @Override
-    public RoleBindingReport saveNewRoleBounds(@NonNull RoleBindingRequest request) {
+    public RoleBindingReport saveNewRoleBounds(@NonNull RoleBoundSavingRequest request) {
         ProcessingRequestLogger.log(log, request, SAVE, RoleBinding.class);
         var roleBindingClaims = new HashSet<>(request.getRolesBindingsClaims());
         Map<String, AuthorityDetails> savedAuthorityDetails = null;
@@ -90,14 +87,31 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
     @Override
     public RoleDeletingReport deleteRoles(@NonNull RoleDeletingRequest request) {
         var rolesIds = request.getRoleIdSet();
-        ProcessingRequestLogger.log(log, request, DELETE, RoleBinding.class);
-        var deletedBounds = roleBindingDataSourceRepository.deleteRoleBindings(rolesIds);
+        var roleBoundsDelReq = new LinkedRoleBoundsDeletingRequest(request);
+        var linkedReport = deleteRoleBounds(roleBoundsDelReq);
         ProcessingRequestLogger.log(log, request, DELETE, Role.class);
-        var deleted = roleDataSourceRepository.deleteRoles(request.getRoleIdSet());
+        var deleted = roleDataSourceRepository.deleteRoles(rolesIds);
+        if(deleted != rolesIds.size()){
+            throw new DeletedRolesQtyDoesntMuchRequestedQty(rolesIds.size(), deleted, request.getId(), log);
+        }
         return new DomainRoleDeletingReport(
                 request.getId(),
                 deleted,
-                deletedBounds
+                linkedReport.getDeletedRolesBoundsQty()
+        );
+    }
+
+    @Override
+    public RoleBoundsDeletingReport deleteRoleBounds(@NonNull RoleBoundDeletingRequest request) {
+        ProcessingRequestLogger.log(log, request, DELETE, RoleBinding.class);
+        var roleDeletedBoundsQty = new HashMap<String, Integer>();
+        request.getRoleBoundsMap().forEach((roleId, authoritiesIds) ->{
+            var deleted = deleteRoleBound(roleId, authoritiesIds, request.isDeleteAll());
+            roleDeletedBoundsQty.put(roleId, deleted);
+        });
+        return new DomainRoleBindingDeletingReport(
+                request.getId(),
+                roleDeletedBoundsQty
         );
     }
 
@@ -108,7 +122,15 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
         return roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);
     }
 
-    private Set<RoleBindingClaim> createLinkedRoleBindingClaimsSet(RoleBindingRequest request, AuthoritySavingReport report){
+    private int deleteRoleBound(String roleId, Set<String> authoritiesIds, boolean deleteAll){
+        if(deleteAll){
+            return roleBindingDataSourceRepository.deleteRoleBindings(roleId);
+        }else {
+            return roleBindingDataSourceRepository.deleteRoleBoundsForGivenAuthority(roleId, authoritiesIds);
+        }
+    }
+
+    private Set<RoleBindingClaim> createLinkedRoleBindingClaimsSet(RoleBoundSavingRequest request, AuthoritySavingReport report){
         var roleBindingsClaims = new HashSet<RoleBindingClaim>();
         request.getRoleIdAuthoritySavingRequestMap().forEach((roleId, requestedAuthoritiesDetails) ->{
             requestedAuthoritiesDetails.forEach(authorityDetail -> {

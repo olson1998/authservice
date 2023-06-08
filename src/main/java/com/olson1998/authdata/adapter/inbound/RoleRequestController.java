@@ -1,6 +1,6 @@
 package com.olson1998.authdata.adapter.inbound;
 
-import com.olson1998.authdata.application.requesting.model.RoleBindingAdapterRequest;
+import com.olson1998.authdata.application.requesting.model.RoleBoundSavingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.RoleDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.RoleSavingAdapterRequest;
 import com.olson1998.authdata.domain.port.processing.pipeline.RoleDatabaseOperationsPipeline;
@@ -34,7 +34,7 @@ public class RoleRequestController {
     }
 
     @PostMapping(path = "/save/binding")
-    public CompletableFuture<RoleBindingReport> interceptRoleBindingRequest(@RequestBody RoleBindingAdapterRequest request){
+    public CompletableFuture<RoleBindingReport> interceptRoleBindingRequest(@RequestBody RoleBoundSavingAdapterRequest request){
         return roleDatabaseOperationsPipeline.runRoleBindingPipeline(request);
     }
 }

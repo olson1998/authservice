@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.application.requesting.model.payload.AuthorityDetailsForm;
 import com.olson1998.authdata.application.requesting.model.payload.RoleBindingForm;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBindingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.ID;
 
 @Getter
-public class RoleBindingAdapterRequest implements RoleBindingRequest {
+public class RoleBoundSavingAdapterRequest implements RoleBoundSavingRequest {
 
     private final UUID id;
 
@@ -27,9 +27,9 @@ public class RoleBindingAdapterRequest implements RoleBindingRequest {
     private final Map<String, Set<AuthorityDetails>> roleIdAuthoritySavingRequestMap;
 
     @JsonCreator
-    public RoleBindingAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
-                                     @JsonProperty(value = "role_bindings", required = true)Set<RoleBindingForm> roleBindingFormSet,
-                                     @JsonProperty(value = "bind_saved_authorities") Map<String, Set<AuthorityDetailsForm>> claimedToSaveAuthoritiesDetails) {
+    public RoleBoundSavingAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
+                                         @JsonProperty(value = "role_bindings", required = true)Set<RoleBindingForm> roleBindingFormSet,
+                                         @JsonProperty(value = "bind_saved_authorities") Map<String, Set<AuthorityDetailsForm>> claimedToSaveAuthoritiesDetails) {
         this.id = id;
         this.rolesBindingsClaims = roleBindingFormSet.stream()
                 .map(this::mapRoleBindingClaim)

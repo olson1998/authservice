@@ -38,7 +38,12 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     }
 
     @Override
-    public int deleteRoleBindings(Set<String> rolesIdSet) {
+    public int deleteRoleBindings(@NonNull String roleId) {
+        return roleBindingJpaRepository.deleteRoleBindingByRolesIdSet(roleId);
+    }
+
+    @Override
+    public int deleteRoleBoundsForGivenAuthority(String roleId, Set<String> authoritiesIds) {
         return 0;
     }
 
