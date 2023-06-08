@@ -29,7 +29,7 @@ public class UserRequestController {
         return userDatabaseOperationsPipeline.runSaveUserPipeline(userSavingAdapterRequest);
     }
 
-    @PostMapping(path = "/save/membership")
+    @PostMapping(path = "/save/mb")
     public CompletableFuture<UserMembershipBindReport> interceptUserMembershipSavingReport(@RequestBody UserMembershipSavingAdapterRequest request){
         return userDatabaseOperationsPipeline.runUserMembershipBindPipeline(request);
     }
@@ -39,7 +39,7 @@ public class UserRequestController {
         return userDatabaseOperationsPipeline.runUserDeletePipeline(userDeletingRequest);
     }
 
-    @DeleteMapping(path = "/del/membership")
+    @DeleteMapping(path = "/del/mb")
     public CompletableFuture<UserMembershipDeletingReport> interceptUserMembershipDeletingRequest(@RequestBody UserMembershipDeletingAdapterRequest request){
         return userDatabaseOperationsPipeline.runUserMembershipDeletingPipeline(request);
     }

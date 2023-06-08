@@ -18,6 +18,7 @@ import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequ
 import com.olson1998.authdata.domain.port.processing.request.stereotype.*;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBoundDeletingClaim;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -105,8 +106,8 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
     public RoleBoundsDeletingReport deleteRoleBounds(@NonNull RoleBoundDeletingRequest request) {
         ProcessingRequestLogger.log(log, request, DELETE, RoleBinding.class);
         var roleDeletedBoundsQty = new HashMap<String, Integer>();
-        request.getRoleBoundsMap().forEach((roleId, authoritiesIds) ->{
-            var deleted = deleteRoleBound(roleId, authoritiesIds, request.isDeleteAll());
+        request.getRoleBoundsMap().forEach((roleId, claim) ->{
+            var deleted = deleteRoleBound(roleId, claim);
             roleDeletedBoundsQty.put(roleId, deleted);
         });
         return new DomainRoleBindingDeletingReport(
@@ -122,11 +123,11 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
         return roleDataSourceRepository.deleteAllPrivateRolesByUserId(userId);
     }
 
-    private int deleteRoleBound(String roleId, Set<String> authoritiesIds, boolean deleteAll){
-        if(deleteAll){
+    private int deleteRoleBound(String roleId, RoleBoundDeletingClaim claim){
+        if(claim.isDeleteAll()){
             return roleBindingDataSourceRepository.deleteRoleBindings(roleId);
         }else {
-            return roleBindingDataSourceRepository.deleteRoleBoundsForGivenAuthority(roleId, authoritiesIds);
+            return roleBindingDataSourceRepository.deleteRoleBoundsForGivenAuthority(roleId, claim.getAuthoritiesIds());
         }
     }
 

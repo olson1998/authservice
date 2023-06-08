@@ -2,6 +2,7 @@ package com.olson1998.authdata.domain.model.processing.request;
 
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleDeletingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBoundDeletingClaim;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +21,25 @@ public class LinkedRoleBoundsDeletingRequest implements RoleBoundDeletingRequest
 
     private final UUID id;
 
-    private final Map<String, Set<String>> roleBoundsMap;
+    private final Map<String, RoleBoundDeletingClaim> roleBoundsMap;
 
     public LinkedRoleBoundsDeletingRequest(RoleDeletingRequest request) {
         this.id = request.getId();
         this.roleBoundsMap = new HashMap<>();
-        request.getRoleIdSet().forEach(roleId -> roleBoundsMap.put(roleId, null));
+        request.getRoleIdSet().forEach(roleId -> roleBoundsMap.put(roleId, claim()));
     }
 
-    @Override
-    public void setDeleteAll(boolean deleteAll) {
-        log.error("setter not allowed...");
+    private RoleBoundDeletingClaim claim(){
+        return new RoleBoundDeletingClaim() {
+            @Override
+            public boolean isDeleteAll() {
+                return true;
+            }
+
+            @Override
+            public Set<String> getAuthoritiesIds() {
+                return null;
+            }
+        };
     }
 }

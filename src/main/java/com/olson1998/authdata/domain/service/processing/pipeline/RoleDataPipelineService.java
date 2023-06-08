@@ -3,9 +3,11 @@ package com.olson1998.authdata.domain.service.processing.pipeline;
 import com.olson1998.authdata.domain.port.processing.pipeline.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.pipeline.RoleDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBoundsDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleSavingRequest;
@@ -36,5 +38,11 @@ public class RoleDataPipelineService implements RoleDatabaseOperationsPipeline {
     public CompletableFuture<RoleDeletingReport> runRoleDeletingPipeline(RoleDeletingRequest request) {
         return pipelineFactory.fabricate(request)
                 .thenApply(roleRequestProcessor::deleteRoles);
+    }
+
+    @Override
+    public CompletableFuture<RoleBoundsDeletingReport> runRoleBoundsDeletingPipeline(RoleBoundDeletingRequest request) {
+        return pipelineFactory.fabricate(request)
+                .thenApply(roleRequestProcessor::deleteRoleBounds);
     }
 }
