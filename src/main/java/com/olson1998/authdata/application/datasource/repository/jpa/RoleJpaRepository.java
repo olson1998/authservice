@@ -23,4 +23,7 @@ public interface RoleJpaRepository extends JpaRepository<RoleData, String> {
 
     @Query("DELETE FROM RoleData r WHERE r.subject='PRIVATE' AND r.userId=:userId")
     int deleteAllPrivateRolesByUserId(long userId);
+
+    @Query("DELETE FROM RoleData r WHERE r.id IN :roleIdsSet")
+    int deleteRoleWithGivenId(Set<String> roleIdsSet);
 }

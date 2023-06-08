@@ -13,6 +13,8 @@ public interface RoleDataSourceRepository {
 
     int deleteAllPrivateRolesByUserId(long userId);
 
+    int deleteRoles(Set<String> roleIdSet);
+
     List<Role> saveRoles(Set<RoleDetails> roleDetails);
 
 }

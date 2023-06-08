@@ -57,7 +57,7 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
                     .findFirst()
                     .orElseThrow();
         }catch (NoSuchElementException e){
-            throw new NoAuthorityDetailsFoundForPersistedEntity(authoritySavingRequest.getId());
+            throw new NoAuthorityDetailsFoundForPersistedEntity(log, authoritySavingRequest.getId());
         }
     }
 

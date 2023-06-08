@@ -5,10 +5,12 @@ import com.olson1998.authdata.domain.port.processing.tree.repository.Authorities
 import com.olson1998.authdata.domain.port.processing.tree.stereotype.AuthoritiesTree;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @NoArgsConstructor
 public class DomainAuthoritiesTreeComparator implements AuthoritiesTreeComparator {
 
@@ -28,7 +30,7 @@ public class DomainAuthoritiesTreeComparator implements AuthoritiesTreeComparato
 
     private void checkUserId(AuthoritiesTree authoritiesTree1, AuthoritiesTree authoritiesTree2){
         if(authoritiesTree1.getUserId() != authoritiesTree2.getUserId()){
-            throw new MismatchAuthoritiesTreeUserIdException();
+            throw new MismatchAuthoritiesTreeUserIdException(log);
         }
     }
 }

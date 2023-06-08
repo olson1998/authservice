@@ -1,6 +1,7 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingReport;
+import com.olson1998.authdata.domain.model.processing.report.DomainRoleDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleSavingReport;
 import com.olson1998.authdata.domain.model.processing.request.LinkedAuthoritySavingRequest;
 import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBindingClaim;
@@ -10,10 +11,12 @@ import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.data.stereotype.RoleBinding;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBindingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
@@ -82,6 +85,13 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
                 savedRoleBindingsMap,
                 savedAuthorityDetails
         );
+    }
+
+    @Override
+    public RoleDeletingReport deleteRoles(RoleDeletingRequest request) {
+        ProcessingRequestLogger.log(log, request, DELETE, Role.class);
+        var deleted = roleDataSourceRepository.deleteRoles(request.getRoleIdSet());
+        return new DomainRoleDeletingReport(request.getId(), deleted);
     }
 
     @Override

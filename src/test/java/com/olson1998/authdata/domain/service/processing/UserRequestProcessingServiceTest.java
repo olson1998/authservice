@@ -86,7 +86,7 @@ class UserRequestProcessingServiceTest {
 
         userRequestProcessingService().deleteUser(TEST_USER_DELETING_REQUEST);
 
-        then(userMembershipDataSourceRepository).should().deleteUserMembership(TEST_USER_ID);
+        then(userMembershipDataSourceRepository).should().deleteAllUserMemberships(TEST_USER_ID);
         then(roleDataSourceRepository).should().deleteAllPrivateRolesByUserId(TEST_USER_ID);
         then(userDataSourceRepository).should().deleteUser(TEST_USER_ID);
     }

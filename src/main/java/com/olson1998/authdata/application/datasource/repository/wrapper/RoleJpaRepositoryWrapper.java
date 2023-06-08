@@ -33,6 +33,11 @@ public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
     }
 
     @Override
+    public int deleteRoles(@NonNull Set<String> roleIdSet) {
+        return roleJpaRepository.deleteRoleWithGivenId(roleIdSet);
+    }
+
+    @Override
     public List<Role> saveRoles(@NonNull Set<RoleDetails> roleDetails) {
         var roleDataSet = mapRoleDetails(roleDetails);
         var persistedData = roleJpaRepository.saveAll(roleDataSet);
