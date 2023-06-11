@@ -2,6 +2,7 @@ package com.olson1998.authdata.application.security.config;
 
 import com.olson1998.authdata.application.security.filter.CheckpointAuthenticationFilter;
 import com.olson1998.authdata.application.security.filter.JwtAuthenticationFilter;
+import com.olson1998.authdata.application.security.handler.MicroserviceAuthenticationFailureHandler;
 import com.olson1998.authdata.application.security.service.ApplicationAuthenticationManager;
 import com.olson1998.authdata.domain.port.security.repository.TokenVerifier;
 import lombok.NonNull;
@@ -11,20 +12,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityFilterChainConfig {
 
     private static final String[] CHECKPOINT_TOKEN_AUTH_PATHS = {
-            "/authority/data/*",
-            "/role/data/*",
-            "/user/data/*"
+            "/authority/data/**",
+            "/role/data/**",
+            "/user/data/**"
     };
 
     private static final String[] JWT_TOKEN_AUTH_PATHS = {
-            "/checkpoint/*"
+            "/checkpoint/**"
     };
 
     @Bean
@@ -37,12 +40,15 @@ public class SecurityFilterChainConfig {
                                                    @NonNull TokenVerifier tokenVerifier,
                                                    @NonNull ApplicationAuthenticationManager authenticationManager,
                                                    @NonNull AuthenticationConverter authenticationConverter) throws Exception {
+        var failureHandler = new MicroserviceAuthenticationFailureHandler();
         var checkpointTokenFilter = checkpointAuthenticationFilter(tokenVerifier, authenticationManager, authenticationConverter);
         var jwtTokenFilter = jwtAuthenticationFilter(tokenVerifier, authenticationManager, authenticationConverter);
+        checkpointTokenFilter.setFailureHandler(failureHandler);
+        jwtTokenFilter.setFailureHandler(failureHandler);
         security.csrf().disable();
         security.authorizeHttpRequests(requestsStream -> requestsStream.requestMatchers("/*").permitAll());
-        security.securityMatcher(CHECKPOINT_TOKEN_AUTH_PATHS).addFilterBefore(checkpointTokenFilter, CheckpointAuthenticationFilter.class);
-        security.securityMatcher(JWT_TOKEN_AUTH_PATHS).addFilterBefore(jwtTokenFilter, JwtAuthenticationFilter.class);
+        security.securityMatcher(CHECKPOINT_TOKEN_AUTH_PATHS).addFilterBefore(checkpointTokenFilter, BasicAuthenticationFilter.class);
+        security.securityMatcher(JWT_TOKEN_AUTH_PATHS).addFilterBefore(jwtTokenFilter, BasicAuthenticationFilter.class);
         return security.build();
     }
 

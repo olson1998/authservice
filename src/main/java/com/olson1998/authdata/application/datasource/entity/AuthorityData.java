@@ -11,7 +11,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 @Entity
 @Table(name = "ROLEAUTHORITY")
-@SequenceGenerator(name = "AUTHORITY_ID_SEQ", sequenceName = "AUTHORITY_ID_SEQ", allocationSize = 1)
 
 @Builder
 @NoArgsConstructor

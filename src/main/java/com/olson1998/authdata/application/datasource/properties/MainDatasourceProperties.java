@@ -7,11 +7,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import static com.olson1998.authdata.application.datasource.entity.utils.SecretDigest.DEFAULT_DIGEST;
+import static com.olson1998.authdata.application.datasource.entity.utils.SecretDigest.NONE;
 
 @Setter
 
 @Configuration
-@ConfigurationProperties(prefix = "olson1998.authservice.datasource.main")
+@ConfigurationProperties(prefix = "com.olson1998.authservice.datasource.main")
 public class MainDatasourceProperties {
 
     @Getter
@@ -20,12 +21,12 @@ public class MainDatasourceProperties {
     @Getter
     private String user ="user";
 
-    private String password = null;
+    private String password ="";
 
-    private SecretDigest secretDigest = DEFAULT_DIGEST;
+    private SecretDigest secretDigest = NONE;
 
     @Getter
-    private String url ="main-datasource";
+    private String url;
 
     @Getter
     private int port =1433;

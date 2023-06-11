@@ -7,10 +7,11 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Getter
 
 @Embeddable
 
+@Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleBindingJunction implements Serializable {

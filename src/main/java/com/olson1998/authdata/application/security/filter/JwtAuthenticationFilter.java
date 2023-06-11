@@ -39,4 +39,5 @@ public class JwtAuthenticationFilter extends AuthDataAuthenticationFilter {
     public JwtAuthenticationFilter(TokenVerifier tokenVerifier, AuthenticationManager authenticationManager, AuthenticationConverter authenticationConverter) {
         super(tokenVerifier, authenticationManager, authenticationConverter);
     }
+
 }

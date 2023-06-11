@@ -3,16 +3,14 @@ package com.olson1998.authdata.application.datasource.entity.id;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Embeddable
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserMembershipJunction implements Serializable {

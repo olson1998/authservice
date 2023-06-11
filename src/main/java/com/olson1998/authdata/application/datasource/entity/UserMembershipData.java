@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "AUTHUSERMEM")
-@IdClass(UserMembershipJunction.class)
 
 @NoArgsConstructor
 @AllArgsConstructor

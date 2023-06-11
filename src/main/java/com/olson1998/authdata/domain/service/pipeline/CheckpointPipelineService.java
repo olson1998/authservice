@@ -18,7 +18,7 @@ public class CheckpointPipelineService implements CheckpointPipeline {
 
     private final CheckpointRepository checkpointRepository;
 
-    private final CheckpointResponseEntityMapper checkpointResponseEntityMapper;
+    private final CheckpointResponseEntityMapper checkpointResponseEntityMapper = new CheckpointResponseEntityMapper();
 
     @Override
     public CompletableFuture<LinkedList<String>> runGetCheckpointLogsPipeline() {

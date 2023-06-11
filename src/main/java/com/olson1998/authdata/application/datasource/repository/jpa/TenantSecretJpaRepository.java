@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TenantSecretJpaRepository extends JpaRepository<String, TenantSecretData> {
+public interface TenantSecretJpaRepository extends JpaRepository<TenantSecretData, String> {
 
     @Query("SELECT CASE WHEN sd.timestamp=:timestamp THEN 1 ELSE 0 END FROM TenantSecretData sd WHERE sd.tenantId=:tid")
     boolean isMostRecentTimestamp(String tid, long timestamp);

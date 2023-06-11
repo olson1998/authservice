@@ -1,10 +1,13 @@
 package com.olson1998.authdata.application.pipeline.config;
 
 import com.olson1998.authdata.application.pipeline.ApplicationPipelineFactory;
+import com.olson1998.authdata.domain.port.pipeline.AuthorityDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.pipeline.RoleDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.pipeline.UserDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;
+import com.olson1998.authdata.domain.service.pipeline.AuthorityDataPipelineService;
 import com.olson1998.authdata.domain.service.pipeline.RoleDataPipelineService;
 import com.olson1998.authdata.domain.service.pipeline.UserDataPipelineService;
 import lombok.NonNull;
@@ -31,4 +34,14 @@ public class EntityDatabaseOperationsPipelinesConfig {
                 roleRequestProcessor
         );
     }
+
+    @Bean
+    public AuthorityDatabaseOperationsPipeline authorityDatabaseOperationsPipeline(@NonNull AuthorityRequestProcessor authorityRequestProcessor,
+                                                                                   @NonNull ApplicationPipelineFactory applicationPipelineFactory){
+        return new AuthorityDataPipelineService(
+                applicationPipelineFactory,
+                authorityRequestProcessor
+        );
+    }
+
 }

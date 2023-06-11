@@ -13,21 +13,21 @@ import static com.olson1998.authdata.application.datasource.properties.JpaDialec
 @Setter
 
 @Configuration
-@ConfigurationProperties(prefix = "olson1998.authservice.datasource.main.jpa")
+@ConfigurationProperties(prefix = "com.olson1998.authservice.datasource.main.jpa")
 public class MainDatasourceJpaProperties implements LocalJpaProperties{
 
     @Getter
-    private String persistenceUnitName = "main-datasource-persistence-unit";
+    private String persistenceUnitName = "authdata";
 
     @Getter
     private JpaDialectInstance dialect = HIBERNATE;
 
-    private String hbmDdl = null;
+    private String hbm2Ddl;
 
     @Override
     public Properties toSpringJpaProperties() {
         var jpaProps = new Properties();
-        Optional.of(hbmDdl).ifPresent(ddl -> jpaProps.put("hibernate.hbm2ddl.auto", ddl));
+        Optional.ofNullable(hbm2Ddl).ifPresent(ddl -> jpaProps.put("hibernate.hbm2ddl.auto", ddl));
         return jpaProps;
     }
 }

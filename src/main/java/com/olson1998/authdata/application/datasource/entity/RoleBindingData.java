@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "AUTHROLEBIND")
-@IdClass(RoleBindingJunction.class)
 
 @NoArgsConstructor
 @AllArgsConstructor

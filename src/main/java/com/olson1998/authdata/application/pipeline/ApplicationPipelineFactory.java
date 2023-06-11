@@ -4,6 +4,7 @@ import com.olson1998.authdata.application.pipeline.exception.PipelineFabrication
 import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.Request;
+import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

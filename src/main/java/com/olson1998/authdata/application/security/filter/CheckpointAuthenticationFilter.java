@@ -23,8 +23,7 @@ public class CheckpointAuthenticationFilter extends AuthDataAuthenticationFilter
         log.trace("Building request context based on checkpoint: '{}' of tenant: '{}' of user: {}",
                 context.getId(),
                 context.getTenantId(),
-                context.getUserId()
-        );
+                context.getUserId());
     }
 
     @Override
