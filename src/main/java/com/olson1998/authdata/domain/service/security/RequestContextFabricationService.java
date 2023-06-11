@@ -1,9 +1,11 @@
 package com.olson1998.authdata.domain.service.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.olson1998.authdata.domain.model.security.DomainCheckpointRequestContext;
 import com.olson1998.authdata.domain.model.security.DomainRequestContext;
 import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
-import com.olson1998.authdata.domain.port.security.RequestContextFactory;
+import com.olson1998.authdata.domain.port.security.stereotype.CheckpointContext;
+import com.olson1998.authdata.domain.port.security.repository.RequestContextFactory;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -27,9 +29,10 @@ public class RequestContextFabricationService implements RequestContextFactory {
     }
 
     @Override
-    public RequestContext fabricate(@NonNull Checkpoint checkpoint) {
-        return DomainRequestContext.builder()
+    public CheckpointContext fabricate(@NonNull String xTenantToken, @NonNull Checkpoint checkpoint) {
+        return DomainCheckpointRequestContext.builder()
                 .tenantId(checkpoint.getTenantId())
+                .token(xTenantToken)
                 .userId(checkpoint.getUserId())
                 .id(checkpoint.getId())
                 .build();

@@ -51,7 +51,7 @@ public class DomainCheckpoint implements Checkpoint {
 
     private final Integer maxUsageCount;
 
-    private final List<String> logs = new LinkedList<>();
+    private final LinkedList<String> logs = new LinkedList<>();
 
     private int usageCount = 0;
 
@@ -66,13 +66,8 @@ public class DomainCheckpoint implements Checkpoint {
     }
 
     @Override
-    public List<String> getLogs(@NonNull String token,@NonNull String sign) {
-        var expected = writeCheckpointToken(sign);
-        if(expected.equals(token)){
-            return logs;
-        }else {
-            throw new CheckpointTokenVerificationException();
-        }
+    public LinkedList<String> getLogs() {
+        return logs;
     }
 
     @Override

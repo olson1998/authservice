@@ -2,7 +2,6 @@ package com.olson1998.authdata.application.requesting.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.application.requesting.model.payload.AuthorityDetailsForm;
 import com.olson1998.authdata.application.requesting.model.payload.RoleBindingForm;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundSavingRequest;
@@ -13,7 +12,6 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter

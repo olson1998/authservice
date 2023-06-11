@@ -1,6 +1,6 @@
 package com.olson1998.authdata.domain.port.checkpoint.stereotype;
 
-import java.util.List;
+import java.util.LinkedList;
 import java.util.UUID;
 
 public interface Checkpoint extends CheckpointValues{
@@ -13,7 +13,7 @@ public interface Checkpoint extends CheckpointValues{
 
     boolean isUsageCount();
 
-    List<String> getLogs(String token, String sign);
+    LinkedList<String> getLogs();
 
     String writeCheckpointToken(String sign);
 

@@ -7,4 +7,8 @@ import java.util.concurrent.CompletableFuture;
 public interface PipelineFactory {
 
     <R extends Request> CompletableFuture<R> fabricate(R request);
+
+    CompletableFuture<Void> fabricate();
+
+    <O> O dematerializeContext(O object);
 }

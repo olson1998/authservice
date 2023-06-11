@@ -5,12 +5,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.olson1998.authdata.domain.model.exception.security.CheckpointRequiredException;
 import com.olson1998.authdata.domain.model.exception.security.TenantSecretNotFound;
 import com.olson1998.authdata.domain.port.caching.repository.impl.CheckpointCacheRepository;
-import com.olson1998.authdata.domain.port.security.RequestContextFactory;
-import com.olson1998.authdata.domain.port.security.TenantSecretProvider;
-import com.olson1998.authdata.domain.port.security.TokenVerifier;
+import com.olson1998.authdata.domain.port.security.stereotype.CheckpointContext;
+import com.olson1998.authdata.domain.port.security.repository.RequestContextFactory;
+import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
+import com.olson1998.authdata.domain.port.security.repository.TokenVerifier;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 
 import java.net.InetAddress;
 
@@ -38,10 +41,10 @@ public class TokenVerifyingService implements TokenVerifier {
     }
 
     @Override
-    public RequestContext verifyCheckpointToken(String xCheckpointToken) {
+    public CheckpointContext verifyCheckpointToken(String xCheckpointToken) {
         var checkpoint = checkpointCacheRepository.getValue(xCheckpointToken)
                 .orElseThrow(CheckpointRequiredException::new);
-        return requestContextFactory.fabricate(checkpoint);
+        return requestContextFactory.fabricate(xCheckpointToken, checkpoint);
     }
 
     private JWTVerifier buildVerifier(TenantSecret tenantSecret){
@@ -68,4 +71,5 @@ public class TokenVerifyingService implements TokenVerifier {
                 .append(servicePort)
                 .toString();
     }
+
 }

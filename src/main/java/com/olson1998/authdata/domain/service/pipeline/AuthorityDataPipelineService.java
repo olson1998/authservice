@@ -21,12 +21,14 @@ public class AuthorityDataPipelineService implements AuthorityDatabaseOperations
     @Override
     public CompletableFuture<AuthoritySavingReport> runAuthoritySavingPipeline(AuthoritySavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(authorityRequestProcessor::saveAuthorities);
+                .thenApply(authorityRequestProcessor::saveAuthorities)
+                .thenApply(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<AuthorityDeletingReport> runAuthorityDeletingPipeline(AuthorityDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(authorityRequestProcessor::deleteAuthorities);
+                .thenApply(authorityRequestProcessor::deleteAuthorities)
+                .thenApply(pipelineFactory::dematerializeContext);
     }
 }

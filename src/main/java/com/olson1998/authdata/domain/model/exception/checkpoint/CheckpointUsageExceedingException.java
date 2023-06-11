@@ -1,20 +1,21 @@
 package com.olson1998.authdata.domain.model.exception.checkpoint;
 
-import com.olson1998.authdata.domain.port.checkpoint.excpetion.CheckpointException;
-import lombok.RequiredArgsConstructor;
+import com.olson1998.authdata.domain.port.checkpoint.excpetion.CheckpointVerificationException;
 
-@RequiredArgsConstructor
-public class CheckpointUsageExceedingException extends CheckpointException {
+public class CheckpointUsageExceedingException extends CheckpointVerificationException {
+
+    private static final String EXCEPTION_MESSAGE = "checkpoint usage exceeded";
 
     private final Integer maxUsages;
 
-    @Override
-    public String getHeaderValue() {
-        return "checkpoint usage exceeded";
+    public CheckpointUsageExceedingException(Integer maxUsages) {
+        super(EXCEPTION_MESSAGE, new SecurityException());
+        this.maxUsages = maxUsages;
     }
 
     @Override
-    public String getMessage() {
-        return "exceeded checkpoint usage, max: " + maxUsages;
+    public String getHeaderValue() {
+        return "checkpoint usage exceeded, max: " + maxUsages;
     }
+
 }

@@ -25,24 +25,28 @@ public class UserDataPipelineService implements UserDatabaseOperationsPipeline {
     @Override
     public CompletableFuture<UserSavingReport> runSaveUserPipeline(UserSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::saveUser);
+                .thenApply(userRequestProcessor::saveUser)
+                .thenApply(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<UserDeletingReport> runUserDeletePipeline(UserDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::deleteUser);
+                .thenApply(userRequestProcessor::deleteUser)
+                .thenApply(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<UserMembershipBindReport> runUserMembershipBindPipeline(UserMembershipSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::bindMemberships);
+                .thenApply(userRequestProcessor::bindMemberships)
+                .thenApply(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<UserMembershipDeletingReport> runUserMembershipDeletingPipeline(UserMembershipDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::deleteMemberships);
+                .thenApply(userRequestProcessor::deleteMemberships)
+                .thenApply(pipelineFactory::dematerializeContext);
     }
 }

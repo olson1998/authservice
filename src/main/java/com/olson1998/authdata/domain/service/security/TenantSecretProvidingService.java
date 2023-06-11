@@ -2,7 +2,7 @@ package com.olson1998.authdata.domain.service.security;
 
 import com.olson1998.authdata.domain.port.caching.repository.impl.TenantSecretCacheRepository;
 import com.olson1998.authdata.domain.port.data.repository.TenantSecretDataSourceRepository;
-import com.olson1998.authdata.domain.port.security.TenantSecretProvider;
+import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.RequiredArgsConstructor;
 

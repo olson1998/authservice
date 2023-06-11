@@ -1,10 +1,13 @@
 package com.olson1998.authdata.domain.port.checkpoint.repository;
 
-import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointValues;
-import org.springframework.http.ResponseEntity;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointTokenHolder;
+
+import java.util.LinkedList;
 
 public interface CheckpointRepository {
 
-    <B  extends CheckpointValues> ResponseEntity<B> create(Long expireTime, Integer maxUsages);
+    LinkedList<String> getLogs();
+
+    CheckpointTokenHolder create(Long expireTime, Integer maxUsages);
 
 }
