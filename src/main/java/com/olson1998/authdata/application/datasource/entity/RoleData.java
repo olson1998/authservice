@@ -4,16 +4,13 @@ import com.olson1998.authdata.application.datasource.entity.utils.RoleSubject;
 import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 
 @Entity
 @Table(name = "AUTHROLE")
 
-@Builder
+@Builder(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleData implements Role {

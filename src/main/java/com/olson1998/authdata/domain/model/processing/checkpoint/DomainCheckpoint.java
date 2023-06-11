@@ -150,7 +150,7 @@ public class DomainCheckpoint implements Checkpoint {
         }
         if(!expectedToken.equals(givenToken)){
             var e = new CheckpointTokenVerificationException();
-            logs.add(log(CheckpointStatus.ERROR, e.getHeaderValue()));
+            logs.add(log(CheckpointStatus.ERROR, e.getDisplayName()));
             throw e;
         }
     }
