@@ -4,6 +4,8 @@ import com.olson1998.authdata.application.requesting.model.RoleBoundSavingAdapte
 import com.olson1998.authdata.application.requesting.model.RoleBoundsDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.RoleDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.RoleSavingAdapterRequest;
+import com.olson1998.authdata.application.requesting.model.payload.RoleBoundDeletingForm;
+import com.olson1998.authdata.application.requesting.model.payload.RoleDetailsForm;
 import com.olson1998.authdata.domain.port.pipeline.RoleDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBoundsDeletingReport;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
@@ -26,13 +30,13 @@ public class RoleRequestController {
     private final RoleDatabaseOperationsPipeline roleDatabaseOperationsPipeline;
 
     @PostMapping(path = "/save")
-    public CompletableFuture<RoleSavingReport> interceptRoleSavingRequest(@RequestBody RoleSavingAdapterRequest request){
-        return roleDatabaseOperationsPipeline.runRoleSavingRequestPipeline(request);
+    public CompletableFuture<RoleSavingReport> interceptRoleSavingRequest(@RequestBody Set<RoleDetailsForm> roleDetailsForms){
+        return roleDatabaseOperationsPipeline.runRoleSavingRequestPipeline(new RoleSavingAdapterRequest(roleDetailsForms));
     }
 
     @DeleteMapping(path = "/del")
-    public CompletableFuture<RoleDeletingReport> interceptRoleDeletingRequest(@RequestBody RoleDeletingAdapterRequest request){
-        return roleDatabaseOperationsPipeline.runRoleDeletingPipeline(request);
+    public CompletableFuture<RoleDeletingReport> interceptRoleDeletingRequest(@RequestBody Set<String> roleIdSet){
+        return roleDatabaseOperationsPipeline.runRoleDeletingPipeline(new RoleDeletingAdapterRequest(roleIdSet));
     }
 
     @PostMapping(path = "/save/bound")
@@ -41,7 +45,7 @@ public class RoleRequestController {
     }
 
     @DeleteMapping(path = "/del/bound")
-    public CompletableFuture<RoleBoundsDeletingReport> interceptRoleBoundsDeletingRequest(@RequestBody RoleBoundsDeletingAdapterRequest request){
-        return roleDatabaseOperationsPipeline.runRoleBoundsDeletingPipeline(request);
+    public CompletableFuture<RoleBoundsDeletingReport> interceptRoleBoundsDeletingRequest(@RequestBody Map<String, RoleBoundDeletingForm> roleBoundDeletingForms){
+        return roleDatabaseOperationsPipeline.runRoleBoundsDeletingPipeline(new RoleBoundsDeletingAdapterRequest(roleBoundDeletingForms));
     }
 }

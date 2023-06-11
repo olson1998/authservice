@@ -1,6 +1,6 @@
-package com.olson1998.authdata.application.processing.pipeline;
+package com.olson1998.authdata.application.pipeline;
 
-import com.olson1998.authdata.application.processing.pipeline.exception.PipelineFabricationException;
+import com.olson1998.authdata.application.pipeline.exception.PipelineFabricationException;
 import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.Request;
 import lombok.NoArgsConstructor;

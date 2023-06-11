@@ -1,29 +1,19 @@
 package com.olson1998.authdata.application.requesting.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.application.requesting.model.payload.RoleDetailsForm;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleSavingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.Getter;
 
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.ID;
-
 @Getter
-public class RoleSavingAdapterRequest implements RoleSavingRequest {
-
-    private final UUID id;
+public class RoleSavingAdapterRequest extends AbstractAdapterRequest implements RoleSavingRequest {
 
     private final Set<RoleDetails> details;
 
-    @JsonCreator
-    public RoleSavingAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
-                                    @JsonProperty(value = "role_details", required = true) Set<RoleDetailsForm> roleDetailsForms) {
-        this.id = id;
+    public RoleSavingAdapterRequest(Set<RoleDetailsForm> roleDetailsForms) {
         this.details = mapRoleDetailsForms(roleDetailsForms);
     }
 

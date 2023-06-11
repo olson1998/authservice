@@ -2,6 +2,7 @@ package com.olson1998.authdata.application.requesting.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.application.requesting.model.payload.AuthorityDetailsForm;
 import com.olson1998.authdata.application.requesting.model.payload.RoleBindingForm;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundSavingRequest;
@@ -15,22 +16,16 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.ID;
-
 @Getter
-public class RoleBoundSavingAdapterRequest implements RoleBoundSavingRequest {
-
-    private final UUID id;
+public class RoleBoundSavingAdapterRequest extends AbstractAdapterRequest implements RoleBoundSavingRequest {
 
     private final Set<RoleBindingClaim> rolesBindingsClaims;
 
     private final Map<String, Set<AuthorityDetails>> roleIdAuthoritySavingRequestMap;
 
     @JsonCreator
-    public RoleBoundSavingAdapterRequest(@JsonProperty(value = ID, required = true) UUID id,
-                                         @JsonProperty(value = "role_bindings", required = true)Set<RoleBindingForm> roleBindingFormSet,
+    public RoleBoundSavingAdapterRequest(@JsonProperty(value = "role_bindings", required = true)Set<RoleBindingForm> roleBindingFormSet,
                                          @JsonProperty(value = "bind_saved_authorities") Map<String, Set<AuthorityDetailsForm>> claimedToSaveAuthoritiesDetails) {
-        this.id = id;
         this.rolesBindingsClaims = roleBindingFormSet.stream()
                 .map(this::mapRoleBindingClaim)
                 .collect(Collectors.toUnmodifiableSet());
@@ -52,4 +47,5 @@ public class RoleBoundSavingAdapterRequest implements RoleBoundSavingRequest {
     private RoleBindingClaim mapRoleBindingClaim(RoleBindingForm form){
         return form;
     }
+
 }

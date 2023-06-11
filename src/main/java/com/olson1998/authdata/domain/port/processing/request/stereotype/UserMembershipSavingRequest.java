@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface UserMembershipSavingRequest extends Request{
 
-    Long getUserId();
+    long getUserId();
 
     Set<UserMembershipClaim> getUserMembershipClaims();
 }

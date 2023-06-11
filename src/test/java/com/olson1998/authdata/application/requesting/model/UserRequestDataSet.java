@@ -1,5 +1,6 @@
 package com.olson1998.authdata.application.requesting.model;
 
+import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDeletingRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -32,8 +33,15 @@ public abstract class UserRequestDataSet {
             Set.of(TEST_USER_MEMBERSHIP_FORM)
     );
 
-    public static final UserDeletingAdapterRequest TEST_USER_DELETING_REQUEST = new UserDeletingAdapterRequest(
-            TEST_USER_DELETING_REQUEST_ID,
-            TEST_USER_ID
-    );
+    public static final UserDeletingRequest TEST_USER_DELETING_REQUEST = new UserDeletingRequest() {
+        @Override
+        public long getUserId() {
+            return TEST_USER_ID;
+        }
+
+        @Override
+        public UUID getId() {
+            return TEST_USER_DELETING_REQUEST_ID;
+        }
+    };
 }

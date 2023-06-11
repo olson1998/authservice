@@ -4,7 +4,7 @@ import java.util.Set;
 
 public interface UserMembershipDeletingRequest extends Request {
 
-    Long getUserId();
+    long getUserId();
 
     Set<String> getRegionMemberships();
 

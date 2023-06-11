@@ -4,6 +4,7 @@ import com.olson1998.authdata.application.requesting.model.UserDeletingAdapterRe
 import com.olson1998.authdata.application.requesting.model.UserMembershipSavingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.UserMembershipDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.UserSavingAdapterRequest;
+import com.olson1998.authdata.application.requesting.model.payload.UserMembershipForm;
 import com.olson1998.authdata.domain.port.pipeline.UserDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipBindReport;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
@@ -30,13 +32,13 @@ public class UserRequestController {
     }
 
     @PostMapping(path = "/save/mb")
-    public CompletableFuture<UserMembershipBindReport> interceptUserMembershipSavingReport(@RequestBody UserMembershipSavingAdapterRequest request){
-        return userDatabaseOperationsPipeline.runUserMembershipBindPipeline(request);
+    public CompletableFuture<UserMembershipBindReport> interceptUserMembershipSavingReport(@RequestBody Set<UserMembershipForm> userMembershipForms){
+        return userDatabaseOperationsPipeline.runUserMembershipBindPipeline(new UserMembershipSavingAdapterRequest(userMembershipForms));
     }
 
     @DeleteMapping(path = "/del")
-    public CompletableFuture<UserDeletingReport> interceptUserDeletingRequest(@RequestBody UserDeletingAdapterRequest userDeletingRequest){
-        return userDatabaseOperationsPipeline.runUserDeletePipeline(userDeletingRequest);
+    public CompletableFuture<UserDeletingReport> interceptUserDeletingRequest(){
+        return userDatabaseOperationsPipeline.runUserDeletePipeline(new UserDeletingAdapterRequest());
     }
 
     @DeleteMapping(path = "/del/mb")

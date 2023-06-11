@@ -1,4 +1,4 @@
-package com.olson1998.authdata.application.processing.pipeline.exception;
+package com.olson1998.authdata.application.pipeline.exception;
 
 import com.olson1998.authdata.domain.port.processing.exception.PipelineRuntimeException;
 import lombok.Getter;
