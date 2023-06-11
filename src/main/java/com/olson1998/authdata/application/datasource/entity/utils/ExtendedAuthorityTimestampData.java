@@ -2,11 +2,9 @@ package com.olson1998.authdata.application.datasource.entity.utils;
 
 import com.olson1998.authdata.domain.port.data.utils.ExtendedAuthorityTimestamp;
 import com.olson1998.authdata.domain.port.processing.tree.stereotype.AuthorityTimestamp;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class ExtendedAuthorityTimestampData implements ExtendedAuthorityTimestamp {
 

@@ -1,22 +1,13 @@
 package com.olson1998.authdata.domain.port.processing.checkpoint.stereotype;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface Checkpoint {
+public interface Checkpoint extends CheckpointValues{
 
-    String getId();
-
-    String getTenantId();
-
-    long getCompanyNumber();
+    UUID getId();
 
     long getUserId();
-
-    long getTimestamp();
-
-    Long getExpireTime();
-
-    Integer getMaxUsageCount();
 
     boolean isExpiring();
 
@@ -28,8 +19,6 @@ public interface Checkpoint {
 
     String writeTenantToken(String sign);
 
-    String writeCompanyToken(String sign);
-
     String writeUserToken(String sign);
 
     void verifyCheckpointToken(String checkpointToken, String sign);
@@ -38,5 +27,4 @@ public interface Checkpoint {
 
     void verifyTenantToken(String tenantToken, String sign);
 
-    void verifyCompanyToken(String companyToken, String sign);
 }

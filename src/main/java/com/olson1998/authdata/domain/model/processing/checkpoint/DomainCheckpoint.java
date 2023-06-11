@@ -1,7 +1,7 @@
 package com.olson1998.authdata.domain.model.processing.checkpoint;
 
 import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointExpiredException;
-import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointTokenVerificationException;
+import com.olson1998.authdata.domain.model.exception.security.CheckpointTokenVerificationException;
 import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointUsageExceedingException;
 import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.Checkpoint;
 import lombok.Getter;
@@ -13,9 +13,9 @@ import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @Getter
 public class DomainCheckpoint implements Checkpoint {
@@ -31,21 +31,17 @@ public class DomainCheckpoint implements Checkpoint {
 
     private static final MessageDigest TOKEN_DIGEST = DigestUtils.getSha3_256Digest();
 
-    private static final String CHECKPOINT_TOKEN_FORMAT = "Checkpoint(id=%s,tid=%s,cono=%s,uid=%s,tmp=%s,sign=%s)";
+    private static final String CHECKPOINT_TOKEN_FORMAT = "Checkpoint(id=%s,tid=%s,uid=%s,tmp=%s,sign=%s)";
 
-    private static final String TENANT_TOKEN_FORMAT = "Tenant(id=%s,tid=%s,tmp=%s,sign=%s)";
+    private static final String TENANT_TOKEN_FORMAT = "Tenant(id=%s,tid=%s,sign=%s)";
 
-    private static final String COMPANY_TOKEN_FORMAT = "Company(id=%s,tid=%s,cono=%s,tmp=%s,sign=%s)";
-
-    private static final String USER_TOKEN_FORMAT = "User(id=%s,tid=%s,cono=%s,uid=%s,tmp=%s,sign=%s)";
+    private static final String USER_TOKEN_FORMAT = "User(id=%s,tid=%s,cono=%s,uid=%s,sign=%s)";
 
     private static final String CHECKPOINT_LOG = "%s %s %s";
 
-    private final String id = "CHECKPOINT&" + randomAlphanumeric(15);
+    private final UUID id;
 
     private final String tenantId;
-
-    private final long companyNumber;
 
     private final long userId;
 
@@ -85,7 +81,6 @@ public class DomainCheckpoint implements Checkpoint {
                 CHECKPOINT_TOKEN_FORMAT,
                 id,
                 tenantId,
-                companyNumber,
                 userId,
                 timestamp,
                 sign
@@ -99,20 +94,6 @@ public class DomainCheckpoint implements Checkpoint {
                 TENANT_TOKEN_FORMAT,
                 id,
                 tenantId,
-                timestamp,
-                sign
-        );
-        return digest(rawToken);
-    }
-
-    @Override
-    public String writeCompanyToken(@NonNull String sign) {
-        var rawToken = String.format(
-                COMPANY_TOKEN_FORMAT,
-                id,
-                tenantId,
-                companyNumber,
-                timestamp,
                 sign
         );
         return digest(rawToken);
@@ -124,9 +105,7 @@ public class DomainCheckpoint implements Checkpoint {
                 USER_TOKEN_FORMAT,
                 id,
                 tenantId,
-                companyNumber,
                 userId,
-                timestamp,
                 sign
         );
         return digest(rawToken);
@@ -145,11 +124,6 @@ public class DomainCheckpoint implements Checkpoint {
     @Override
     public void verifyTenantToken(@NonNull String tenantToken, @NonNull String sign) {
         verifyToken(writeTenantToken(tenantToken), tenantToken);
-    }
-
-    @Override
-    public void verifyCompanyToken(@NonNull String companyToken, @NonNull String sign) {
-        verifyToken(writeCompanyToken(companyToken), companyToken);
     }
 
     private String digest(String token){
@@ -186,9 +160,9 @@ public class DomainCheckpoint implements Checkpoint {
         return String.format(CHECKPOINT_LOG, now, status, message);
     }
 
-    public DomainCheckpoint(String tenantId, long companyNumber, long userId, Long expireTime, Integer maxUsageCount) {
+    public DomainCheckpoint(UUID id, String tenantId, long userId, Long expireTime, Integer maxUsageCount) {
+        this.id = id;
         this.tenantId = tenantId;
-        this.companyNumber = companyNumber;
         this.userId = userId;
         this.expireTime = expireTime;
         this.maxUsageCount = maxUsageCount;

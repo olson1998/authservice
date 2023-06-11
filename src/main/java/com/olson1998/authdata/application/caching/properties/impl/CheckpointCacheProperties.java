@@ -28,16 +28,16 @@ public class CheckpointCacheProperties implements CaffeineCacheProperties {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     protected static class KeyCacheTimeout{
 
-        private long timeout;
+        private long timeout =1L;
 
-        private ChronoUnit timeoutUnit;
+        private ChronoUnit timeoutUnit = MINUTES;
     }
 
     @Setter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     protected static class HashKeyCacheTimeout{
 
-        private long timeout = 30L;
+        private long timeout = 2L;
 
         private ChronoUnit timeoutUnit = MINUTES;
     }
