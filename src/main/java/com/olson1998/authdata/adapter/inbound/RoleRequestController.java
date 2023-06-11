@@ -4,7 +4,7 @@ import com.olson1998.authdata.application.requesting.model.RoleBoundSavingAdapte
 import com.olson1998.authdata.application.requesting.model.RoleBoundsDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.RoleDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.RoleSavingAdapterRequest;
-import com.olson1998.authdata.domain.port.processing.pipeline.RoleDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.RoleDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBoundsDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;

@@ -3,7 +3,7 @@ package com.olson1998.authdata.domain.model.processing.checkpoint;
 import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointExpiredException;
 import com.olson1998.authdata.domain.model.exception.security.CheckpointTokenVerificationException;
 import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointUsageExceedingException;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.Checkpoint;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.codec.digest.DigestUtils;

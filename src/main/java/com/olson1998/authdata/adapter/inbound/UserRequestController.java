@@ -4,7 +4,7 @@ import com.olson1998.authdata.application.requesting.model.UserDeletingAdapterRe
 import com.olson1998.authdata.application.requesting.model.UserMembershipSavingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.UserMembershipDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.UserSavingAdapterRequest;
-import com.olson1998.authdata.domain.port.processing.pipeline.UserDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.UserDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipBindReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipDeletingReport;

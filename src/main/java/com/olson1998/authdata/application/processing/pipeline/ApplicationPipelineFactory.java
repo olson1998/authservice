@@ -1,7 +1,7 @@
 package com.olson1998.authdata.application.processing.pipeline;
 
 import com.olson1998.authdata.application.processing.pipeline.exception.PipelineFabricationException;
-import com.olson1998.authdata.domain.port.processing.pipeline.PipelineFactory;
+import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.Request;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

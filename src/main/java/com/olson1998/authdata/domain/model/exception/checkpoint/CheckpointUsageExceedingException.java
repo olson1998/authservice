@@ -1,6 +1,6 @@
 package com.olson1998.authdata.domain.model.exception.checkpoint;
 
-import com.olson1998.authdata.domain.port.processing.checkpoint.excpetion.CheckpointException;
+import com.olson1998.authdata.domain.port.checkpoint.excpetion.CheckpointException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

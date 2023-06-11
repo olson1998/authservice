@@ -1,8 +1,8 @@
-package com.olson1998.authdata.domain.service.processing.checkpoint;
+package com.olson1998.authdata.domain.service.checkpoint;
 
-import com.olson1998.authdata.domain.port.processing.checkpoint.repository.CheckpointTokenHolderMapper;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.CheckpointTokenHolder;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.CheckpointValues;
+import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointTokenHolderMapper;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointTokenHolder;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointValues;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
 

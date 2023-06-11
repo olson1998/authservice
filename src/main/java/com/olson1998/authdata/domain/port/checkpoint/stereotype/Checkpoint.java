@@ -1,4 +1,4 @@
-package com.olson1998.authdata.domain.port.processing.checkpoint.stereotype;
+package com.olson1998.authdata.domain.port.checkpoint.stereotype;
 
 import java.util.List;
 import java.util.UUID;

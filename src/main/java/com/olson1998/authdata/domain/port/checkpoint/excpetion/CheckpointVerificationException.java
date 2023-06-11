@@ -1,4 +1,4 @@
-package com.olson1998.authdata.domain.port.processing.checkpoint.excpetion;
+package com.olson1998.authdata.domain.port.checkpoint.excpetion;
 
 public abstract class CheckpointVerificationException extends CheckpointException {
 }

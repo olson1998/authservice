@@ -4,8 +4,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.Checkpoint;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.CheckpointTokenHolder;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointTokenHolder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

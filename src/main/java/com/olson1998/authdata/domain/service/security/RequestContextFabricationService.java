@@ -2,7 +2,7 @@ package com.olson1998.authdata.domain.service.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.olson1998.authdata.domain.model.security.DomainRequestContext;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.Checkpoint;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
 import com.olson1998.authdata.domain.port.security.RequestContextFactory;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
 import lombok.NoArgsConstructor;

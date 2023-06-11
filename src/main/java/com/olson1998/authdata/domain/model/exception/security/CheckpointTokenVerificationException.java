@@ -1,7 +1,5 @@
 package com.olson1998.authdata.domain.model.exception.security;
 
-import com.olson1998.authdata.domain.port.processing.checkpoint.excpetion.CheckpointException;
-import com.olson1998.authdata.domain.port.processing.checkpoint.excpetion.CheckpointVerificationException;
 import com.olson1998.authdata.domain.port.security.exception.TokenVerificationException;
 import lombok.NoArgsConstructor;
 

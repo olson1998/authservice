@@ -1,7 +1,7 @@
-package com.olson1998.authdata.domain.service.processing.pipeline;
+package com.olson1998.authdata.domain.service.pipeline;
 
-import com.olson1998.authdata.domain.port.processing.pipeline.PipelineFactory;
-import com.olson1998.authdata.domain.port.processing.pipeline.UserDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
+import com.olson1998.authdata.domain.port.pipeline.UserDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipBindReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipDeletingReport;

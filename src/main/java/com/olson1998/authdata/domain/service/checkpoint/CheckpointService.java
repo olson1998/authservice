@@ -1,11 +1,11 @@
-package com.olson1998.authdata.domain.service.processing.checkpoint;
+package com.olson1998.authdata.domain.service.checkpoint;
 
 import com.olson1998.authdata.domain.model.processing.checkpoint.DomainCheckpoint;
 import com.olson1998.authdata.domain.model.processing.checkpoint.DomainCheckpointTokenHolder;
 import com.olson1998.authdata.domain.port.caching.repository.impl.CheckpointCacheRepository;
-import com.olson1998.authdata.domain.port.processing.checkpoint.repository.CheckpointRepository;
-import com.olson1998.authdata.domain.port.processing.checkpoint.repository.CheckpointTokenHolderMapper;
-import com.olson1998.authdata.domain.port.processing.checkpoint.stereotype.CheckpointValues;
+import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
+import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointTokenHolderMapper;
+import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointValues;
 import com.olson1998.authdata.domain.port.processing.request.repository.RequestContextHolder;
 import com.olson1998.authdata.domain.port.security.TenantSecretProvider;
 import lombok.RequiredArgsConstructor;
