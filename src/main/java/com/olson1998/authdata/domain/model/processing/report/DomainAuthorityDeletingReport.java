@@ -5,6 +5,7 @@ import com.olson1998.authdata.domain.port.processing.report.stereotype.Authority
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -16,4 +17,10 @@ public class DomainAuthorityDeletingReport implements AuthorityDeletingReport {
 
     @JsonProperty(value = "del_authorities_qty")
     private final int deletedAuthoritiesQty;
+
+    @JsonProperty(value = "del_role_bounds")
+    private final int deletedRoleBounds;
+
+    @JsonProperty(value = "up_role_tmp")
+    private final Set<String> roleIdWithUpdatedTimestamps;
 }

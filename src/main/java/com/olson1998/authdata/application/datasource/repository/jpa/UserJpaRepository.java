@@ -5,6 +5,7 @@ import com.olson1998.authdata.application.datasource.entity.UserData;
 import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
 import com.olson1998.authdata.application.datasource.entity.values.ExtendedAuthorityTimestampData;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +47,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "WHERE u.id=:userId")
     Set<ExtendedAuthorityTimestampData> selectUserAuthoritiesTimestamps(long userId);
 
+    @Modifying
     @Query("DELETE FROM UserData u WHERE u.id=:id")
     int deleteUserById(long id);
 

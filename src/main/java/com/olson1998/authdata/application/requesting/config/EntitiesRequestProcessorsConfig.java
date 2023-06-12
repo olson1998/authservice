@@ -15,8 +15,14 @@ import org.springframework.context.annotation.Configuration;
 public class EntitiesRequestProcessorsConfig {
 
     @Bean
-    public AuthorityRequestProcessor authorityRequestProcessor(@NonNull AuthorityJpaRepositoryWrapper authorityJpaRepositoryWrapper){
-        return new AuthorityRequestProcessingService(authorityJpaRepositoryWrapper);
+    public AuthorityRequestProcessor authorityRequestProcessor(@NonNull AuthorityJpaRepositoryWrapper authorityJpaRepositoryWrapper,
+                                                               @NonNull RoleJpaRepositoryWrapper roleJpaRepositoryWrapper,
+                                                               @NonNull RoleBindingJpaRepositoryWrapper roleBindingJpaRepositoryWrapper){
+        return new AuthorityRequestProcessingService(
+                authorityJpaRepositoryWrapper,
+                roleBindingJpaRepositoryWrapper,
+                roleJpaRepositoryWrapper
+        );
     }
 
     @Bean

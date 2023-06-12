@@ -1,5 +1,6 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
+import com.olson1998.authdata.domain.model.exception.data.DifferentUpdatedEntitiesTimestampsException;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleDeletingReport;
@@ -78,6 +79,16 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
                 savedRoleBindingsMap.put(roleId, authSet);
             }
         });
+        var timestamp = System.currentTimeMillis();
+        var updated = roleDataSourceRepository.updateRoleTimestamp(savedRoleBindingsMap.keySet(), timestamp);
+        if(updated != savedRoleBindingsMap.size()){
+            throw new DifferentUpdatedEntitiesTimestampsException(
+                    log,
+                    request.getId(),
+                    savedRoleBindingsMap.size(),
+                    updated
+            );
+        }
         return new DomainRoleBindingReport(
                 request.getId(),
                 savedRoleBindingsMap,

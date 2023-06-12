@@ -13,10 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoleBindingForm implements RoleBindingClaim {
 
-    @JsonProperty(value = "role_id")
+    @JsonProperty(value = "role_id", required = true)
     private String roleId;
 
-    @JsonProperty(value = "authority_d")
+    @JsonProperty(value = "authority_id", required = true)
     private String authorityId;
 
     public RoleBindingForm(String roleId) {

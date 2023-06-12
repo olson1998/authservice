@@ -21,6 +21,11 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     private final RoleBindingJpaRepository roleBindingJpaRepository;
 
     @Override
+    public Set<String> getRoleIdsOfBoundedAuthorities(Set<String> authoritiesIds) {
+        return roleBindingJpaRepository.selectRoleIdsOfBoundedAuthorities(authoritiesIds);
+    }
+
+    @Override
     public boolean areAnyOtherAuthorityTenants(@NonNull String authorityId) {
         return roleBindingJpaRepository.selectCaseIfMoreThanOneTenant(authorityId);
     }
@@ -40,6 +45,11 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     @Override
     public int deleteRoleBindings(@NonNull String roleId) {
         return roleBindingJpaRepository.deleteRoleBindingByRolesIdSet(roleId);
+    }
+
+    @Override
+    public int deleteRoleBoundsOfAuthorities(Set<String> authoritiesIds) {
+        return roleBindingJpaRepository.deleteRoleBindingsOfAuthorities(authoritiesIds);
     }
 
     @Override

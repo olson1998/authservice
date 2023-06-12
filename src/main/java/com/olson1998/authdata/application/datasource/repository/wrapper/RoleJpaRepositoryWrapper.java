@@ -44,6 +44,11 @@ public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
         return mapRoleData(persistedData);
     }
 
+    @Override
+    public int updateRoleTimestamp(@NonNull Set<String> rolesIdsSet, long timestamp) {
+        return roleJpaRepository.updateRoleTimestamps(rolesIdsSet, timestamp);
+    }
+
     private Set<RoleData> mapRoleDetails(Set<RoleDetails> roleDetails){
         return roleDetails.stream()
                 .map(RoleData::new)

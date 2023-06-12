@@ -16,10 +16,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class RoleBindingJunction implements Serializable {
 
-    @Column(name = "ROLEID")
+    @Column(name = "ROLEID", nullable = false)
     private String roleId;
 
-    @Column(name = "AUTHORITYID")
+    @Column(name = "AUTHORITYID", nullable = false)
     private String authorityId;
 
     public RoleBindingJunction(@NonNull RoleBindingClaim claim) {

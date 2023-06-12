@@ -8,6 +8,8 @@ import java.util.Set;
 
 public interface RoleBindingDataSourceRepository {
 
+    Set<String> getRoleIdsOfBoundedAuthorities(Set<String> authoritiesIds);
+
     /**
      * Checks if there is more than one tenant of given authority
      * @param authorityId authority id
@@ -25,6 +27,8 @@ public interface RoleBindingDataSourceRepository {
     int deleteRoleAuthorityBindingsByAuthorityId(String authorityId);
 
     int deleteRoleBindings(String roleId);
+
+    int deleteRoleBoundsOfAuthorities(Set<String> authoritiesIds);
 
     int deleteRoleBoundsForGivenAuthority(String roleId, Set<String> authoritiesIds);
 

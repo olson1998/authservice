@@ -1,9 +1,12 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
+import com.olson1998.authdata.domain.model.exception.data.DifferentUpdatedEntitiesTimestampsException;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthoritiesSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.data.exception.NoAuthorityDetailsFoundForPersistedEntity;
 import com.olson1998.authdata.domain.port.data.repository.AuthorityDataSourceRepository;
+import com.olson1998.authdata.domain.port.data.repository.RoleBindingDataSourceRepository;
+import com.olson1998.authdata.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Authority;
 import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthorityDeletingReport;
@@ -27,6 +30,10 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
 
     private final AuthorityDataSourceRepository authorityDataSourceRepository;
 
+    private final RoleBindingDataSourceRepository roleBindingDataSourceRepository;
+
+    private final RoleDataSourceRepository roleDataSourceRepository;
+
     @Override
     public AuthoritySavingReport saveAuthorities(@NonNull AuthoritySavingRequest authoritySavingRequest) {
         ProcessingRequestLogger.log(log, authoritySavingRequest, SAVE, Authority.class);
@@ -45,10 +52,32 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
     @Override
     public AuthorityDeletingReport deleteAuthorities(AuthorityDeletingRequest authorityDeletingRequest) {
         ProcessingRequestLogger.log(log, authorityDeletingRequest, DELETE, Role.class);
-        var deleted = authorityDataSourceRepository.deleteAuthorities(authorityDeletingRequest.getAuthoritiesIds());
+        var authoritiesIds = authorityDeletingRequest.getAuthoritiesIds();
+        var boundedRolesIds = roleBindingDataSourceRepository.getRoleIdsOfBoundedAuthorities(authoritiesIds);
+        var deletedBounds = roleBindingDataSourceRepository.deleteRoleBoundsOfAuthorities(authoritiesIds);
+        var deletedAuthorities = authorityDataSourceRepository.deleteAuthorities(authorityDeletingRequest.getAuthoritiesIds());
+        if(deletedAuthorities != authoritiesIds.size()){
+            throw new DifferentUpdatedEntitiesTimestampsException(
+                    log,
+                    authorityDeletingRequest.getId(),
+                    authoritiesIds.size(),
+                    deletedAuthorities
+            );
+        }
+        var updatedRoles = roleDataSourceRepository.updateRoleTimestamp(boundedRolesIds, System.currentTimeMillis());
+        if(updatedRoles != boundedRolesIds.size()){
+            throw new DifferentUpdatedEntitiesTimestampsException(
+                    log,
+                    authorityDeletingRequest.getId(),
+                    boundedRolesIds.size(),
+                    updatedRoles
+            );
+        }
         return new DomainAuthorityDeletingReport(
                 authorityDeletingRequest.getId(),
-                deleted
+                deletedAuthorities,
+                deletedBounds,
+                boundedRolesIds
         );
     }
 
