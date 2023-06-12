@@ -12,23 +12,23 @@ import org.springframework.data.domain.Persistable;
 @Setter
 
 @Entity
-@Table(name = "TNTSCT")
+@Table(name = "TNTSC")
 @NoArgsConstructor
 @AllArgsConstructor
 public class TenantSecretData implements Persistable<String>, TenantAlgorithm {
 
     @Id
-    @Column(name = "TNTSCTID")
+    @Column(name = "TNTSCID")
     private String tenantId;
 
-    @Column(name = "TNTSCTTMP", nullable = false)
+    @Column(name = "TNTSCTMP", nullable = false)
     private Long timestamp;
 
-    @Column(name = "TNTSCTSG", nullable = false, unique = true)
+    @Column(name = "TNTSCVAL", nullable = false, updatable = false)
     private String secret;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "TNTSCTALG", nullable = false)
+    @Column(name = "TNTSCALG", nullable = false, updatable = false)
     private JwtAlgorithm jwtAlgorithm;
 
     @Override

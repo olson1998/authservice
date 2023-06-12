@@ -1,17 +1,21 @@
 package com.olson1998.authdata.domain.service.checkpoint;
 
+import com.auth0.jwt.algorithms.Algorithm;
+import com.olson1998.authdata.domain.model.checkpoint.DomainCheckpoint;
+import com.olson1998.authdata.domain.model.checkpoint.DomainCheckpointTimestamp;
+import com.olson1998.authdata.domain.model.checkpoint.DomainCheckpointTokenHolder;
 import com.olson1998.authdata.domain.model.exception.security.CheckpointRequiredException;
 import com.olson1998.authdata.domain.model.exception.security.TenantSecretNotFound;
-import com.olson1998.authdata.domain.model.processing.checkpoint.DomainCheckpoint;
-import com.olson1998.authdata.domain.model.processing.checkpoint.DomainCheckpointTokenHolder;
 import com.olson1998.authdata.domain.port.caching.repository.impl.CheckpointCacheRepository;
+import com.olson1998.authdata.domain.port.caching.stereotype.CheckpointTimestamp;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
 import com.olson1998.authdata.domain.port.checkpoint.stereotype.CheckpointTokenHolder;
 import com.olson1998.authdata.domain.port.processing.request.repository.RequestContextHolder;
-import com.olson1998.authdata.domain.port.security.stereotype.CheckpointContext;
 import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
+import com.olson1998.authdata.domain.port.security.stereotype.CheckpointContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.LinkedList;
 
@@ -19,6 +23,8 @@ import java.util.LinkedList;
 
 @RequiredArgsConstructor
 public class CheckpointService implements CheckpointRepository {
+
+    private static final String CHECKPOINT_CACHE_KEY = "com.olson1998.Checkpoint(tid=%s,uid=%s,pubkey=%s,prvkey=%s)";
 
     private final TenantSecretProvider tenantSecretProvider;
 
@@ -31,7 +37,14 @@ public class CheckpointService implements CheckpointRepository {
         var ctx = requestContextHolder.getRequestContext();
         if(ctx instanceof CheckpointContext checkpointContext){
             var token = checkpointContext.getToken();
-            return checkpointCacheRepository.getValue(token)
+            var checkpointTimestamp = checkpointCacheRepository.getHashValue(token)
+                    .orElseThrow(CheckpointRequiredException::new);
+            var tid = checkpointTimestamp.getTenantId();
+            var tenantSecret = tenantSecretProvider.getTenantSecret(tid)
+                    .orElseThrow(CheckpointRequiredException::new);
+            var alg = tenantSecret.toAlgorithm();
+            var key = createCheckpointKey(checkpointTimestamp, token, alg);
+            return checkpointCacheRepository.getValue(key)
                     .orElseThrow(CheckpointRequiredException::new)
                     .getLogs();
         }else {
@@ -45,6 +58,7 @@ public class CheckpointService implements CheckpointRepository {
         var id = requestContextHolder.getId();
         var uid = requestContextHolder.getUserId();
         var tenantSecret = tenantSecretProvider.getTenantSecret(tid).orElseThrow(TenantSecretNotFound::new);
+        var alg = tenantSecret.toAlgorithm();
         var checkpoint = new DomainCheckpoint(
                 id,
                 tid,
@@ -52,10 +66,41 @@ public class CheckpointService implements CheckpointRepository {
                 expireTime,
                 maxUsages
         );
+        var tokenHolder = new DomainCheckpointTokenHolder(checkpoint, alg);
+        var checkpointTimestamp = new DomainCheckpointTimestamp(
+                tid,
+                uid
+        );
+        var checkpointKey = createCheckpointKey(checkpointTimestamp, tokenHolder.getCheckpointToken(), alg);
+        checkpointCacheRepository.cacheHashValue(
+                tokenHolder.getCheckpointToken(),
+                checkpointTimestamp
+        );
+        checkpointCacheRepository.cacheValue(checkpointKey, checkpoint);
         log.info("created new checkpoint: '{}'", checkpoint.getId());
-        var tokenHolder = new DomainCheckpointTokenHolder(checkpoint, tenantSecret.toAlgorithm());
-        checkpointCacheRepository.cacheValue(tokenHolder.getCheckpointToken(), checkpoint);
         return tokenHolder;
     }
 
+    @Override
+    public String writeCheckpointCacheKey(String tid, long uid, String token, Algorithm algorithm) {
+        var rawKey = String.format(
+                CHECKPOINT_CACHE_KEY,
+                tid,
+                uid,
+                token,
+                algorithm.toString()
+        );
+        return DigestUtils.sha256Hex(rawKey);
+    }
+
+    private String createCheckpointKey(CheckpointTimestamp checkpointTimestamp,
+                                       String xCheckpointToken,
+                                       Algorithm algorithm){
+        return writeCheckpointCacheKey(
+                checkpointTimestamp.getTenantId(),
+                checkpointTimestamp.getUserId(),
+                xCheckpointToken,
+                algorithm
+        );
+    }
 }

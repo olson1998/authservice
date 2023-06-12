@@ -23,8 +23,8 @@ public class ApplicationPipelineFactory implements PipelineFactory {
     @Override
     public <R extends Request> CompletableFuture<R> fabricate(R request) {
         var requestContextRef = new AtomicReference<>(getLocalThreadRequestContext());
-        return CompletableFuture.supplyAsync(()-> this.createRequestPipeline(request))
-                .thenApply(req -> inheritRequestContext(request, requestContextRef));
+        return CompletableFuture.supplyAsync(()-> inheritRequestContext(request, requestContextRef))
+                .thenApply(this::createRequestPipeline);
     }
 
     @Override

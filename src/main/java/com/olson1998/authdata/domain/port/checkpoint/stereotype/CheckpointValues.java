@@ -4,8 +4,6 @@ public interface CheckpointValues {
 
     String getTenantId();
 
-    long getTimestamp();
-
     Long getExpireTime();
 
     Integer getMaxUsageCount();

@@ -1,4 +1,4 @@
-package com.olson1998.authdata.domain.model.processing.checkpoint;
+package com.olson1998.authdata.domain.model.checkpoint;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,9 +19,6 @@ public class DomainCheckpointTokenHolder implements CheckpointTokenHolder {
     @JsonProperty(value = "tid", required = true)
     private final String tenantId;
 
-    @JsonProperty(value = "timestamp", required = true)
-    private final long timestamp;
-
     @JsonProperty(value = "exp_time")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final Long expireTime;
@@ -33,7 +30,6 @@ public class DomainCheckpointTokenHolder implements CheckpointTokenHolder {
     public DomainCheckpointTokenHolder(Checkpoint checkpoint, Algorithm algorithm) {
         this.checkpointToken = checkpoint.writeCheckpointToken(algorithm.toString());
         this.tenantId = checkpoint.getTenantId();
-        this.timestamp = checkpoint.getTimestamp();
         this.expireTime = checkpoint.getExpireTime();
         this.maxUsageCount = checkpoint.getMaxUsageCount();
     }

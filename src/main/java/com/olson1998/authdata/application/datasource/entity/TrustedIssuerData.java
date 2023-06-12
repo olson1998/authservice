@@ -18,10 +18,10 @@ import org.springframework.data.domain.Persistable;
 public class TrustedIssuerData implements Persistable<String> {
 
     @Id
-    @Column(name = "TRTNTISSNM")
+    @Column(name = "TRTNTISSNM", nullable = false, updatable = false, unique = true)
     private String name;
 
-    @Column(name = "TRTNTISSTNTID", nullable = false)
+    @Column(name = "TRTNTISSTNTID", nullable = false, updatable = false)
     private String tenantId;
 
     @Override

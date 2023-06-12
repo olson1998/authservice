@@ -7,8 +7,6 @@ public interface Checkpoint extends CheckpointValues{
 
     UUID getId();
 
-    long getUserId();
-
     boolean isExpiring();
 
     boolean isUsageCount();

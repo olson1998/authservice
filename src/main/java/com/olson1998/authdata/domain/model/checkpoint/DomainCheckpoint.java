@@ -1,21 +1,16 @@
-package com.olson1998.authdata.domain.model.processing.checkpoint;
+package com.olson1998.authdata.domain.model.checkpoint;
 
 import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointExpiredException;
-import com.olson1998.authdata.domain.model.exception.security.CheckpointTokenVerificationException;
 import com.olson1998.authdata.domain.model.exception.checkpoint.CheckpointUsageExceedingException;
+import com.olson1998.authdata.domain.model.exception.security.CheckpointTokenVerificationException;
 import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Getter
 public class DomainCheckpoint implements Checkpoint {
@@ -55,7 +50,7 @@ public class DomainCheckpoint implements Checkpoint {
 
     @Override
     public boolean isExpiring() {
-        return maxUsageCount != null;
+        return expireTime != null;
     }
 
     @Override
@@ -83,16 +78,16 @@ public class DomainCheckpoint implements Checkpoint {
 
     @Override
     public void verifyCheckpointToken(@NonNull String checkpointToken, @NonNull String sign) {
-        verifyToken(writeCheckpointToken(sign), checkpointToken);
+        verifyToken(checkpointToken, sign);
     }
 
     private String digest(String token){
         return DigestUtils.sha256Hex(token);
     }
 
-    private void verifyToken(String expectedToken, String givenToken){
-        givenToken = StringUtils.substringAfter(givenToken, BEARER);
+    private void verifyToken(String xCheckpointToken, String secret){
         logs.add(log(CheckpointStatus.VERIFIED, "checkpoint verification"));
+        var expectedToken = writeCheckpointToken(secret);
         if(isExpiring()){
             if(expireTime < System.currentTimeMillis()){
                 var e = new CheckpointExpiredException(expireTime);
@@ -108,7 +103,7 @@ public class DomainCheckpoint implements Checkpoint {
                 throw e;
             }
         }
-        if(!expectedToken.equals(givenToken)){
+        if(!expectedToken.equals(xCheckpointToken)){
             var e = new CheckpointTokenVerificationException();
             logs.add(log(CheckpointStatus.ERROR, e.getDisplayName()));
             throw e;
@@ -117,7 +112,7 @@ public class DomainCheckpoint implements Checkpoint {
 
     private String log(CheckpointStatus status, String message){
         var now = LocalDateTime.now();
-        return String.format(CHECKPOINT_LOG, now, status, message);
+        return String.format(CHECKPOINT_LOG, status, now, message);
     }
 
     public DomainCheckpoint(UUID id, String tenantId, long userId, Long expireTime, Integer maxUsageCount) {
