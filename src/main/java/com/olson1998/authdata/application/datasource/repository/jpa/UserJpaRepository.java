@@ -48,4 +48,5 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
 
     @Query("DELETE FROM UserData u WHERE u.id=:id")
     int deleteUserById(long id);
+
 }

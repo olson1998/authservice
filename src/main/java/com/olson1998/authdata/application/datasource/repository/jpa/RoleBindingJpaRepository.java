@@ -25,4 +25,5 @@ public interface RoleBindingJpaRepository extends JpaRepository<RoleBindingData,
 
     @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId AND rb.junction.authorityId IN :authoritiesIds")
     int deleteRoleBindingsByRoleIdAndAuthoritiesIdsSet(String roleId, Set<String> authoritiesIds);
+
 }

@@ -5,6 +5,7 @@ import com.olson1998.authdata.application.datasource.repository.jpa.AuthorityJpa
 import com.olson1998.authdata.domain.port.data.repository.AuthorityDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Authority;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
+import jakarta.persistence.EntityManager;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceRepository {
 
     private final AuthorityJpaRepository authorityJpaRepository;
+
+    private final EntityManager entityManager;
 
     @Override
     public List<Authority> saveAuthorities(@NonNull Set<AuthorityDetails> authorityDetailsSet) {

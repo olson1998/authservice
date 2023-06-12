@@ -6,6 +6,7 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.data.domain.Persistable;
 
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ import static com.olson1998.authdata.application.datasource.entity.values.Secret
 @SequenceGenerator(name = "AUTH_USER_NUM_SEQ", sequenceName = "AUTH_USER_NUM_SEQ", allocationSize = 1)
 
 @NoArgsConstructor
-public class UserData implements User {
+public class UserData implements Persistable<Long>, User {
 
     @Id
     @Column(name = "USERNUM")
@@ -36,6 +37,11 @@ public class UserData implements User {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 
     @Override

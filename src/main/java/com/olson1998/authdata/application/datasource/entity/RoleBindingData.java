@@ -9,13 +9,14 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "AUTHROLEBIND")
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleBindingData implements RoleBinding {
+public class RoleBindingData implements Persistable<RoleBindingJunction>, RoleBinding {
 
     @EmbeddedId
     private RoleBindingJunction junction;
@@ -34,4 +35,13 @@ public class RoleBindingData implements RoleBinding {
         return junction.getAuthorityId();
     }
 
+    @Override
+    public RoleBindingJunction getId() {
+        return junction;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

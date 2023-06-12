@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "ROLEAUTHORITY")
@@ -15,7 +16,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorityData implements Authority {
+public class AuthorityData implements Persistable<String>, Authority {
 
     @Id
     @Column(name = "AUTHORITYID")
@@ -36,6 +37,11 @@ public class AuthorityData implements Authority {
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 
     @Override

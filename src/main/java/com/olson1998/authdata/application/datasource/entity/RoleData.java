@@ -6,6 +6,7 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 import jakarta.persistence.*;
 import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "AUTHROLE")
@@ -13,7 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @Builder(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleData implements Role {
+public class RoleData implements Persistable<String>, Role{
 
     @Id
     @Column(name = "ROLEID")
@@ -47,6 +48,11 @@ public class RoleData implements Role {
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 
     @Override

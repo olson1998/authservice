@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 @Setter
 
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Table(name = "TNTSCT")
 @NoArgsConstructor
 @AllArgsConstructor
-public class TenantSecretData implements TenantAlgorithm {
+public class TenantSecretData implements Persistable<String>, TenantAlgorithm {
 
     @Id
     @Column(name = "TNTSCTID")
@@ -54,4 +55,13 @@ public class TenantSecretData implements TenantAlgorithm {
         return Algorithm.none();
     }
 
+    @Override
+    public String getId() {
+        return tenantId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

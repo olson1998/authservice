@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "TRTNTISS")
-public class TrustedIssuerData {
+public class TrustedIssuerData implements Persistable<String> {
 
     @Id
     @Column(name = "TRTNTISSNM")
@@ -22,4 +23,14 @@ public class TrustedIssuerData {
 
     @Column(name = "TRTNTISSTNTID", nullable = false)
     private String tenantId;
+
+    @Override
+    public String getId() {
+        return name;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

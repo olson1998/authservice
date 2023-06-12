@@ -6,6 +6,7 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -14,7 +15,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserMembershipData implements UserMembership {
+public class UserMembershipData implements Persistable<String>, UserMembership {
 
     @Id
     @Column(name = "USERMEMID")
@@ -56,4 +57,13 @@ public class UserMembershipData implements UserMembership {
         return junction.getTeamId();
     }
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }
