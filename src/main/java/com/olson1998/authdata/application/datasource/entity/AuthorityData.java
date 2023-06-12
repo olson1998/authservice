@@ -22,16 +22,16 @@ public class AuthorityData implements Persistable<String>, Authority {
     @Column(name = "AUTHORITYID")
     private String id;
 
-    @Column(name = "AUTHORITYNM", nullable = false)
+    @Column(name = "AUTHORITYNM", nullable = false, updatable = false)
     private String authorityName;
 
-    @Column(name = "AUTHORITYTOKEN")
+    @Column(name = "AUTHORITYTOKEN", updatable = false)
     private String authorityToken;
 
-    @Column(name = "AUTHORITYLVL")
+    @Column(name = "AUTHORITYLVL", updatable = false)
     private Integer level;
 
-    @Column(name = "AUTHORITYEXP")
+    @Column(name = "AUTHORITYEXP", updatable = false)
     private Long expiringTime;
 
     @Override

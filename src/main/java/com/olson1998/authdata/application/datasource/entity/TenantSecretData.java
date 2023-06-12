@@ -18,7 +18,7 @@ import org.springframework.data.domain.Persistable;
 public class TenantSecretData implements Persistable<String>, TenantAlgorithm {
 
     @Id
-    @Column(name = "TNTSCID")
+    @Column(name = "TNTID")
     private String tenantId;
 
     @Column(name = "TNTSCTMP", nullable = false)

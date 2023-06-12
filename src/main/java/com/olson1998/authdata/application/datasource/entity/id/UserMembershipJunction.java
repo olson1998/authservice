@@ -19,16 +19,16 @@ public class UserMembershipJunction implements Serializable {
     @Column(name = "AUTHUSERID", nullable = false, updatable = false)
     private Long userId;
 
-    @Column(name = "MEMCONO")
+    @Column(name = "MEMCONO", updatable = false)
     private Long companyNumber;
 
-    @Column(name = "MEMREGID")
+    @Column(name = "MEMREGID", updatable = false)
     private String regionId;
 
-    @Column(name = "MEMGRPID")
+    @Column(name = "MEMGRPID", updatable = false)
     private Long groupId;
 
-    @Column(name = "MEMTMID")
+    @Column(name = "MEMTMID", updatable = false)
     private Long teamId;
 
     public UserMembershipJunction(@NonNull Long userId, @NonNull UserMembershipClaim claim) {

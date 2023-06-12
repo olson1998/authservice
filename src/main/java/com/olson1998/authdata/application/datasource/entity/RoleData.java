@@ -20,29 +20,29 @@ public class RoleData implements Persistable<String>, Role{
     @Column(name = "ROLEID")
     private String id;
 
-    @Column(name = "ROLENM", nullable = false)
+    @Column(name = "ROLENM", nullable = false, updatable = false)
     private String name;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "ROLESUB", nullable = false)
+    @Column(name = "ROLESUB", nullable = false, updatable = false)
     private RoleSubject subject;
 
     @Column(name = "ROLETMP", nullable = false)
     private Long timestamp = System.currentTimeMillis();
 
-    @Column(name = "ROLESUBUSERID")
+    @Column(name = "ROLESUBUSERID", updatable = false)
     private Long userId;
 
-    @Column(name = "ROLESUBCONO")
+    @Column(name = "ROLESUBCONO", updatable = false)
     private Long companyNumber;
 
-    @Column(name = "ROLESUBREGID")
+    @Column(name = "ROLESUBREGID", updatable = false)
     private String regionId;
 
-    @Column(name = "ROLESUBGRPID")
+    @Column(name = "ROLESUBGRPID", updatable = false)
     private Long groupId;
 
-    @Column(name = "ROLESUBTMID")
+    @Column(name = "ROLESUBTMID", updatable = false)
     private Long teamId;
 
     @Override

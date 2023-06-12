@@ -14,14 +14,14 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "TRTNTISS")
+@Table(name = "TNTTRUSTISS")
 public class TrustedIssuerData implements Persistable<String> {
 
     @Id
-    @Column(name = "TRTNTISSNM", nullable = false, updatable = false, unique = true)
+    @Column(name = "TNTTRUSTISS", nullable = false, updatable = false, unique = true)
     private String name;
 
-    @Column(name = "TRTNTISSTNTID", nullable = false, updatable = false)
+    @Column(name = "TNTID", nullable = false, updatable = false)
     private String tenantId;
 
     @Override
