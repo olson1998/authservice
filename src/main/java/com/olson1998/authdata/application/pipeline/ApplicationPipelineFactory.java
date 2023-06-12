@@ -35,7 +35,7 @@ public class ApplicationPipelineFactory implements PipelineFactory {
 
     @Override
     public <O> O dematerializeContext(O object) {
-        AdapterRequestContextHolder.cleanContext();
+        //AdapterRequestContextHolder.cleanContext();
         return object;
     }
 
