@@ -2,8 +2,7 @@ package com.olson1998.authdata.application.requesting.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authdata.application.datasource.entity.utils.SecretDigest;
-import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
+import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
 import com.olson1998.authdata.application.requesting.model.payload.UserDetailsForm;
 import com.olson1998.authdata.application.requesting.model.payload.UserMembershipForm;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
@@ -13,10 +12,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.olson1998.authdata.application.requesting.model.AbstractCommonJsonValues.ID;
 
 @Getter
 

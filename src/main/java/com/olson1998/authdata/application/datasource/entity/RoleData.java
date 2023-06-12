@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.datasource.entity;
 
-import com.olson1998.authdata.application.datasource.entity.utils.RoleSubject;
+import com.olson1998.authdata.application.datasource.entity.values.RoleSubject;
 import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
 import jakarta.persistence.*;

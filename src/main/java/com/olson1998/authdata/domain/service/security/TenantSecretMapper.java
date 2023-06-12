@@ -21,21 +21,20 @@ public class TenantSecretMapper {
     private Optional<TenantSecret> mapByAudience(List<ExtendedTrustedIssuer> extendedTrustedIssuerList){
         try{
             var tenantSecretBuilder = MappedTenantSecret.builder();
-            var tenantAudienceStream = extendedTrustedIssuerList.stream();
             var size = extendedTrustedIssuerList.size();
-            var tid = tenantAudienceStream.map(ExtendedTrustedIssuer::getTenantId)
+            var tid = extendedTrustedIssuerList.stream().map(ExtendedTrustedIssuer::getTenantId)
                     .findFirst()
                     .orElseThrow();
             tenantSecretBuilder.tenantId(tid);
-            var alg = tenantAudienceStream.map(ExtendedTrustedIssuer::getAlgorithm)
+            var alg = extendedTrustedIssuerList.stream().map(ExtendedTrustedIssuer::getAlgorithm)
                     .findFirst()
                     .orElseThrow();
             tenantSecretBuilder.algorithm(alg);
-            var tmp = tenantAudienceStream.map(ExtendedTrustedIssuer::getTimestamp)
+            var tmp = extendedTrustedIssuerList.stream().map(ExtendedTrustedIssuer::getTimestamp)
                     .findFirst()
                     .orElseThrow();
             tenantSecretBuilder.timestamp(tmp);
-            var trustedIssuers = tenantAudienceStream.map(ExtendedTrustedIssuer::getName)
+            var trustedIssuers = extendedTrustedIssuerList.stream().map(ExtendedTrustedIssuer::getName)
                     .toList()
                     .toArray(new String[size]);
             tenantSecretBuilder.trustedIssuers(trustedIssuers);

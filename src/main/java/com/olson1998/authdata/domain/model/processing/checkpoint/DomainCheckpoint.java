@@ -29,8 +29,6 @@ public class DomainCheckpoint implements Checkpoint {
 
     private static final String BEARER = "Bearer ";
 
-    private static final MessageDigest TOKEN_DIGEST = DigestUtils.getSha3_256Digest();
-
     private static final String CHECKPOINT_TOKEN_FORMAT = "Checkpoint(id=%s,tid=%s,uid=%s,tmp=%s,sign=%s)";
 
     private static final String TENANT_TOKEN_FORMAT = "Tenant(id=%s,tid=%s,sign=%s)";
@@ -84,45 +82,12 @@ public class DomainCheckpoint implements Checkpoint {
     }
 
     @Override
-    public String writeTenantToken(@NonNull String sign) {
-        var rawToken = String.format(
-                TENANT_TOKEN_FORMAT,
-                id,
-                tenantId,
-                sign
-        );
-        return digest(rawToken);
-    }
-
-    @Override
-    public String writeUserToken(@NonNull String sign) {
-        var rawToken = String.format(
-                USER_TOKEN_FORMAT,
-                id,
-                tenantId,
-                userId,
-                sign
-        );
-        return digest(rawToken);
-    }
-
-    @Override
     public void verifyCheckpointToken(@NonNull String checkpointToken, @NonNull String sign) {
         verifyToken(writeCheckpointToken(sign), checkpointToken);
     }
 
-    @Override
-    public void verifyUserToken(@NonNull String userToken, @NonNull String sign) {
-        verifyToken(writeUserToken(sign), userToken);
-    }
-
-    @Override
-    public void verifyTenantToken(@NonNull String tenantToken, @NonNull String sign) {
-        verifyToken(writeTenantToken(tenantToken), tenantToken);
-    }
-
     private String digest(String token){
-        return new String(TOKEN_DIGEST.digest(token.getBytes(UTF_8)), UTF_8);
+        return DigestUtils.sha256Hex(token);
     }
 
     private void verifyToken(String expectedToken, String givenToken){

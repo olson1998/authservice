@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.datasource.entity;
 
-import com.olson1998.authdata.application.datasource.entity.utils.SecretDigest;
+import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserDetails;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.NonNull;
 
 import java.util.Objects;
 
-import static com.olson1998.authdata.application.datasource.entity.utils.SecretDigest.DEFAULT_DIGEST;
+import static com.olson1998.authdata.application.datasource.entity.values.SecretDigest.DEFAULT_DIGEST;
 
 @Entity
 @Table(name = "AUTHUSER")

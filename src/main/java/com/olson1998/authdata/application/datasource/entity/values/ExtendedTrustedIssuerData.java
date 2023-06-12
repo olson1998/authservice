@@ -1,4 +1,4 @@
-package com.olson1998.authdata.application.datasource.entity.utils;
+package com.olson1998.authdata.application.datasource.entity.values;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.olson1998.authdata.application.datasource.entity.TenantSecretData;

@@ -3,12 +3,11 @@ package com.olson1998.authdata.application.datasource.entity;
 import com.olson1998.authdata.application.datasource.entity.id.UserMembershipJunction;
 import com.olson1998.authdata.domain.port.data.stereotype.UserMembership;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @Entity
 @Table(name = "AUTHUSERMEM")
@@ -17,11 +16,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserMembershipData implements UserMembership {
 
-    @EmbeddedId
+    @Id
+    @Column(name = "USERMEMID")
+    private String id;
+
     private UserMembershipJunction junction;
 
     public UserMembershipData(Long userId, UserMembershipClaim claim) {
         this.junction = new UserMembershipJunction(userId, claim);
+        this.id = new StringBuilder("USER&")
+                .append(userId)
+                .append('&')
+                .append(randomAlphanumeric(6).toUpperCase())
+                .toString();
     }
 
     @Override

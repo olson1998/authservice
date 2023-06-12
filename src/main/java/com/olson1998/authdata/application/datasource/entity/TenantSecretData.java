@@ -1,9 +1,10 @@
 package com.olson1998.authdata.application.datasource.entity;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.olson1998.authdata.application.datasource.entity.utils.JwtAlgorithm;
+import com.olson1998.authdata.application.datasource.entity.values.JwtAlgorithm;
 import com.olson1998.authdata.domain.port.data.stereotype.TenantAlgorithm;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "TNTSCT")
 @NoArgsConstructor
+@AllArgsConstructor
 public class TenantSecretData implements TenantAlgorithm {
 
     @Id

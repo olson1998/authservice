@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.datasource.entity;
 
-import com.olson1998.authdata.application.datasource.entity.utils.ExtendedAuthorityTimestampData;
+import com.olson1998.authdata.application.datasource.entity.values.ExtendedAuthorityTimestampData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

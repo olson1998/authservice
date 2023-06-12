@@ -1,5 +1,6 @@
 package com.olson1998.authdata.application.security.filter;
 
+import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.domain.port.security.repository.TokenVerifier;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
 import jakarta.servlet.FilterChain;
@@ -32,7 +33,7 @@ public class JwtAuthenticationFilter extends AuthDataAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = StringUtils.substringAfter(request.getHeader(AUTHORIZATION), BEARER);
-        var context = tokenVerifier.verifyCheckpointToken(token);
+        var context = tokenVerifier.verifyJwt(token);
         commonFilterChain(context, request, response, filterChain);
     }
 

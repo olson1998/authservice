@@ -34,7 +34,13 @@ public class TenantSecretProvidingService implements TenantSecretProvider {
                 }
             }
         }else {
-            return obtainFromDataSource(tid);
+            optionalTenantSec = obtainFromDataSource(tid);
+            if(optionalTenantSec.isPresent()){
+                tenantSecretCacheRepository.cacheValue(tid, optionalTenantSec.get());
+                return optionalTenantSec;
+            }else {
+                throw new UnknownError("cached tenant not present in data source");
+            }
         }
     }
 

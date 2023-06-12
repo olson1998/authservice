@@ -1,13 +1,12 @@
 package com.olson1998.authdata.application.datasource.properties;
 
-import com.olson1998.authdata.application.datasource.entity.utils.SecretDigest;
+import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import static com.olson1998.authdata.application.datasource.entity.utils.SecretDigest.DEFAULT_DIGEST;
-import static com.olson1998.authdata.application.datasource.entity.utils.SecretDigest.NONE;
+import static com.olson1998.authdata.application.datasource.entity.values.SecretDigest.NONE;
 
 @Setter
 

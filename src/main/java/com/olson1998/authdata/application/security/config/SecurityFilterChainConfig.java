@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -45,11 +44,11 @@ public class SecurityFilterChainConfig {
         var jwtTokenFilter = jwtAuthenticationFilter(tokenVerifier, authenticationManager, authenticationConverter);
         checkpointTokenFilter.setFailureHandler(failureHandler);
         jwtTokenFilter.setFailureHandler(failureHandler);
-        security.csrf().disable();
-        security.authorizeHttpRequests(requestsStream -> requestsStream.requestMatchers("/*").permitAll());
-        security.securityMatcher(CHECKPOINT_TOKEN_AUTH_PATHS).addFilterBefore(checkpointTokenFilter, BasicAuthenticationFilter.class);
-        security.securityMatcher(JWT_TOKEN_AUTH_PATHS).addFilterBefore(jwtTokenFilter, BasicAuthenticationFilter.class);
-        return security.build();
+        return security.csrf().disable()
+                .authorizeHttpRequests(requestsStream -> requestsStream.requestMatchers("/**").permitAll())
+                .securityMatcher(JWT_TOKEN_AUTH_PATHS).addFilterBefore(jwtTokenFilter, BasicAuthenticationFilter.class)
+                //.securityMatcher(CHECKPOINT_TOKEN_AUTH_PATHS).addFilterBefore(checkpointTokenFilter, BasicAuthenticationFilter.class)
+                .build();
     }
 
     private CheckpointAuthenticationFilter checkpointAuthenticationFilter(@NonNull TokenVerifier tokenVerifier,

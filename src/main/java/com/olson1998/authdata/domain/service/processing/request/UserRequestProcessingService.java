@@ -41,7 +41,6 @@ public class UserRequestProcessingService implements UserRequestProcessor {
 
     @Override
     public UserSavingReport saveUser(@NonNull UserSavingRequest request) {
-        checkUserReq(request);
         ProcessingRequestLogger.log(log, request, SAVE, User.class);
         var details = request.getUserDetails();
         var membershipClaims = request.getMembershipClaims();
@@ -49,12 +48,8 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         var userId = user.getId();
         if(request.getMembershipClaims() != null){
             var size = membershipClaims.size();
-            log.debug("binding {} memberships of user: '{}'", size, userId);
             userMembershipDataSourceRepository.saveUserMemberships(userId, membershipClaims);
-        }else {
-            log.trace("no membership claim to bind for user: '{}'", userId);
         }
-        log.debug("successfully saved user: '{}'", userId);
         return new DomainUserSavingReport(
                 request.getId(),
                 user

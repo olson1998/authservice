@@ -17,14 +17,6 @@ public interface Checkpoint extends CheckpointValues{
 
     String writeCheckpointToken(String sign);
 
-    String writeTenantToken(String sign);
-
-    String writeUserToken(String sign);
-
     void verifyCheckpointToken(String checkpointToken, String sign);
-
-    void verifyUserToken(String userToken, String sign);
-
-    void verifyTenantToken(String tenantToken, String sign);
 
 }

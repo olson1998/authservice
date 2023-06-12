@@ -3,7 +3,7 @@ package com.olson1998.authdata.application.requesting.model.payload;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.olson1998.authdata.application.datasource.entity.utils.RoleSubject;
+import com.olson1998.authdata.application.datasource.entity.values.RoleSubject;
 import com.olson1998.authdata.application.mapping.exception.RoleDetailsMappingException;
 import com.olson1998.authdata.domain.port.processing.tree.exception.DtoMappingException;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;

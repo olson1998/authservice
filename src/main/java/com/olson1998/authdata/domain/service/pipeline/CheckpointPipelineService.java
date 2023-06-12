@@ -31,8 +31,7 @@ public class CheckpointPipelineService implements CheckpointPipeline {
     public CompletableFuture<ResponseEntity<CheckpointValues>> runCreateCheckpointPipeline(Long expireTime, Integer maxUsages) {
         return pipelineFactory.fabricate()
                 .thenApply(empty -> checkpointRepository.create(expireTime, maxUsages))
-                .thenApply(checkpointResponseEntityMapper::map)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApply(checkpointResponseEntityMapper::map);
     }
 
 

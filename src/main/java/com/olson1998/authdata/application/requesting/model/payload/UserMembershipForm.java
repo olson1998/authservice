@@ -21,7 +21,7 @@ public class UserMembershipForm implements UserMembershipClaim {
     private final Long teamId;
 
     @JsonCreator
-    public UserMembershipForm(@JsonProperty(value = COMPANY_NUMBER, required = true) long companyNumber,
+    public UserMembershipForm(@JsonProperty(value = COMPANY_NUMBER) Long companyNumber,
                               @JsonProperty(value = REGION_ID) String regionId,
                               @JsonProperty(value = GROUP_ID) Long groupId,
                               @JsonProperty(value = TEAM_ID) Long teamId) {

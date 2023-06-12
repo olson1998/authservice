@@ -23,7 +23,6 @@ public class ApplicationPipelineFactory implements PipelineFactory {
     @Override
     public <R extends Request> CompletableFuture<R> fabricate(R request) {
         var requestContextRef = new AtomicReference<>(getLocalThreadRequestContext());
-        AdapterRequestContextHolder.cleanContext();
         return CompletableFuture.supplyAsync(()-> this.createRequestPipeline(request))
                 .thenApply(req -> inheritRequestContext(request, requestContextRef));
     }
@@ -31,7 +30,6 @@ public class ApplicationPipelineFactory implements PipelineFactory {
     @Override
     public CompletableFuture<Void> fabricate() {
         var requestContextRef = new AtomicReference<>(getLocalThreadRequestContext());
-        AdapterRequestContextHolder.cleanContext();
         return CompletableFuture.runAsync(()-> inheritRequestContext(requestContextRef));
     }
 

@@ -3,6 +3,7 @@ package com.olson1998.authdata.application.datasource.entity.id;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.ForeignKey;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,10 +19,10 @@ public class UserMembershipJunction implements Serializable {
     @Column(name = "AUTHUSERID", nullable = false, updatable = false)
     private Long userId;
 
-    @Column(name = "MEMCONO", updatable = false)
+    @Column(name = "MEMCONO")
     private Long companyNumber;
 
-    @Column(name = "MEMREGID", updatable = false)
+    @Column(name = "MEMREGID")
     private String regionId;
 
     @Column(name = "MEMGRPID")

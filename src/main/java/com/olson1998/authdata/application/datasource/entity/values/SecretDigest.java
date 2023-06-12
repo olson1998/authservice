@@ -1,4 +1,4 @@
-package com.olson1998.authdata.application.datasource.entity.utils;
+package com.olson1998.authdata.application.datasource.entity.values;
 
 import com.olson1998.authdata.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authdata.domain.port.data.utils.SecretEncryption;

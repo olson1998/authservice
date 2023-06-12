@@ -2,8 +2,8 @@ package com.olson1998.authdata.application.datasource.repository.jpa;
 
 import com.olson1998.authdata.application.datasource.entity.RoleData;
 import com.olson1998.authdata.application.datasource.entity.UserData;
-import com.olson1998.authdata.application.datasource.entity.utils.SecretDigest;
-import com.olson1998.authdata.application.datasource.entity.utils.ExtendedAuthorityTimestampData;
+import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
+import com.olson1998.authdata.application.datasource.entity.values.ExtendedAuthorityTimestampData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,7 +31,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "WHERE u.id=:userId")
     Set<RoleData> selectUserRoles(long userId);
 
-    @Query("SELECT new com.olson1998.authdata.application.datasource.entity.utils.ExtendedAuthorityTimestampData" +
+    @Query("SELECT new com.olson1998.authdata.application.datasource.entity.values.ExtendedAuthorityTimestampData" +
             "(u.id, r.id, a.id, r.timestamp, a.expiringTime) " +
             "FROM UserData u " +
             "LEFT OUTER JOIN UserMembershipData mb ON u.id=mb.junction.userId " +

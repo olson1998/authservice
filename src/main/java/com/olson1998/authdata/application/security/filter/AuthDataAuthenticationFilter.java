@@ -29,7 +29,6 @@ public abstract class AuthDataAuthenticationFilter extends AuthenticationFilter 
         response.addHeader(REQUEST_CONTEXT_ID, context.getId().toString());
         response.addHeader(REQUEST_CONTEXT_TENANT, context.getTenantId());
         response.addHeader(REQUEST_CONTEXT_USER, String.valueOf(context.getUserId()));
-        request.authenticate(response);
         filterChain.doFilter(request, response);
     }
 

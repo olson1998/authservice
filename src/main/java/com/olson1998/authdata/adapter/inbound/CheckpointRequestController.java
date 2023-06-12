@@ -27,8 +27,8 @@ public class CheckpointRequestController {
     }
 
     @PostMapping(path = "/create")
-    public CompletableFuture<ResponseEntity<CheckpointValues>> createCheckpoint(@RequestParam("expire") Long expireTime,
-                                                                                @RequestParam("max_usage") Integer maxUsage){
+    public CompletableFuture<ResponseEntity<CheckpointValues>> createCheckpoint(@RequestParam(value = "expire", required = false) Long expireTime,
+                                                                                @RequestParam(value = "max_usage", required = false) Integer maxUsage){
         return checkpointPipeline.runCreateCheckpointPipeline(expireTime, maxUsage);
     }
 }

@@ -4,7 +4,4 @@ public interface CheckpointTokenHolder extends CheckpointValues {
 
     String getCheckpointToken();
 
-    String getTenantToken();
-
-    String getUserToken();
 }

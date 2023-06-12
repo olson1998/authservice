@@ -1,8 +1,8 @@
 package com.olson1998.authdata.application.datasource.repository.wrapper;
 
 import com.olson1998.authdata.application.datasource.entity.UserData;
-import com.olson1998.authdata.application.datasource.entity.utils.ExtendedAuthorityTimestampData;
-import com.olson1998.authdata.application.datasource.entity.utils.SecretDigest;
+import com.olson1998.authdata.application.datasource.entity.values.ExtendedAuthorityTimestampData;
+import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
 import com.olson1998.authdata.application.datasource.repository.jpa.UserJpaRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.data.stereotype.User;

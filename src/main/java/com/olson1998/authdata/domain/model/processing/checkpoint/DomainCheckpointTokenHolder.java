@@ -16,12 +16,6 @@ public class DomainCheckpointTokenHolder implements CheckpointTokenHolder {
     @JsonIgnore
     private final String checkpointToken;
 
-    @JsonIgnore
-    private final String tenantToken;
-
-    @JsonIgnore
-    private final String userToken;
-
     @JsonProperty(value = "tid", required = true)
     private final String tenantId;
 
@@ -38,8 +32,6 @@ public class DomainCheckpointTokenHolder implements CheckpointTokenHolder {
 
     public DomainCheckpointTokenHolder(Checkpoint checkpoint, Algorithm algorithm) {
         this.checkpointToken = checkpoint.writeCheckpointToken(algorithm.toString());
-        this.tenantToken = checkpoint.writeTenantToken(algorithm.toString());
-        this.userToken = checkpoint.writeUserToken(algorithm.toString());
         this.tenantId = checkpoint.getTenantId();
         this.timestamp = checkpoint.getTimestamp();
         this.expireTime = checkpoint.getExpireTime();
