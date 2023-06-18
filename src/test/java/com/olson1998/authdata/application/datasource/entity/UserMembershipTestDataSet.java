@@ -3,9 +3,37 @@ package com.olson1998.authdata.application.datasource.entity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import static com.olson1998.authdata.application.datasource.entity.UserTestDataSet.TEST_USER_ID;
+import static com.olson1998.authdata.application.requesting.model.payload.UserMembershipClaimTestDataSet.*;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class UserMembershipTestDataSet {
 
     public static final long TEST_COMPANY_NUMBER = 1L;
 
+    public static final String TEST_REGION_ID = "USA/TEST";
+
+    public static final long TEST_GROUP_ID = 1L;
+
+    public static final long TEST_TEAM_ID = 1L;
+
+    public static final UserMembershipData TEST_USER_COMPANY_MEMBERSHIP= new UserMembershipData(
+            TEST_USER_ID,
+            TEST_USER_COMPANY_MEMBERSHIP_CLAIM
+    );
+
+    public static final UserMembershipData TEST_USER_REGION_MEMBERSHIP = new UserMembershipData(
+            TEST_USER_ID,
+            TEST_USER_REGION_MEMBERSHIP_CLAIM
+    );
+
+    public static final UserMembershipData TEST_USER_GROUP_MEMBERSHIP = new UserMembershipData(
+            TEST_USER_ID,
+            TEST_USER_GROUP_MEMBERSHIP_CLAIM
+    );
+
+    public static final UserMembershipData TEST_USER_TEAM_MEMBERSHIP = new UserMembershipData(
+            TEST_USER_ID,
+            TEST_USER_TEAM_MEMBERSHIP_CLAIM
+    );
 }

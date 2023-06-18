@@ -16,12 +16,14 @@ public class EntitiesRequestProcessorsConfig {
 
     @Bean
     public AuthorityRequestProcessor authorityRequestProcessor(@NonNull AuthorityJpaRepositoryWrapper authorityJpaRepositoryWrapper,
+                                                               @NonNull RoleRequestProcessor roleRequestProcessor,
                                                                @NonNull RoleJpaRepositoryWrapper roleJpaRepositoryWrapper,
                                                                @NonNull RoleBindingJpaRepositoryWrapper roleBindingJpaRepositoryWrapper){
         return new AuthorityRequestProcessingService(
                 authorityJpaRepositoryWrapper,
-                roleBindingJpaRepositoryWrapper,
-                roleJpaRepositoryWrapper
+                roleRequestProcessor::deleteRoleBounds,
+                roleBindingJpaRepositoryWrapper::getRoleBindingsByAuthoritiesIds,
+                roleJpaRepositoryWrapper::updateRoleTimestamp
         );
     }
 

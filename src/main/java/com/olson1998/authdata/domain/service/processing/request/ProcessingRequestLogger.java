@@ -20,6 +20,7 @@ public abstract class ProcessingRequestLogger {
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     protected enum RequestType{
         SAVE("save"),
+        UPDATE("update"),
         DELETE("delete");
 
         private final String displayName;
@@ -28,15 +29,15 @@ public abstract class ProcessingRequestLogger {
     private static String displayNameOf(Class<?> clazz){
         String displayName = clazz.getSimpleName();
         if (User.class.equals(clazz)) {
-            displayName = "user";
+            displayName = "users";
         } else if (UserMembership.class.equals(clazz)) {
-            displayName = "user membership";
+            displayName = "user memberships";
         } else if (Role.class.equals(clazz)) {
-            displayName = "role";
+            displayName = "roles";
         } else if (RoleBinding.class.equals(clazz)) {
-            displayName = "role binding";
+            displayName = "role bindings";
         } else if (Authority.class.equals(clazz)){
-            displayName = "authority";
+            displayName = "authorities";
         }
         return displayName;
     }

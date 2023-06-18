@@ -3,6 +3,7 @@ package com.olson1998.authdata.application.requesting.model.payload;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.olson1998.authdata.domain.port.data.stereotype.Authority;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -70,5 +71,23 @@ public class AuthorityDetailsForm implements AuthorityDetails {
                 eqLvl &&
                 eqExpTime &&
                 name.equals(authorityDetails.getName());
+    }
+
+    @Override
+    public boolean isMatching(Authority authority) {
+        boolean sameLvl = false;
+        boolean sameExpTime = false;
+        boolean sameName = this.name.equals(authority.getAuthorityName());
+        if(this.level != null && authority.getLevel() != null){
+            sameLvl = this.level.equals(authority.getLevel());
+        }else if(this.level == null && authority.getLevel() == null){
+            sameLvl = true;
+        }
+        if(this.expiringTime != null && authority.getExpiringTime() != null){
+            sameExpTime = this.expiringTime .equals(authority.getExpiringTime());
+        } else if (this.expiringTime  == null && authority.getExpiringTime() == null) {
+            sameExpTime = true;
+        }
+        return sameName && sameLvl && sameExpTime;
     }
 }

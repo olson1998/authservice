@@ -143,58 +143,7 @@ public abstract class SampleDeveloperData {
             @Override
             public Set<AuthorityDetails> getAuthoritiesDetails() {
                 return Set.of(
-                        new AuthorityDetails() {
-                            @Override
-                            public String getName() {
-                                return "AUTHDATA_SERVICE_AUTHORITY_1";
-                            }
 
-                            @Override
-                            public String getToken() {
-                                return null;
-                            }
-
-                            @Override
-                            public Integer getLevel() {
-                                return null;
-                            }
-
-                            @Override
-                            public Long getExpiringTime() {
-                                return null;
-                            }
-
-                            @Override
-                            public boolean equals(AuthorityDetails authorityDetails) {
-                                return false;
-                            }
-                        },
-                        new AuthorityDetails() {
-                            @Override
-                            public String getName() {
-                                return "AUTHDATA_SERVICE_AUTHORITY_2";
-                            }
-
-                            @Override
-                            public String getToken() {
-                                return null;
-                            }
-
-                            @Override
-                            public Integer getLevel() {
-                                return null;
-                            }
-
-                            @Override
-                            public Long getExpiringTime() {
-                                return null;
-                            }
-
-                            @Override
-                            public boolean equals(AuthorityDetails authorityDetails) {
-                                return false;
-                            }
-                        }
                 );
             }
 

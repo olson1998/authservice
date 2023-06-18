@@ -13,30 +13,15 @@ import java.util.Set;
 @Repository
 public interface RoleBindingJpaRepository extends JpaRepository<RoleBindingData, RoleBindingJunction> {
 
-    @Query("SELECT DISTINCT rb.junction.roleId FROM RoleBindingData rb WHERE rb.junction.authorityId IN :authoritiesIds")
-    Set<String> selectRoleIdsOfBoundedAuthorities(Set<String> authoritiesIds);
-
-    @Query("SELECT CASE WHEN COUNT (rb.junction.roleId) > 1 THEN 1 ELSE 0 END FROM RoleBindingData rb WHERE rb.junction.authorityId=:authorityId")
-    boolean selectCaseIfMoreThanOneTenant(String authorityId);
+    @Query("SELECT DISTINCT rb FROM RoleBindingData rb WHERE rb.junction.authorityId IN :authoritiesIds")
+    Set<RoleBindingData> selectRoleBoundsByAuthoritiesIds(Set<String> authoritiesIds);
 
     @Modifying
-    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId")
-    int deleteRoleBindingsByRoleId(String roleId);
-
-    @Modifying
-    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.authorityId=:authorityId")
-    int deleteRoleBindingsByAuthorityId(String authorityId);
-
-    @Modifying
-    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.authorityId IN :authoritiesIds")
-    int deleteRoleBindingsOfAuthorities(Set<String> authoritiesIds);
+    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId AND rb.junction.authorityId IN :authoritiesIds")
+    int deleteRoleBindingsByRoleIdAndSetOfAuthorities(String roleId, Set<String> authoritiesIds);
 
     @Modifying
     @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId")
     int deleteRoleBindingByRolesIdSet(String roleId);
-
-    @Modifying
-    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId AND rb.junction.authorityId IN :authoritiesIds")
-    int deleteRoleBindingsByRoleIdAndAuthoritiesIdsSet(String roleId, Set<String> authoritiesIds);
 
 }

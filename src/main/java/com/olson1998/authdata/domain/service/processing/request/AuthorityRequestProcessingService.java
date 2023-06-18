@@ -3,23 +3,29 @@ package com.olson1998.authdata.domain.service.processing.request;
 import com.olson1998.authdata.domain.model.exception.data.DifferentUpdatedEntitiesTimestampsException;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthoritiesSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthorityDeletingReport;
+import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBoundsDeletingRequest;
+import com.olson1998.authdata.domain.model.processing.request.payload.LinkedRoleBoundsDeletingClaim;
 import com.olson1998.authdata.domain.port.data.exception.NoAuthorityDetailsFoundForPersistedEntity;
 import com.olson1998.authdata.domain.port.data.repository.AuthorityDataSourceRepository;
-import com.olson1998.authdata.domain.port.data.repository.RoleBindingDataSourceRepository;
-import com.olson1998.authdata.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Authority;
-import com.olson1998.authdata.domain.port.data.stereotype.Role;
+import com.olson1998.authdata.domain.port.data.stereotype.RoleBinding;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
+import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBoundsDeletingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthorityDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthoritySavingRequest;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.RoleBoundDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBoundDeletingClaim;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.DELETE;
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
@@ -30,9 +36,11 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
 
     private final AuthorityDataSourceRepository authorityDataSourceRepository;
 
-    private final RoleBindingDataSourceRepository roleBindingDataSourceRepository;
+    private final Function<RoleBoundDeletingRequest, RoleBoundsDeletingReport> roleBoundDeletingRequestFunction;
 
-    private final RoleDataSourceRepository roleDataSourceRepository;
+    private final Function<Set<String>, Set<RoleBinding>> roleBindingsByAuthoritiesIdsProvidingFunction;
+
+    private final BiFunction<Set<String>, Long, Integer> roleTimestampUpdatingFunction;
 
     @Override
     public AuthoritySavingReport saveAuthorities(@NonNull AuthoritySavingRequest authoritySavingRequest) {
@@ -51,10 +59,20 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
 
     @Override
     public AuthorityDeletingReport deleteAuthorities(AuthorityDeletingRequest authorityDeletingRequest) {
-        ProcessingRequestLogger.log(log, authorityDeletingRequest, DELETE, Role.class);
+        ProcessingRequestLogger.log(log, authorityDeletingRequest, DELETE, Authority.class);
         var authoritiesIds = authorityDeletingRequest.getAuthoritiesIds();
-        var boundedRolesIds = roleBindingDataSourceRepository.getRoleIdsOfBoundedAuthorities(authoritiesIds);
-        var deletedBounds = roleBindingDataSourceRepository.deleteRoleBoundsOfAuthorities(authoritiesIds);
+        var roleBounds = roleBindingsByAuthoritiesIdsProvidingFunction.apply(authoritiesIds);
+        var boundedRolesIds = roleBounds.stream()
+                .map(RoleBinding::getRoleId)
+                .collect(Collectors.toUnmodifiableSet());
+
+        var linkedRoleBoundsDeletingClaimMap = mapRoleBindings(boundedRolesIds, roleBounds);
+
+        var roleBoundDeletingReq = new LinkedRoleBoundsDeletingRequest(
+                authorityDeletingRequest.getId(),
+                linkedRoleBoundsDeletingClaimMap
+        );
+        var deletedBounds = roleBoundDeletingRequestFunction.apply(roleBoundDeletingReq).getDeletedRolesBoundsQty();
         var deletedAuthorities = authorityDataSourceRepository.deleteAuthorities(authorityDeletingRequest.getAuthoritiesIds());
         if(deletedAuthorities != authoritiesIds.size()){
             throw new DifferentUpdatedEntitiesTimestampsException(
@@ -64,7 +82,8 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
                     deletedAuthorities
             );
         }
-        var updatedRoles = roleDataSourceRepository.updateRoleTimestamp(boundedRolesIds, System.currentTimeMillis());
+        var updatedRoles = roleTimestampUpdatingFunction.apply(boundedRolesIds, System.currentTimeMillis());
+
         if(updatedRoles != boundedRolesIds.size()){
             throw new DifferentUpdatedEntitiesTimestampsException(
                     log,
@@ -84,7 +103,6 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
     private Map<String, AuthorityDetails> createPersistedAuthoritiesMap(@NonNull AuthoritySavingRequest authoritySavingRequest,
                                                                         @NonNull List<Authority> persistedAuthorityList){
         var persistedAuthoritiesMap = new HashMap<String, AuthorityDetails>();
-        var authoritiesDetails = authoritySavingRequest.getAuthoritiesDetails();
         persistedAuthorityList.forEach(authority -> {
             var authorityDetails = getMatchingAuthoritiesDetails(authoritySavingRequest, authority);
             var id = authority.getId();
@@ -97,7 +115,7 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
         var authoritiesDetailsSet = authoritySavingRequest.getAuthoritiesDetails();
         try{
             return authoritiesDetailsSet.stream()
-                    .filter(details -> isMatchingAuthorityDetails(details, authority))
+                    .filter(details -> details.isMatching(authority))
                     .findFirst()
                     .orElseThrow();
         }catch (NoSuchElementException e){
@@ -105,20 +123,16 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
         }
     }
 
-    private boolean isMatchingAuthorityDetails(AuthorityDetails authorityDetails, Authority authority){
-        boolean sameLvl = false;
-        boolean sameExpTime = false;
-        boolean sameName = authorityDetails.getName().equals(authority.getAuthorityName());
-        if(authorityDetails.getLevel() != null && authority.getLevel() != null){
-            sameLvl = authorityDetails.getLevel().equals(authority.getLevel());
-        }else if(authorityDetails.getLevel() == null && authority.getLevel() == null){
-            sameLvl = true;
-        }
-        if(authorityDetails.getExpiringTime() != null && authority.getExpiringTime() != null){
-            sameExpTime = authorityDetails.getExpiringTime().equals(authority.getExpiringTime());
-        } else if (authorityDetails.getExpiringTime() == null && authority.getExpiringTime() == null) {
-            sameExpTime = true;
-        }
-        return sameName && sameLvl && sameExpTime;
+    private Map<String, RoleBoundDeletingClaim> mapRoleBindings(Set<String> rolesIds, Set<RoleBinding> roleBindings){
+        var roleBoundsDeletingReqMap = new HashMap<String, RoleBoundDeletingClaim>();
+        rolesIds.forEach(roleId ->{
+                    var authoritiesIds = roleBindings.stream()
+                            .filter(roleBinding -> roleBinding.getRoleId().equals(roleId))
+                            .map(RoleBinding::getAuthorityId)
+                            .collect(Collectors.toUnmodifiableSet());
+                    var roleBoundDeletingClaim = new LinkedRoleBoundsDeletingClaim(false, authoritiesIds);
+                    roleBoundsDeletingReqMap.put(roleId, roleBoundDeletingClaim);
+                });
+        return roleBoundsDeletingReqMap;
     }
 }

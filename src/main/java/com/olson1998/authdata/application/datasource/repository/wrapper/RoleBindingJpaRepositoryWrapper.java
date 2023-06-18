@@ -8,7 +8,6 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -21,25 +20,10 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     private final RoleBindingJpaRepository roleBindingJpaRepository;
 
     @Override
-    public Set<String> getRoleIdsOfBoundedAuthorities(Set<String> authoritiesIds) {
-        return roleBindingJpaRepository.selectRoleIdsOfBoundedAuthorities(authoritiesIds);
-    }
-
-    @Override
-    public boolean areAnyOtherAuthorityTenants(@NonNull String authorityId) {
-        return roleBindingJpaRepository.selectCaseIfMoreThanOneTenant(authorityId);
-    }
-
-    @Override
-    @Transactional
-    public int deleteRoleAuthorityBindingsByRoleId(@NonNull String roleId) {
-        return roleBindingJpaRepository.deleteRoleBindingsByRoleId(roleId);
-    }
-
-    @Override
-    @Transactional
-    public int deleteRoleAuthorityBindingsByAuthorityId(@NonNull String authorityId) {
-        return roleBindingJpaRepository.deleteRoleBindingsByAuthorityId(authorityId);
+    public Set<RoleBinding> getRoleBindingsByAuthoritiesIds(Set<String> authoritiesIds) {
+        return roleBindingJpaRepository.selectRoleBoundsByAuthoritiesIds(authoritiesIds).stream()
+                .map(RoleBinding.class::cast)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
@@ -48,17 +32,11 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     }
 
     @Override
-    public int deleteRoleBoundsOfAuthorities(Set<String> authoritiesIds) {
-        return roleBindingJpaRepository.deleteRoleBindingsOfAuthorities(authoritiesIds);
-    }
-
-    @Override
     public int deleteRoleBoundsForGivenAuthority(String roleId, Set<String> authoritiesIds) {
-        return 0;
+        return roleBindingJpaRepository.deleteRoleBindingsByRoleIdAndSetOfAuthorities(roleId, authoritiesIds);
     }
 
     @Override
-    @Transactional
     public List<RoleBinding> saveRoleBindings(@NonNull Set<RoleBindingClaim> claims) {
         var roleBindingsData = createRoleBindingDataFromClaims(claims);
         var savedRoleBindings = roleBindingJpaRepository.saveAll(roleBindingsData);

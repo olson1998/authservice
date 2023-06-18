@@ -26,6 +26,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.DELETE;
 import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.SAVE;
 
@@ -88,7 +93,8 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         var userId = request.getUserId();
         var claims = request.getUserMembershipClaims();
         var persistedMemberships = userMembershipDataSourceRepository.saveUserMemberships(userId, claims);
-        return new DomainUserMembershipSavingReport(id, request.getUserId(), persistedMemberships);
+        var persistedMembershipsMap = mapUserMembershipBindings(claims, persistedMemberships);
+        return new DomainUserMembershipSavingReport(id, request.getUserId(), persistedMembershipsMap);
     }
 
     @Override
@@ -114,6 +120,19 @@ public class UserRequestProcessingService implements UserRequestProcessor {
             reportBuilder.deletedTeamMemberships(deleted);
         }
         return reportBuilder.build();
+    }
+
+    private Map<String, UserMembershipClaim> mapUserMembershipBindings(Set<UserMembershipClaim> userMembershipClaims, List<UserMembership> userMemberships){
+        var savedMemberships = new HashMap<String, UserMembershipClaim>();
+        userMembershipClaims.forEach(userMembershipClaim -> {
+            userMemberships.forEach(userMembership -> {
+                if(userMembershipClaim.isMatching(userMembership)){
+                    var id = userMembership.getId();
+                    savedMemberships.put(id, userMembershipClaim);
+                }
+            });
+        });
+        return savedMemberships;
     }
 
     private void checkUserReq(UserSavingRequest request) throws RollbackRequiredException {
