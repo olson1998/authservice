@@ -1,7 +1,7 @@
 package com.olson1998.authdata.application.datasource;
 
+import com.olson1998.authdata.application.datasource.properties.DataSourceChangelogProps;
 import liquibase.integration.spring.SpringLiquibase;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.h2.jdbcx.JdbcDataSource;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +22,6 @@ import static java.util.Map.entry;
 @Slf4j
 
 @Component(value = "localThreadTenantDataSource")
-@RequiredArgsConstructor
 public class LocalThreadTenantDataSource implements DataSource {
 
     private static final String SELF_TENANT = "SELF_TENANT";
@@ -35,6 +35,8 @@ public class LocalThreadTenantDataSource implements DataSource {
                     entry(SELF_TENANT, IN_MEMORY_DATA_SOURCE)
             ));
 
+    private final String tenantDataSourceChangelog;
+
     private final SpringLiquibase springLiquibase;
 
     public void setCurrentThreadTenantDatasource(String tid){
@@ -45,8 +47,12 @@ public class LocalThreadTenantDataSource implements DataSource {
 
     @SneakyThrows
     public void appendDataSource(String tid, DataSource dataSource){
+        var liquiParams = new HashMap<String, String>();
+        liquiParams.put("tenant.id", tid);
+        springLiquibase.setChangeLog(tenantDataSourceChangelog);
         springLiquibase.setShouldRun(true);
         springLiquibase.setDefaultSchema(null);
+        springLiquibase.setChangeLogParameters(liquiParams);
         springLiquibase.setDataSource(dataSource);
         springLiquibase.afterPropertiesSet();
         springLiquibase.setShouldRun(false);
@@ -123,5 +129,11 @@ public class LocalThreadTenantDataSource implements DataSource {
         ds.setPassword("pass");
         ds.setUrl("jdbc:h2:mem:self-tenant");
         return ds;
+    }
+
+    public LocalThreadTenantDataSource(DataSourceChangelogProps dataSourceChangelogProps,
+                                       SpringLiquibase springLiquibase) {
+        this.springLiquibase = springLiquibase;
+        this.tenantDataSourceChangelog = dataSourceChangelogProps.getTenantDataBase().getChangeLog();
     }
 }

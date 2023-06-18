@@ -52,7 +52,6 @@ public class GlobalDataSourceConfig {
                 "com.olson1998.authdata.application.datasource.entity.global",
                 "com.olson1998.authdata.application.datasource.repository.global.spring"
         );
-        entityManager.setJpaProperties(globalDatasourceJpaProperties.toSpringJpaProperties());
         entityManager.setJpaVendorAdapter(hibernateJpaVendorAdapter);
         switch (globalDatasourceJpaProperties.getDialect()){
             case HIBERNATE -> entityManager.setJpaDialect(jpaDialects.getHibernateJpaDialect());

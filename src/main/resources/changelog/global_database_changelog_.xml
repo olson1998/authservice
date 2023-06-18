@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_NUM_SEQ" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="TENANT_DS_ID_SEQ"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="TENANT_DS_ID_SEQ" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="18/06/2023/global_data_source/TNTDS" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TNTDS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TNTDS">
+            <column name="TNTDSID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TNTID" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSTMP" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSTYPE" type="varchar(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSDB" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSHOST" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSPORT" type="int"/>
+            <column name="TNTDSDBSCHEMA" type="varchar(255)"/>
+            <column name="TNTDSCONNTIMEOUT" type="int"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/global_data_source/TNTNDSUSR" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TNTNDSUSR"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TNTNDSUSR">
+            <column name="TNTID" type="varchar(15)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TNTUSRNM" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSUSRSEC" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/global_data_source/TNTSC" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TNTSC"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TNTSC">
+            <column name="TNTID" type="varchar(15)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TNTSCTMP" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTSCALG" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTSCVAL" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/global_data_source/TNTTRUSTISS" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TNTTRUSTISS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TNTTRUSTISS">
+            <column name="TNTID" type="varchar(15)"/>
+            <column name="TNTTRUSTISS" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -34,6 +34,7 @@ public class TenantDataSourceData implements TenantDataSource {
     @Column(name = "TNTDSTMP", nullable = false)
     private long timestamp = System.currentTimeMillis();
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TNTDSTYPE", nullable = false, updatable = false)
     private SqlDataSource sqlDataSource;
 
