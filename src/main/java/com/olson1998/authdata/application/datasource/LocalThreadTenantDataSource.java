@@ -1,5 +1,8 @@
 package com.olson1998.authdata.application.datasource;
 
+import liquibase.integration.spring.SpringLiquibase;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,7 @@ import static java.util.Map.entry;
 @Slf4j
 
 @Component(value = "localThreadTenantDataSource")
+@RequiredArgsConstructor
 public class LocalThreadTenantDataSource implements DataSource {
 
     private static final String SELF_TENANT = "SELF_TENANT";
@@ -31,17 +35,25 @@ public class LocalThreadTenantDataSource implements DataSource {
                     entry(SELF_TENANT, IN_MEMORY_DATA_SOURCE)
             ));
 
-    public static void setCurrentThreadTenantDatasource(String tid){
+    private final SpringLiquibase springLiquibase;
+
+    public void setCurrentThreadTenantDatasource(String tid){
         var ds = TENANTS_DATA_SOURCES.get(tid);
         CURRENT_THREAD_TENANT_DATASOURCE.set(ds);
         log.debug("Setting local thread data source of tenant: '{}', instance: '{}'", tid, ds.getClass().getName());
     }
 
-    public static void appendDataSource(String tid, DataSource dataSource){
+    @SneakyThrows
+    public void appendDataSource(String tid, DataSource dataSource){
+        springLiquibase.setShouldRun(true);
+        springLiquibase.setDefaultSchema(null);
+        springLiquibase.setDataSource(dataSource);
+        springLiquibase.afterPropertiesSet();
+        springLiquibase.setShouldRun(false);
         TENANTS_DATA_SOURCES.put(tid, dataSource);
     }
 
-    public static void clean(){
+    public void clean(){
         CURRENT_THREAD_TENANT_DATASOURCE.remove();
     }
 

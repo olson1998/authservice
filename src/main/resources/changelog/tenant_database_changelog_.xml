@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="18/06/2023/tenant_data_source/AUTH_USER_NUM_SEQ" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="AUTH_USER_NUM_SEQ"/>
+                <tableExists tableName="AUTHUSER"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="AUTH_USER_NUM_SEQ" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/AUTHUSER" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHUSER"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHUSER">
+            <column name="USERNUM" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USERNM" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERPASS" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERPASSALG" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/AUTHROLE" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHROLE"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHROLE" >
+            <column name="ROLEID" type="varchar(50)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ROLENM" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLESUB" type="varchar(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLETMP" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLESUBUSERID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLESUBCONO" type="bigint"/>
+            <column name="ROLESUBREGID" type="varchar(30)"/>
+            <column name="ROLESUBGRPID" type="bigint"/>
+            <column name="ROLESUBTMID" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/AUTHROLEAUTHORITY" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHROLEAUTHORITY"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHROLEAUTHORITY">
+            <column name="AUTHORITYID" type="varchar(17)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="AUTHORITYNM" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHORITYTOKEN" type="varchar(255)"/>
+            <column name="AUTHORITYLVL" type="int"/>
+            <column name="AUTHORITYEXP" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/AUTHUSERMEM" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHUSERMEM"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHUSERMEM">
+            <column name="USERMEMID" type="varchar(31)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="AUTHUSERID" type="bigint">
+            </column>
+            <column name="MEMCONO" type="bigint">
+            </column>
+            <column name="MEMGRPID" type="bigint">
+            </column>
+            <column name="MEMREGID" type="varchar(30)">
+            </column>
+            <column name="MEMTMID" type="bigint">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/AUTHROLEBIND" author="olson1998">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHROLEBIND"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHROLEBIND">
+            <column name="ROLEID" type="varchar(50)">
+            </column>
+            <column name="AUTHORITYID" type="varchar(17)">
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

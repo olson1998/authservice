@@ -30,7 +30,7 @@ public class RoleData implements Persistable<String>, Role{
     @Column(name = "ROLETMP", nullable = false)
     private Long timestamp = System.currentTimeMillis();
 
-    @Column(name = "ROLESUBUSERID", updatable = false)
+    @Column(name = "ROLESUBUSERID", updatable = false, nullable = false)
     private Long userId;
 
     @Column(name = "ROLESUBCONO", updatable = false)

@@ -57,6 +57,8 @@ public class SampleDataInject {
             "mysql"
     );
 
+    private final LocalThreadTenantDataSource localThreadTenantDataSource;
+
     private final JwtTokenFactory jwtTokenFactory;
 
     private final UserRequestProcessor userRequestProcessor;
@@ -78,9 +80,9 @@ public class SampleDataInject {
     @EventListener(ApplicationStartedEvent.class)
     public void injectSampleData(){
         injectTestTenant();
-        LocalThreadTenantDataSource.setCurrentThreadTenantDatasource(DEV_TID);
+        localThreadTenantDataSource.setCurrentThreadTenantDatasource(DEV_TID);
         injectTestAuthData();
-        LocalThreadTenantDataSource.clean();
+        localThreadTenantDataSource.clean();
     }
 
     @Modifying
@@ -91,7 +93,7 @@ public class SampleDataInject {
         var dataSource = tenantSqlDataSourceRepository.getForTenant(DEV_TID);
         tenantSecretJpaRepository.save(new TenantSecretData(DEV_TID, System.currentTimeMillis(), randomAlphanumeric(10), HMAC256));
         trustedIssuerDataJpaRepository.save(new TrustedIssuerData(jwtTokenFactory.getServiceIpPort(), DEV_TID));
-        LocalThreadTenantDataSource.appendDataSource(DEV_TID, dataSource);
+        localThreadTenantDataSource.appendDataSource(DEV_TID, dataSource);
     }
 
     public void injectTestAuthData(){

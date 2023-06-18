@@ -42,7 +42,6 @@ public class TenantDataSourceConfig {
                 "com.olson1998.authdata.application.datasource.entity.tenant",
                 "com.olson1998.authdata.application.datasource.repository.tenant.spring"
         );
-        entityManager.setJpaProperties(tenantDataSourceJpaProperties.toSpringJpaProperties());
         entityManager.setJpaVendorAdapter(hibernateJpaVendorAdapter);
         switch (tenantDataSourceJpaProperties.getDialect()){
             case HIBERNATE -> entityManager.setJpaDialect(jpaDialects.getHibernateJpaDialect());
