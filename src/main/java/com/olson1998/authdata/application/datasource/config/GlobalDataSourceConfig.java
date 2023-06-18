@@ -1,9 +1,9 @@
 package com.olson1998.authdata.application.datasource.config;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
-import com.olson1998.authdata.application.datasource.properties.MainDatasourceJpaProperties;
-import com.olson1998.authdata.application.datasource.properties.MainDatasourceProperties;
-import com.olson1998.authdata.application.datasource.properties.MainDatasourceSslProperties;
+import com.olson1998.authdata.application.datasource.properties.GlobalDatasourceJpaProperties;
+import com.olson1998.authdata.application.datasource.properties.GlobalDatasourceProperties;
+import com.olson1998.authdata.application.datasource.properties.GlobalDatasourceSslProperties;
 import lombok.NonNull;
 import lombok.Setter;
 import org.mariadb.jdbc.MariaDbDataSource;
@@ -22,16 +22,16 @@ import java.sql.SQLException;
 @Setter
 
 @EnableJpaRepositories(
-        basePackages = "com.olson1998.authdata.application.datasource.repository.jpa",
-        entityManagerFactoryRef = "mainDatasourceEntityManager",
-        transactionManagerRef = "mainDatasourceTransactionManager"
+        basePackages = "com.olson1998.authdata.application.datasource.repository.global.spring",
+        entityManagerFactoryRef = "globalDatasourceEntityManager",
+        transactionManagerRef = "globalDatasourceTransactionManager"
 )
 
 @Configuration
-public class MainDataSourceConfig {
+public class GlobalDataSourceConfig {
 
-    public DataSource mainDataSource2(@NonNull MainDatasourceProperties datasourceProperties,
-                                     @NonNull MainDatasourceSslProperties sslProperties){
+    public DataSource mainDataSource2(@NonNull GlobalDatasourceProperties datasourceProperties,
+                                     @NonNull GlobalDatasourceSslProperties sslProperties){
         var mainDataSource = new SQLServerDataSource();
         mainDataSource.setServerName(datasourceProperties.getUrl());
         mainDataSource.setPortNumber(datasourceProperties.getPort());
@@ -53,7 +53,7 @@ public class MainDataSourceConfig {
     }
 
     @Bean
-    public DataSource mainDataSource(@NonNull MainDatasourceProperties datasourceProperties) throws SQLException {
+    public DataSource globalDataSource(@NonNull GlobalDatasourceProperties datasourceProperties) throws SQLException {
         var mainDataSource = new MariaDbDataSource();
         mainDataSource.setUser(datasourceProperties.getUser());
         mainDataSource.setPassword(datasourceProperties.getEncryptedPassword());
@@ -62,23 +62,23 @@ public class MainDataSourceConfig {
     }
 
     @Bean
-    public HibernateJpaVendorAdapter hibernateJpaVendorAdapter(){
+    public HibernateJpaVendorAdapter globalHibernateJpaVendorAdapter(){
         var vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
         return vendorAdapter;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean mainDatasourceEntityManager(@Qualifier("mainDataSource") DataSource mainDataSource,
-                                                                              @NonNull MainDatasourceJpaProperties mainDatasourceJpaProperties,
+    public LocalContainerEntityManagerFactoryBean globalDatasourceEntityManager(@Qualifier("globalDataSource") DataSource mainDataSource,
+                                                                              @NonNull GlobalDatasourceJpaProperties mainDatasourceJpaProperties,
                                                                               @NonNull HibernateJpaVendorAdapter hibernateJpaVendorAdapter,
                                                                               @NonNull JpaDialects jpaDialects){
         var entityManager = new LocalContainerEntityManagerFactoryBean();
         entityManager.setPersistenceUnitName(mainDatasourceJpaProperties.getPersistenceUnitName());
         entityManager.setDataSource(mainDataSource);
         entityManager.setPackagesToScan(
-                "com.olson1998.authdata.application.datasource.entity",
-                "com.olson1998.authdata.application.datasource.repository.jpa"
+                "com.olson1998.authdata.application.datasource.entity.global",
+                "com.olson1998.authdata.application.datasource.repository.global.spring"
         );
         entityManager.setJpaProperties(mainDatasourceJpaProperties.toSpringJpaProperties());
         entityManager.setJpaVendorAdapter(hibernateJpaVendorAdapter);
@@ -92,7 +92,7 @@ public class MainDataSourceConfig {
     }
 
     @Bean
-    public PlatformTransactionManager mainDatasourceTransactionManager(@Qualifier("mainDatasourceEntityManager")
+    public PlatformTransactionManager mainDatasourceTransactionManager(@Qualifier("globalDatasourceEntityManager")
                                                                            @NonNull LocalContainerEntityManagerFactoryBean em){
         var transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(em.getObject());

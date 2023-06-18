@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "olson1998.authservice.datasource.main.ssl")
-public class MainDatasourceSslProperties {
+public class GlobalDatasourceSslProperties {
 
     private boolean enabled = false;
 

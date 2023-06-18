@@ -1,5 +1,6 @@
 package com.olson1998.authdata.application.datasource.properties;
 
+import com.olson1998.authdata.application.datasource.entity.global.values.SqlDataSource;
 import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,14 @@ import static com.olson1998.authdata.application.datasource.entity.tenant.values
 @Setter
 
 @Configuration
-@ConfigurationProperties(prefix = "com.olson1998.authservice.datasource.main")
-public class MainDatasourceProperties {
+@ConfigurationProperties(prefix = "com.olson1998.authdata.global.datasource")
+public class GlobalDatasourceProperties {
 
     @Getter
-    private String description = "main datasource";
+    private SqlDataSource type;
+
+    @Getter
+    private String description = "global datasource";
 
     @Getter
     private String user ="user";

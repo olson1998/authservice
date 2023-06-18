@@ -14,7 +14,7 @@ import static com.olson1998.authdata.application.datasource.properties.JpaDialec
 
 @Configuration
 @ConfigurationProperties(prefix = "com.olson1998.authservice.datasource.main.jpa")
-public class MainDatasourceJpaProperties implements LocalJpaProperties{
+public class GlobalDatasourceJpaProperties implements LocalJpaProperties{
 
     @Getter
     private String persistenceUnitName = "authdata";
