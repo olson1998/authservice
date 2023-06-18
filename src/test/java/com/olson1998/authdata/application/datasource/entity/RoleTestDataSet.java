@@ -1,6 +1,7 @@
 package com.olson1998.authdata.application.datasource.entity;
 
-import com.olson1998.authdata.application.datasource.entity.values.RoleSubject;
+import com.olson1998.authdata.application.datasource.entity.tenant.RoleData;
+import com.olson1998.authdata.application.datasource.entity.tenant.values.RoleSubject;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

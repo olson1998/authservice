@@ -1,9 +1,9 @@
 package com.olson1998.authdata.application.developer.utils;
 
-import com.olson1998.authdata.application.datasource.entity.TenantSecretData;
-import com.olson1998.authdata.application.datasource.entity.TrustedIssuerData;
-import com.olson1998.authdata.application.datasource.repository.jpa.TenantSecretJpaRepository;
-import com.olson1998.authdata.application.datasource.repository.jpa.TrustedIssuerDataJpaRepository;
+import com.olson1998.authdata.application.datasource.entity.global.TenantSecretData;
+import com.olson1998.authdata.application.datasource.entity.global.TrustedIssuerData;
+import com.olson1998.authdata.application.datasource.repository.global.spring.TenantSecretJpaRepository;
+import com.olson1998.authdata.application.datasource.repository.global.spring.TrustedIssuerDataJpaRepository;
 import com.olson1998.authdata.application.requesting.model.payload.RoleBindingForm;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleSavingReport;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.olson1998.authdata.application.datasource.entity.values.JwtAlgorithm.HMAC256;
+import static com.olson1998.authdata.application.datasource.entity.tenant.values.JwtAlgorithm.HMAC256;
 import static com.olson1998.authdata.application.developer.utils.SampleDeveloperData.SAMPLE_USER_SAVE_REQ;
 import static com.olson1998.authdata.application.developer.utils.SampleDeveloperData.roleSavingRequest;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;

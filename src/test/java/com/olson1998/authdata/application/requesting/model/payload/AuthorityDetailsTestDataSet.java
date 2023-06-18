@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.requesting.model.payload;
 
-import com.olson1998.authdata.application.datasource.entity.AuthorityData;
+import com.olson1998.authdata.application.datasource.entity.tenant.AuthorityData;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthorityDetails;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.olson1998.authdata.application.datasource.entity.values.RoleSubject.COMPANY;
-import static com.olson1998.authdata.application.datasource.entity.values.RoleSubject.PRIVATE;
-import static com.olson1998.authdata.application.datasource.entity.values.SecretDigest.SHA_3_256;
+import static com.olson1998.authdata.application.datasource.entity.tenant.values.RoleSubject.COMPANY;
+import static com.olson1998.authdata.application.datasource.entity.tenant.values.RoleSubject.PRIVATE;
+import static com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest.SHA_3_256;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class SampleDeveloperData {

@@ -1,5 +1,6 @@
 package com.olson1998.authdata.application.datasource.entity;
 
+import com.olson1998.authdata.application.datasource.entity.tenant.RoleBindingData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

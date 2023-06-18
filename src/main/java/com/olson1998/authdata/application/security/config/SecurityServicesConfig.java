@@ -2,7 +2,7 @@ package com.olson1998.authdata.application.security.config;
 
 import com.olson1998.authdata.application.caching.repository.impl.CaffeineCheckpointCacheRepository;
 import com.olson1998.authdata.application.caching.repository.impl.CaffeineTenantSecretCacheRepository;
-import com.olson1998.authdata.application.datasource.repository.wrapper.TenantSecretJpaRepositoryWrapper;
+import com.olson1998.authdata.application.datasource.repository.global.wrapper.TenantSecretJpaRepositoryWrapper;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
 import com.olson1998.authdata.domain.port.security.repository.CheckpointProvider;
 import com.olson1998.authdata.domain.port.security.repository.RequestContextFactory;

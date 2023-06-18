@@ -1,6 +1,7 @@
 package com.olson1998.authdata.application.datasource.entity;
 
-import com.olson1998.authdata.application.datasource.entity.values.SecretDigest;
+import com.olson1998.authdata.application.datasource.entity.tenant.UserData;
+import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
