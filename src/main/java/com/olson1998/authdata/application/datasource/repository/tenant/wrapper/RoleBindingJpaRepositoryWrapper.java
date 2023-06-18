@@ -20,15 +20,18 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
     private final RoleBindingJpaRepository roleBindingJpaRepository;
 
     @Override
-    public Set<RoleBinding> getRoleBindingsByAuthoritiesIds(Set<String> authoritiesIds) {
-        return roleBindingJpaRepository.selectRoleBoundsByAuthoritiesIds(authoritiesIds).stream()
-                .map(RoleBinding.class::cast)
-                .collect(Collectors.toUnmodifiableSet());
+    public Set<String> getRoleIdsOfBoundedAuthorities(Set<String> authoritiesIds) {
+        return roleBindingJpaRepository.selectRoleIdsOfBindingAuthorities(authoritiesIds);
     }
 
     @Override
     public int deleteRoleBindings(@NonNull String roleId) {
         return roleBindingJpaRepository.deleteRoleBindingByRolesIdSet(roleId);
+    }
+
+    @Override
+    public int deleteRoleBoundsOfAuthorities(Set<String> authoritiesIds) {
+        return roleBindingJpaRepository.deleteAllBoundsOfGivenAuthorities(authoritiesIds);
     }
 
     @Override

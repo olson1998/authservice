@@ -3,6 +3,7 @@ package com.olson1998.authdata.domain.port.data.stereotype;
 import com.olson1998.authdata.domain.port.data.utils.SqlDataSourceType;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TenantDataSource {
 
@@ -12,13 +13,17 @@ public interface TenantDataSource {
 
     String getTid();
 
+    Long getTimestamp();
+
     String getHost();
 
-    Integer getPort();
+    Optional<Integer> getPort();
 
     String getDatabase();
 
     String getSchema();
+
+    Optional<Integer> getLoginTimeout();
 
     List<TenantDataSourceUser> getTenantDataSourceUsers();
 

@@ -1,7 +1,7 @@
 package com.olson1998.authdata.application.security.config;
 
-import com.olson1998.authdata.application.caching.repository.impl.CaffeineCheckpointCacheRepository;
-import com.olson1998.authdata.application.caching.repository.impl.CaffeineTenantSecretCacheRepository;
+import com.olson1998.authdata.application.caching.repository.impl.CaffeineCheckpointCache;
+import com.olson1998.authdata.application.caching.repository.impl.TenantSecretCaffeineCache;
 import com.olson1998.authdata.application.datasource.repository.global.wrapper.TenantSecretJpaRepositoryWrapper;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
 import com.olson1998.authdata.domain.port.security.repository.CheckpointProvider;
@@ -26,7 +26,7 @@ public class SecurityServicesConfig {
 
     @Bean
     public CheckpointProvider checkpointProvider(CheckpointRepository checkpointRepository,
-                                                 CaffeineCheckpointCacheRepository checkpointCacheRepository){
+                                                 CaffeineCheckpointCache checkpointCacheRepository){
         return new CheckpointProvidingService(
                 checkpointRepository,
                 checkpointCacheRepository
@@ -39,10 +39,10 @@ public class SecurityServicesConfig {
     }
 
     @Bean
-    public TenantSecretProvider tenantSecretProvider(CaffeineTenantSecretCacheRepository caffeineTenantSecretCacheRepository,
+    public TenantSecretProvider tenantSecretProvider(TenantSecretCaffeineCache tenantSecretCaffeineCache,
                                                      TenantSecretJpaRepositoryWrapper tenantSecretJpaRepositoryWrapper){
         return new TenantSecretProvidingService(
-                caffeineTenantSecretCacheRepository,
+                tenantSecretCaffeineCache,
                 tenantSecretJpaRepositoryWrapper
         );
     }
@@ -51,7 +51,7 @@ public class SecurityServicesConfig {
     public TokenVerifier tokenVerifier(RequestContextFactory requestContextFactory,
                                        TenantSecretProvider tenantSecretProvider,
                                        CheckpointProvider checkpointProvider,
-                                       CaffeineCheckpointCacheRepository checkpointCacheRepository){
+                                       CaffeineCheckpointCache checkpointCacheRepository){
         return new TokenVerifyingService(
                 InetAddress.getLoopbackAddress(),
                 port,

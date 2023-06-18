@@ -12,12 +12,16 @@ import java.util.Set;
 @Repository
 public interface RoleBindingJpaRepository extends JpaRepository<RoleBindingData, RoleBindingJunction> {
 
-    @Query("SELECT DISTINCT rb FROM RoleBindingData rb WHERE rb.junction.authorityId IN :authoritiesIds")
-    Set<RoleBindingData> selectRoleBoundsByAuthoritiesIds(Set<String> authoritiesIds);
+    @Query("SELECT DISTINCT rb.junction.roleId FROM RoleBindingData rb WHERE rb.junction.authorityId IN :authoritiesIds")
+    Set<String> selectRoleIdsOfBindingAuthorities(Set<String> authoritiesIds);
 
     @Modifying
     @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId AND rb.junction.authorityId IN :authoritiesIds")
     int deleteRoleBindingsByRoleIdAndSetOfAuthorities(String roleId, Set<String> authoritiesIds);
+
+    @Modifying
+    @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.authorityId IN :authoritiesIds")
+    int deleteAllBoundsOfGivenAuthorities(Set<String> authoritiesIds);
 
     @Modifying
     @Query("DELETE FROM RoleBindingData rb WHERE rb.junction.roleId=:roleId")

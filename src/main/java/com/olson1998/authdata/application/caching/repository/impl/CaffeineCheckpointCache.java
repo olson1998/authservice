@@ -8,9 +8,9 @@ import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaffeineCheckpointCacheRepository extends CaffeineCacheRepository<String, CheckpointTimestamp, String, Checkpoint> implements CheckpointCacheRepository {
+public class CaffeineCheckpointCache extends CaffeineCacheRepository<String, CheckpointTimestamp, String, Checkpoint> implements CheckpointCacheRepository {
 
-    public CaffeineCheckpointCacheRepository(CheckpointCacheProperties properties) {
+    public CaffeineCheckpointCache(CheckpointCacheProperties properties) {
         super(properties);
     }
 }

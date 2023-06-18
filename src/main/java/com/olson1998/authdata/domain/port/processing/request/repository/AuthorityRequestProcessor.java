@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface AuthorityRequestProcessor {
 
-    @Transactional(rollbackFor = RollbackRequiredException.class)
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     AuthoritySavingReport saveAuthorities(AuthoritySavingRequest authoritySavingRequest);
 
-    @Transactional(rollbackFor = RollbackRequiredException.class)
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     AuthorityDeletingReport deleteAuthorities(AuthorityDeletingRequest authorityDeletingRequest);
 }

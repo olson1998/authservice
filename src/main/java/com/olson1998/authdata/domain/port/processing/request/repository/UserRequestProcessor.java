@@ -18,15 +18,15 @@ public interface UserRequestProcessor {
      * @param request Request containing all required data to perform persisting
      * @return save user
      */
-    @Transactional(rollbackFor = RollbackRequiredException.class)
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     UserSavingReport saveUser(UserSavingRequest request);
 
-    @Transactional(rollbackFor = RollbackRequiredException.class)
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     UserDeletingReport deleteUser(UserDeletingRequest request);
 
-    @Transactional(rollbackFor = RollbackRequiredException.class)
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     UserMembershipBindReport bindMemberships(UserMembershipSavingRequest request);
 
-    @Transactional(rollbackFor = RollbackRequiredException.class)
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     UserMembershipDeletingReport deleteMemberships(UserMembershipDeletingRequest request);
 }

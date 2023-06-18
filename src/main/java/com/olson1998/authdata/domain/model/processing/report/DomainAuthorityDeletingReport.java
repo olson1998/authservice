@@ -20,7 +20,7 @@ public class DomainAuthorityDeletingReport implements AuthorityDeletingReport {
     private final int deletedAuthoritiesQty;
 
     @JsonProperty(value = "del_role_bounds")
-    private final Map<String, Integer> deletedRoleBounds;
+    private final int deletedRoleBounds;
 
     @JsonProperty(value = "up_role_tmp")
     private final Set<String> roleIdWithUpdatedTimestamps;

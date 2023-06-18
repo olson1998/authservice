@@ -8,9 +8,11 @@ import java.util.Set;
 
 public interface RoleBindingDataSourceRepository {
 
-    Set<RoleBinding> getRoleBindingsByAuthoritiesIds(Set<String> authoritiesIds);
+    Set<String> getRoleIdsOfBoundedAuthorities(Set<String> authoritiesIds);
 
     int deleteRoleBindings(String roleId);
+
+    int deleteRoleBoundsOfAuthorities(Set<String> authoritiesIds);
 
     int deleteRoleBoundsForGivenAuthority(String roleId, Set<String> authoritiesIds);
 

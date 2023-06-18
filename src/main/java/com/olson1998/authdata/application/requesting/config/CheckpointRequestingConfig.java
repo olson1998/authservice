@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.requesting.config;
 
-import com.olson1998.authdata.application.caching.repository.impl.CaffeineCheckpointCacheRepository;
+import com.olson1998.authdata.application.caching.repository.impl.CaffeineCheckpointCache;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
 import com.olson1998.authdata.domain.port.processing.request.repository.RequestContextHolder;
 import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
@@ -14,7 +14,7 @@ public class CheckpointRequestingConfig {
     @Bean
     public CheckpointRepository checkpointRepository(TenantSecretProvider tenantSecretProvider,
                                                      RequestContextHolder requestContextHolder,
-                                                     CaffeineCheckpointCacheRepository checkpointCacheRepository){
+                                                     CaffeineCheckpointCache checkpointCacheRepository){
         return new CheckpointService(
                 tenantSecretProvider,
                 requestContextHolder,

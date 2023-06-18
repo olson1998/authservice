@@ -13,17 +13,16 @@ import static com.olson1998.authdata.application.datasource.properties.JpaDialec
 @Setter
 
 @Configuration
-@ConfigurationProperties(prefix = "com.olson1998.authdata.datasource.global.jpa")
-public class GlobalDatasourceJpaProperties implements LocalJpaProperties{
+@ConfigurationProperties(prefix = "com.olson1998.authdata.datasource.tenant.jpa")
+public class TenantDataSourceJpaProperties implements LocalJpaProperties{
 
     @Getter
-    private String persistenceUnitName = "authdata";
+    private String persistenceUnitName = "tenant";
 
     @Getter
     private JpaDialectInstance dialect = HIBERNATE;
 
     private String hbm2Ddl;
-
     @Override
     public Properties toSpringJpaProperties() {
         var jpaProps = new Properties();

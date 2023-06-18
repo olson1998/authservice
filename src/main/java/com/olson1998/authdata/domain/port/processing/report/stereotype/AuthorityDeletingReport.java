@@ -7,7 +7,7 @@ public interface AuthorityDeletingReport extends ProcessingReport{
 
     int getDeletedAuthoritiesQty();
 
-    Map<String, Integer> getDeletedRoleBounds();
+    int getDeletedRoleBounds();
 
     Set<String> getRoleIdWithUpdatedTimestamps();
 }

@@ -5,17 +5,22 @@ import com.olson1998.authdata.domain.port.data.stereotype.TenantDataSource;
 import com.olson1998.authdata.domain.port.data.stereotype.TenantDataSourceUser;
 import com.olson1998.authdata.domain.port.data.utils.SqlDataSourceType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "TNTDS")
 @SequenceGenerator(name = "TENANT_DS_ID_SEQ", sequenceName = "TENANT_DS_ID_SEQ", allocationSize = 1)
 
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class TenantDataSourceData implements TenantDataSource {
 
     @Id
@@ -25,6 +30,9 @@ public class TenantDataSourceData implements TenantDataSource {
 
     @Column(name = "TNTID", nullable = false, updatable = false, unique = true)
     private String tid;
+
+    @Column(name = "TNTDSTMP", nullable = false)
+    private long timestamp = System.currentTimeMillis();
 
     @Column(name = "TNTDSTYPE", nullable = false, updatable = false)
     private SqlDataSource sqlDataSource;
@@ -40,6 +48,9 @@ public class TenantDataSourceData implements TenantDataSource {
 
     @Column(name = "TNTDSDBSCHEMA")
     private String schema;
+
+    @Column(name = "TNTDSCONNTIMEOUT")
+    private Integer loginTimeout;
 
     @Transient
     private final List<TenantDataSourceUser> tenantDataSourceUsers = new ArrayList<>();
@@ -60,13 +71,18 @@ public class TenantDataSourceData implements TenantDataSource {
     }
 
     @Override
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
     public String getHost() {
         return host;
     }
 
     @Override
-    public Integer getPort() {
-        return port;
+    public Optional<Integer> getPort() {
+        return Optional.ofNullable(port);
     }
 
     @Override
@@ -77,6 +93,11 @@ public class TenantDataSourceData implements TenantDataSource {
     @Override
     public String getSchema() {
         return schema;
+    }
+
+    @Override
+    public Optional<Integer> getLoginTimeout() {
+        return Optional.ofNullable(loginTimeout);
     }
 
     @Override

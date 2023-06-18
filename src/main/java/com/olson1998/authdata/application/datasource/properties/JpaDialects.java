@@ -1,4 +1,4 @@
-package com.olson1998.authdata.application.datasource.config;
+package com.olson1998.authdata.application.datasource.properties;
 
 import lombok.Getter;
 import org.springframework.orm.jpa.DefaultJpaDialect;

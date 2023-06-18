@@ -3,6 +3,7 @@ package com.olson1998.authdata.application.datasource.entity.global;
 import com.olson1998.authdata.application.datasource.entity.global.id.TenantDataSourceUserId;
 import com.olson1998.authdata.domain.port.data.stereotype.TenantDataSourceUser;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -10,6 +11,7 @@ import lombok.NonNull;
 @Table(name = "TNTNDSUSR")
 
 @NoArgsConstructor
+@AllArgsConstructor
 public class TenantDataSourceUserData implements TenantDataSourceUser {
 
     @EmbeddedId
@@ -40,5 +42,8 @@ public class TenantDataSourceUserData implements TenantDataSourceUser {
                 this.password.equals(tenantDataSourceUser.getPassword());
     }
 
-
+    public TenantDataSourceUserData(String tid, String username, String password) {
+        this.password = password;
+        this.tenantDataSourceUserId = new TenantDataSourceUserId(tid, username);
+    }
 }

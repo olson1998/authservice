@@ -7,9 +7,9 @@ import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaffeineTenantSecretCacheRepository extends CaffeineCacheRepository<String, String, String, TenantSecret> implements TenantSecretCacheRepository {
+public class TenantSecretCaffeineCache extends CaffeineCacheRepository<String, String, String, TenantSecret> implements TenantSecretCacheRepository {
 
-    protected CaffeineTenantSecretCacheRepository(CaffeineCacheProperties properties) {
+    protected TenantSecretCaffeineCache(CaffeineCacheProperties properties) {
         super(properties);
     }
 }
