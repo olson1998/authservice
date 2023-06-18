@@ -1,11 +1,12 @@
 package com.olson1998.authdata.application.pipeline;
 
+import com.olson1998.authdata.application.datasource.LocalThreadTenantDataSource;
 import com.olson1998.authdata.application.pipeline.exception.PipelineFabricationException;
 import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.Request;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ import static com.olson1998.authdata.application.requesting.AdapterRequestContex
 @Slf4j
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ApplicationPipelineFactory implements PipelineFactory {
+
+    private final LocalThreadTenantDataSource localThreadTenantDataSource;
     
     @Override
     public <R extends Request> CompletableFuture<R> fabricate(R request) {
@@ -35,12 +38,16 @@ public class ApplicationPipelineFactory implements PipelineFactory {
 
     @Override
     public <O> O dematerializeContext(O object) {
-        //AdapterRequestContextHolder.cleanContext();
+        AdapterRequestContextHolder.cleanContext();
+        localThreadTenantDataSource.clean();
         return object;
     }
 
-    private <R extends Request> R inheritRequestContext(R request, AtomicReference<RequestContext> requestContextRef){
-        AdapterRequestContextHolder.setLocalThreadRequestContext(requestContextRef.get());
+    private <R extends Request> R inheritRequestContext(R request,
+                                                        AtomicReference<RequestContext> requestContextRef){
+        var contextRef = requestContextRef.get();
+        AdapterRequestContextHolder.setLocalThreadRequestContext(contextRef);
+        localThreadTenantDataSource.setCurrentThreadTenantDatasource(contextRef.getTenantId());
         return request;
     }
 

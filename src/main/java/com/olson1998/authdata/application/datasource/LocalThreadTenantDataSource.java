@@ -1,6 +1,7 @@
 package com.olson1998.authdata.application.datasource;
 
 import com.olson1998.authdata.application.datasource.properties.DataSourceChangelogProps;
+import com.olson1998.authdata.domain.port.processing.datasource.TenantSqlDataSourceRepository;
 import liquibase.integration.spring.SpringLiquibase;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +40,17 @@ public class LocalThreadTenantDataSource implements DataSource {
 
     private final SpringLiquibase springLiquibase;
 
+    private final TenantSqlDataSourceRepository tenantSqlDataSourceRepository;
+
     public void setCurrentThreadTenantDatasource(String tid){
-        var ds = TENANTS_DATA_SOURCES.get(tid);
+        var optionalDs = Optional.ofNullable(TENANTS_DATA_SOURCES.get(tid));
+        DataSource ds = null;
+        if(optionalDs.isPresent()){
+            ds = optionalDs.get();
+        }else {
+            ds = tenantSqlDataSourceRepository.getForTenant(tid);
+            appendDataSource(tid, ds);
+        }
         CURRENT_THREAD_TENANT_DATASOURCE.set(ds);
         log.debug("Setting local thread data source of tenant: '{}', instance: '{}'", tid, ds.getClass().getName());
     }
@@ -132,8 +142,10 @@ public class LocalThreadTenantDataSource implements DataSource {
     }
 
     public LocalThreadTenantDataSource(DataSourceChangelogProps dataSourceChangelogProps,
-                                       SpringLiquibase springLiquibase) {
+                                       SpringLiquibase springLiquibase,
+                                       TenantSqlDataSourceRepository tenantSqlDataSourceRepository) {
         this.springLiquibase = springLiquibase;
         this.tenantDataSourceChangelog = dataSourceChangelogProps.getTenantDataBase().getChangeLog();
+        this.tenantSqlDataSourceRepository = tenantSqlDataSourceRepository;
     }
 }

@@ -1,6 +1,5 @@
 package com.olson1998.authdata.application.security.config;
 
-import com.olson1998.authdata.application.datasource.LocalThreadTenantDataSource;
 import com.olson1998.authdata.application.security.filter.CheckpointAuthenticationFilter;
 import com.olson1998.authdata.application.security.filter.JwtAuthenticationFilter;
 import com.olson1998.authdata.application.security.handler.MicroserviceAuthenticationFailureHandler;
@@ -61,13 +60,11 @@ public class SecurityFilterChainConfig {
                                                              @NonNull TokenVerifier tokenVerifier,
                                                              @NonNull ApplicationAuthenticationManager authenticationManager,
                                                              @NonNull AuthenticationConverter authenticationConverter,
-                                                             @NonNull AuthenticationFailureHandler authenticationFailureHandler,
-                                                             LocalThreadTenantDataSource localThreadTenantDataSource) throws Exception {
+                                                             @NonNull AuthenticationFailureHandler authenticationFailureHandler) throws Exception {
         var checkpointTokenFilter = checkpointAuthenticationFilter(
                 tokenVerifier,
                 authenticationManager,
-                authenticationConverter,
-                localThreadTenantDataSource
+                authenticationConverter
         );
         checkpointTokenFilter.setFailureHandler(authenticationFailureHandler);
         security.csrf().disable();
@@ -78,13 +75,11 @@ public class SecurityFilterChainConfig {
 
     private CheckpointAuthenticationFilter checkpointAuthenticationFilter(@NonNull TokenVerifier tokenVerifier,
                                                                           @NonNull ApplicationAuthenticationManager authenticationManager,
-                                                                          @NonNull AuthenticationConverter authenticationConverter,
-                                                                          LocalThreadTenantDataSource localThreadTenantDataSource){
+                                                                          @NonNull AuthenticationConverter authenticationConverter){
         return new CheckpointAuthenticationFilter(
                 tokenVerifier,
                 authenticationManager,
-                authenticationConverter,
-                localThreadTenantDataSource
+                authenticationConverter
         );
     }
 

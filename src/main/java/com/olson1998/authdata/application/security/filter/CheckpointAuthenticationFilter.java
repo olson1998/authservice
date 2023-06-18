@@ -19,8 +19,6 @@ import static com.olson1998.authdata.application.security.filter.CommonResponseH
 @Slf4j
 public class CheckpointAuthenticationFilter extends AuthDataAuthenticationFilter {
 
-    private final LocalThreadTenantDataSource localThreadTenantDataSource;
-
     @Override
     protected void logContextBuild(RequestContext context) {
         log.trace("Building request context based on checkpoint: '{}' of tenant: '{}' of user: {}",
@@ -34,15 +32,12 @@ public class CheckpointAuthenticationFilter extends AuthDataAuthenticationFilter
         var token = Optional.ofNullable(request.getHeader(CHECKPOINT_TOKEN_HEADER))
                 .orElseThrow();
         var context = tokenVerifier.verifyCheckpointToken(token);
-        localThreadTenantDataSource.setCurrentThreadTenantDatasource(context.getTenantId());
         commonFilterChain(context, request, response, filterChain);
     }
 
     public CheckpointAuthenticationFilter(TokenVerifier tokenVerifier,
                                           AuthenticationManager authenticationManager,
-                                          AuthenticationConverter authenticationConverter,
-                                          LocalThreadTenantDataSource localThreadTenantDataSource) {
+                                          AuthenticationConverter authenticationConverter) {
         super(tokenVerifier, authenticationManager, authenticationConverter);
-        this.localThreadTenantDataSource = localThreadTenantDataSource;
     }
 }

@@ -18,6 +18,7 @@ import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequ
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -39,6 +40,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 @RequiredArgsConstructor
 
 @Component
+@ConditionalOnProperty("com.olson1998.authdata.application.developer.sample-data-inject=true")
 public class SampleDataInject {
 
     private static final String DEV_TID = "AUTHDATA_DEV";
