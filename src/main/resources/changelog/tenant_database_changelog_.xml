@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_NUM_SEQ" author="olson1998">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_NUM_SEQ" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <sequenceExists sequenceName="AUTH_USER_NUM_SEQ"/>
@@ -12,20 +12,17 @@
         </preConditions>
         <createSequence sequenceName="AUTH_USER_NUM_SEQ" startValue="1" incrementBy="1"/>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSER" author="olson1998">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSER" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="AUTHUSER"/>
             </not>
         </preConditions>
         <createTable tableName="AUTHUSER">
-            <column name="USERNUM" type="bigint">
+            <column name="USERID" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
             <column name="USERNM" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="USERPASS" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="USERPASSALG" type="varchar(10)">
@@ -33,7 +30,25 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLE" author="olson1998">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERSEC" author="${service.ip}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHUSERSEC"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHUSERSEC">
+            <column name="USERID" type="bigint">
+                <constraints foreignKeyName="USERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
+            </column>
+            <column name="USERSECBYTEORDINAL" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERSECBYTE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLE" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="AUTHROLE"/>
@@ -61,13 +76,13 @@
             <column name="ROLESUBTMID" type="bigint"/>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLEAUTHORITY" author="olson1998">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLEAUTHORITY" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="AUTHROLEAUTHORITY"/>
             </not>
         </preConditions>
-        <createTable tableName="AUTHROLEAUTHORITY">
+        <createTable tableName="ROLEAUTHORITY">
             <column name="AUTHORITYID" type="varchar(17)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -79,7 +94,7 @@
             <column name="AUTHORITYEXP" type="bigint"/>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERMEM" author="olson1998">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERMEM" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="AUTHUSERMEM"/>
@@ -89,7 +104,7 @@
             <column name="USERMEMID" type="varchar(31)">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="AUTHUSERID" type="bigint">
+            <column name="USERID" type="bigint">
             </column>
             <column name="MEMCONO" type="bigint">
             </column>
@@ -101,7 +116,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLEBIND" author="olson1998">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLEBIND" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="AUTHROLEBIND"/>
@@ -112,7 +127,7 @@
                 <constraints foreignKeyName="ROLEID" referencedColumnNames="ROLEID" referencedTableName="AUTHROLE"/>
             </column>
             <column name="AUTHORITYID" type="varchar(17)">
-                <constraints foreignKeyName="AUTHORITYID" referencedColumnNames="AUTHORITYID" referencedTableName="AUTHROLEAUTHORITY"/>
+                <constraints foreignKeyName="AUTHORITYID" referencedColumnNames="AUTHORITYID" referencedTableName="ROLEAUTHORITY"/>
             </column>
         </createTable>
     </changeSet>

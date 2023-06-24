@@ -11,7 +11,7 @@
         </preConditions>
         <createSequence sequenceName="TENANT_DS_ID_SEQ" startValue="1" incrementBy="1"/>
     </changeSet>
-    <changeSet id="18/06/2023/global_data_source/TNTDS" author="olson1998">
+    <changeSet id="18/06/2023/global_data_source/TNTDS" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="TNTDS"/>
@@ -41,7 +41,7 @@
             <column name="TNTDSCONNTIMEOUT" type="int"/>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/global_data_source/TNTNDSUSR" author="olson1998">
+    <changeSet id="18/06/2023/global_data_source/TNTNDSUSR" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="TNTNDSUSR"/>
@@ -59,7 +59,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/global_data_source/TNTSC" author="olson1998">
+    <changeSet id="18/06/2023/global_data_source/TNTSC" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="TNTSC"/>
@@ -80,7 +80,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/global_data_source/TNTTRUSTISS" author="olson1998">
+    <changeSet id="18/06/2023/global_data_source/TNTTRUSTISS" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="TNTTRUSTISS"/>
