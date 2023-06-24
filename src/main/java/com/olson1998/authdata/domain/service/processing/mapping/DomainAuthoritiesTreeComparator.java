@@ -1,4 +1,4 @@
-package com.olson1998.authdata.domain.service.processing.tree;
+package com.olson1998.authdata.domain.service.processing.mapping;
 
 import com.olson1998.authdata.domain.model.exception.processing.MismatchAuthoritiesTreeUserIdException;
 import com.olson1998.authdata.domain.port.processing.tree.repository.AuthoritiesTreeComparator;

@@ -24,7 +24,8 @@ public class SecurityFilterChainConfig {
             "/authority/data/**",
             "/role/data/**",
             "/user/data/**",
-            "/checkpoint/logs"
+            "/checkpoint/logs",
+            "/auth/data/**"
     };
 
     private static final String[] JWT_TOKEN_AUTH_PATHS = {

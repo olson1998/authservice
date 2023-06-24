@@ -2,6 +2,7 @@ package com.olson1998.authdata.application.datasource.entity.tenant;
 
 import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
+import com.olson1998.authdata.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authdata.domain.port.data.utils.SecretEncryption;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserDetails;
 import jakarta.persistence.*;

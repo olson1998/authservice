@@ -17,9 +17,8 @@ public class UserSecretByteJpaRepositoryWrapper implements UserSecretDataSourceR
     private final UserSecretByteJpaRepository userSecretByteJpaRepository;
 
     @Override
-    public LinkedList<Byte> getUserSecretBytes(@NonNull String username) {
-        var userSecretBytes = userSecretByteJpaRepository.selectUserSecretBytesByUsername(username);
-        return new LinkedList<>(userSecretBytes);
+    public LinkedList<Byte> getUserSecretBytes(long userId) {
+        return new LinkedList<>(userSecretByteJpaRepository.selectUserSecretBytesByUserId(userId));
     }
 
     @Override

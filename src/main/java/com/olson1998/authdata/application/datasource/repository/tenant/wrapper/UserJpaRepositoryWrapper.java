@@ -14,6 +14,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,9 +29,9 @@ public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    public Optional<User> getUser(@NonNull String username) {
-        return userJpaRepository.selectUserByUsername(username)
-                .map(UserJpaRepositoryWrapper::mapUser);
+    public Optional<User> getUser(long userId) {
+        return userJpaRepository.selectUserById(userId)
+                .map(User.class::cast);
     }
 
     @Override

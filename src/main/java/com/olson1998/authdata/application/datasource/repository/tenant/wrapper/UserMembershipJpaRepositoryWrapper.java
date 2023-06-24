@@ -20,6 +20,13 @@ public class UserMembershipJpaRepositoryWrapper implements UserMembershipDataSou
     private final UserMembershipJpaRepository userMembershipJpaRepository;
 
     @Override
+    public Set<UserMembership> getUserMemberships(long userId) {
+        return userMembershipJpaRepository.selectUserMembershipsByUserId(userId).stream()
+                .map(UserMembership.class::cast)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    @Override
     public List<UserMembership> saveUserMemberships(Long userId, Set<UserMembershipClaim> claims) {
         var dataSet = createMembershipDataSet(userId, claims);
         var persistedData = userMembershipJpaRepository.saveAll(dataSet);

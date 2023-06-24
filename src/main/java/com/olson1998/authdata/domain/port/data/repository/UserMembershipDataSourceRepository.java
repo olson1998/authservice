@@ -8,6 +8,8 @@ import java.util.Set;
 
 public interface UserMembershipDataSourceRepository {
 
+    Set<UserMembership> getUserMemberships(long userId);
+
     List<UserMembership> saveUserMemberships(Long userId, Set<UserMembershipClaim> claims);
 
     int deleteAllUserMemberships(long userId);

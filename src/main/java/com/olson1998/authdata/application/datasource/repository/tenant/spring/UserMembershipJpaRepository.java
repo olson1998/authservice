@@ -12,6 +12,9 @@ import java.util.Set;
 @Repository
 public interface UserMembershipJpaRepository extends JpaRepository<UserMembershipData, UserMembershipJunction> {
 
+    @Query("SELECT um FROM UserMembershipData um WHERE um.junction.userId=:userId")
+    Set<UserMembershipData> selectUserMembershipsByUserId(long userId);
+
     @Modifying
     @Query("DELETE FROM UserMembershipData um WHERE um.junction.userId=:userId")
     int deleteAllUserMemberships(long userId);

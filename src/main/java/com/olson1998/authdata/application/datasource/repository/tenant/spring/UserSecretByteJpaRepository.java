@@ -14,9 +14,9 @@ public interface UserSecretByteJpaRepository extends JpaRepository<UserSecretByt
     @Query("SELECT usb.byteValue " +
             "FROM UserSecretByteData usb " +
             "LEFT OUTER JOIN UserData u ON u.id=usb.byteId.userId " +
-            "WHERE u.username=:username " +
+            "WHERE u.id=:userId " +
             "ORDER BY usb.byteId.byteOrdinal ASC")
-    List<Byte> selectUserSecretBytesByUsername(String username);
+    List<Byte> selectUserSecretBytesByUserId(long userId);
 
     @Query("DELETE FROM UserSecretByteData usb WHERE usb.byteId.userId=:userId")
     int deleteUserSecretByUserId(long userId);

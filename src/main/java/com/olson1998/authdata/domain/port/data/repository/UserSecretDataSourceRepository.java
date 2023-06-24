@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public interface UserSecretDataSourceRepository {
 
-    LinkedList<Byte> getUserSecretBytes(String username);
+    LinkedList<Byte> getUserSecretBytes(long userId);
 
     int saveUserSecret(long userId, byte[] secretBytes);
 

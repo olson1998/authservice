@@ -9,4 +9,5 @@ public interface User {
     String getUsername();
 
     SecretEncryption getSecretEncryptor();
+
 }

@@ -11,12 +11,7 @@ import java.util.Set;
 
 public interface UserDataSourceRepository {
 
-    /**
-     * Search SQL database for User entity by unique username
-     * @param username User's username
-     * @return User wrapped in Optional interface, if user not found returns Optional.empty()
-     */
-    Optional<User> getUser(String username);
+    Optional<User> getUser(long userId);
 
     /**
      * Search SQL database for User roles
