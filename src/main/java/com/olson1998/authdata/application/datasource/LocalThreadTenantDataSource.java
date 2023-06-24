@@ -1,6 +1,7 @@
 package com.olson1998.authdata.application.datasource;
 
 import com.olson1998.authdata.application.datasource.properties.DataSourceChangelogProps;
+import com.olson1998.authdata.application.security.config.LocalServiceInstanceSign;
 import com.olson1998.authdata.domain.port.processing.datasource.TenantSqlDataSourceRepository;
 import liquibase.integration.spring.SpringLiquibase;
 import lombok.SneakyThrows;
@@ -40,6 +41,8 @@ public class LocalThreadTenantDataSource implements DataSource {
 
     private final SpringLiquibase springLiquibase;
 
+    private final LocalServiceInstanceSign localServiceInstanceSign;
+
     private final TenantSqlDataSourceRepository tenantSqlDataSourceRepository;
 
     public void setCurrentThreadTenantDatasource(String tid){
@@ -59,6 +62,7 @@ public class LocalThreadTenantDataSource implements DataSource {
     public void appendDataSource(String tid, DataSource dataSource){
         var liquiParams = new HashMap<String, String>();
         liquiParams.put("tenant.id", tid);
+        liquiParams.put("service.ip", localServiceInstanceSign.getValue());
         springLiquibase.setChangeLog(tenantDataSourceChangelog);
         springLiquibase.setShouldRun(true);
         springLiquibase.setDefaultSchema(null);
@@ -143,9 +147,11 @@ public class LocalThreadTenantDataSource implements DataSource {
 
     public LocalThreadTenantDataSource(DataSourceChangelogProps dataSourceChangelogProps,
                                        SpringLiquibase springLiquibase,
-                                       TenantSqlDataSourceRepository tenantSqlDataSourceRepository) {
+                                       TenantSqlDataSourceRepository tenantSqlDataSourceRepository,
+                                       LocalServiceInstanceSign localServiceInstanceSign) {
         this.springLiquibase = springLiquibase;
         this.tenantDataSourceChangelog = dataSourceChangelogProps.getTenantDataBase().getChangeLog();
         this.tenantSqlDataSourceRepository = tenantSqlDataSourceRepository;
+        this.localServiceInstanceSign = localServiceInstanceSign;
     }
 }

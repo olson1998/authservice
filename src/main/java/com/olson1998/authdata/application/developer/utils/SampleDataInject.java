@@ -40,17 +40,17 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 @RequiredArgsConstructor
 
 @Component
-@ConditionalOnProperty("com.olson1998.authdata.application.developer.sample-data-inject=true")
+@ConditionalOnProperty(value = "com.olson1998.authdata.application.developer.sample-data-inject", havingValue = "true")
 public class SampleDataInject {
 
-    private static final String DEV_TID = "AUTHDATA_DEV";
+    private static final String DEV_TID = "TENANT_TEST";
 
     private static final TenantDataSourceData DEV_DB = TenantDataSourceData.builder()
             .tid(DEV_TID)
             .sqlDataSource(MARIA_DB)
             .host("localhost")
             .port(3306)
-            .database("authdata")
+            .database("TENANT_TEST_AUTHDATA")
             .build();
 
     private static final TenantDataSourceUserData DEV_DB_USER = new TenantDataSourceUserData(

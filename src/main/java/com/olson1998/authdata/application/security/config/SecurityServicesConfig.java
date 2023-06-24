@@ -21,9 +21,6 @@ import java.net.InetAddress;
 @Configuration
 public class SecurityServicesConfig {
 
-    @Value("${server.port}")
-    private int port;
-
     @Bean
     public CheckpointProvider checkpointProvider(CheckpointRepository checkpointRepository,
                                                  CaffeineCheckpointCache checkpointCacheRepository){
@@ -51,10 +48,9 @@ public class SecurityServicesConfig {
     public TokenVerifier tokenVerifier(RequestContextFactory requestContextFactory,
                                        TenantSecretProvider tenantSecretProvider,
                                        CheckpointProvider checkpointProvider,
-                                       CaffeineCheckpointCache checkpointCacheRepository){
+                                       LocalServiceInstanceSign localServiceInstanceSign){
         return new TokenVerifyingService(
-                InetAddress.getLoopbackAddress(),
-                port,
+                localServiceInstanceSign,
                 checkpointProvider,
                 requestContextFactory,
                 tenantSecretProvider

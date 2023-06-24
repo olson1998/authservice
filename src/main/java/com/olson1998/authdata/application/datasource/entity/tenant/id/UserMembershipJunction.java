@@ -16,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserMembershipJunction implements Serializable {
 
-    @Column(name = "AUTHUSERID", nullable = false, updatable = false)
+    @Column(name = "USERID", nullable = false, updatable = false)
     private Long userId;
 
     @Column(name = "MEMCONO", updatable = false)

@@ -10,6 +10,7 @@ import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvid
 import com.olson1998.authdata.domain.port.security.repository.TokenVerifier;
 import com.olson1998.authdata.domain.port.security.stereotype.CheckpointContext;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
+import com.olson1998.authdata.domain.port.security.stereotype.ServiceInstanceSign;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.NonNull;
 
@@ -66,18 +67,14 @@ public class TokenVerifyingService implements TokenVerifier {
                 .build();
     }
 
-    public TokenVerifyingService(InetAddress serviceAddress,
-                                 int servicePort,
+    public TokenVerifyingService(ServiceInstanceSign serviceInstanceSign,
                                  CheckpointProvider checkpointProvider,
                                  RequestContextFactory requestContextFactory,
                                  TenantSecretProvider tenantSecretProvider) {
         this.requestContextFactory = requestContextFactory;
         this.tenantSecretProvider = tenantSecretProvider;
         this.checkpointProvider = checkpointProvider;
-        this.serviceIpPort = new StringBuilder(serviceAddress.getHostAddress())
-                .append(':')
-                .append(servicePort)
-                .toString();
+        this.serviceIpPort = serviceInstanceSign.getValue();
     }
 
 }

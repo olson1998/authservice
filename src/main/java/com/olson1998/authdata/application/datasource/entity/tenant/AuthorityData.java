@@ -11,7 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Persistable;
 
 @Entity
-@Table(name = "AUTHROLEAUTHORITY")
+@Table(name = "ROLEAUTHORITY")
 
 @Builder
 @NoArgsConstructor
