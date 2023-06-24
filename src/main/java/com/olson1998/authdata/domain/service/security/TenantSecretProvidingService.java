@@ -5,6 +5,8 @@ import com.olson1998.authdata.domain.port.data.repository.TenantSecretDataSource
 import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
@@ -49,4 +51,8 @@ public class TenantSecretProvidingService implements TenantSecretProvider {
         return tenantSecretMapper.map(tenantAudienceList);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 }
