@@ -9,14 +9,10 @@ import com.olson1998.authdata.application.datasource.repository.global.spring.Te
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantDataSourceUserJpaRepository;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantSecretJpaRepository;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TrustedIssuerDataJpaRepository;
-import com.olson1998.authdata.application.requesting.model.payload.RoleBindingForm;
 import com.olson1998.authdata.domain.port.processing.datasource.TenantSqlDataSourceRepository;
-import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
-import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleSavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleBindingClaim;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -26,13 +22,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static com.olson1998.authdata.application.datasource.entity.global.values.SqlDataSource.MARIA_DB;
 import static com.olson1998.authdata.application.datasource.entity.tenant.values.JwtAlgorithm.HMAC256;
-import static com.olson1998.authdata.application.developer.utils.SampleDeveloperData.SAMPLE_USER_SAVE_REQ;
-import static com.olson1998.authdata.application.developer.utils.SampleDeveloperData.roleSavingRequest;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @Profile("developer")
@@ -52,13 +43,6 @@ public class SampleDataInject {
             .port(3306)
             .database("TENANT_TEST_AUTHDATA")
             .build();
-
-    private static final TenantDataSourceUserData DEV_DB_USER = new TenantDataSourceUserData(
-            DEV_TID,
-            "user",
-            "mysql"
-    );
-
     private final LocalThreadTenantDataSource localThreadTenantDataSource;
 
     private final JwtTokenFactory jwtTokenFactory;
@@ -81,43 +65,25 @@ public class SampleDataInject {
 
     @EventListener(ApplicationStartedEvent.class)
     public void injectSampleData(){
-        injectTestTenant();
-        localThreadTenantDataSource.setCurrentThreadTenantDatasource(DEV_TID);
-        injectTestAuthData();
-        localThreadTenantDataSource.clean();
+        if(!tenantSecretJpaRepository.isTenantExisting(DEV_TID)){
+            injectTestTenant();
+        }
     }
 
     @Modifying
     @Transactional(transactionManager = "globalDatasourceTransactionManager")
     public void injectTestTenant(){
-        var db = tenantDataSourceJpaRepository.save(DEV_DB);
-        var dbUser = tenantDataSourceUserJpaRepository.save(DEV_DB_USER);
-        var dataSource = tenantSqlDataSourceRepository.getForTenant(DEV_TID);
         tenantSecretJpaRepository.save(new TenantSecretData(DEV_TID, System.currentTimeMillis(), randomAlphanumeric(10), HMAC256));
         trustedIssuerDataJpaRepository.save(new TrustedIssuerData(jwtTokenFactory.getServiceIpPort(), DEV_TID));
+        var db = tenantDataSourceJpaRepository.save(DEV_DB);
+        var ds = new TenantDataSourceUserData(
+                db.getId(),
+                "user",
+                "mysql"
+        );
+        var dbUser = tenantDataSourceUserJpaRepository.save(ds);
+        var dataSource = tenantSqlDataSourceRepository.getForTenant(DEV_TID);
         localThreadTenantDataSource.appendDataSource(DEV_TID, dataSource);
-    }
-
-    public void injectTestAuthData(){
-        var userSavingReport =userRequestProcessor.saveUser(SAMPLE_USER_SAVE_REQ);
-        var roleSavingReport =roleRequestProcessor.saveNewRoles(roleSavingRequest(userSavingReport.getUserId()));
-        userRequestProcessor.bindMemberships(SampleDeveloperData.userMembershipSavingRequest(userSavingReport.getUserId()));
-        var authoritySavingReport= authorityRequestProcessor.saveAuthorities(SampleDeveloperData.authoritySavingRequest());
-        roleRequestProcessor.saveNewRoleBounds(SampleDeveloperData.roleBoundSavingRequest(roleBindingClaims(roleSavingReport, authoritySavingReport)));
-    }
-
-    private Set<RoleBindingClaim> roleBindingClaims(RoleSavingReport roleSavingReport, AuthoritySavingReport authoritySavingReport){
-        var roleBoundsClaims = new HashSet<RoleBindingClaim>();
-        roleSavingReport.getPersistedRolesDetailsMap()
-                .keySet()
-                .forEach(role ->{
-                    authoritySavingReport.getPersistedAuthoritiesDetailsMap()
-                            .keySet()
-                            .forEach(authorityId ->{
-                                roleBoundsClaims.add(new RoleBindingForm(role, authorityId));
-                            });
-                });
-        return roleBoundsClaims;
     }
 
 }

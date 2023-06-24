@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface TenantDataSourceUserJpaRepository extends JpaRepository<TenantDataSourceUserData, TenantDataSourceUserId> {
 
-    @Query("SELECT usr FROM TenantDataSourceUserData usr WHERE usr.tenantDataSourceUserId.tid=:tid")
+    @Query("SELECT usr FROM TenantDataSourceUserData usr " +
+            "LEFT OUTER JOIN TenantDataSourceData ds " +
+            "ON usr.userId.dataSourceId=ds.id " +
+            "WHERE ds.tid=:tid")
     List<TenantDataSourceUserData> selectTenantDataSourceUsersByTenantId(String tid);
 }

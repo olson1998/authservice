@@ -19,9 +19,9 @@ public class TenantDataSourceUserId implements Serializable {
     @Serial
     private static final long serialVersionUID = 6162890169884477239L;
 
-    @Column(name = "TNTID")
-    private String tid;
+    @Column(name = "TNTDSID")
+    private Long dataSourceId;
 
-    @Column(name = "TNTUSRNM")
+    @Column(name = "TNTUSRNM", length = 30)
     private String username;
 }

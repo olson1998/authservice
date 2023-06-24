@@ -2,7 +2,7 @@ package com.olson1998.authdata.domain.port.data.stereotype;
 
 public interface TenantDataSourceUser {
 
-    String getTid();
+    Long getDataSourceId();
 
     String getUsername();
 

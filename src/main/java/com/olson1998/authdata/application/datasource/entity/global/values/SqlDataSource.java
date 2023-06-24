@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SqlDataSource implements SqlDataSourceType {
-    MS_SQL(true, false, false),
+    SQL_SERVER(true, false, false),
     POSTGRES(false, true, false),
     MARIA_DB(false, false, true);
 

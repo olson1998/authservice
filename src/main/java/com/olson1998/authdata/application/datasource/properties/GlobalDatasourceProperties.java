@@ -48,7 +48,7 @@ public class GlobalDatasourceProperties implements TenantDataSource{
         private String password;
 
         @Override
-        public String getTid() {
+        public Long getDataSourceId() {
             return null;
         }
 

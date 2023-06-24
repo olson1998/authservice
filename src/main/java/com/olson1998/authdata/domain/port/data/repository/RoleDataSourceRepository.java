@@ -18,5 +18,7 @@ public interface RoleDataSourceRepository {
 
     List<Role> saveRoles(Set<RoleDetails> roleDetails);
 
+    Role saveRole(RoleDetails roleDetails);
+
     int updateRoleTimestamp(@NonNull Set<String> rolesIdsSet, long timestamp);
 }

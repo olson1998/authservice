@@ -1,6 +1,7 @@
 package com.olson1998.authdata.domain.port.processing.request.repository;
 
 import com.olson1998.authdata.domain.port.data.exception.RollbackRequiredException;
+import com.olson1998.authdata.domain.port.data.stereotype.Role;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBoundsDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;
@@ -21,6 +22,9 @@ public interface RoleRequestProcessor {
 
     @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     RoleBoundsDeletingReport deleteRoleBounds(RoleBoundDeletingRequest request);
+
+    @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
+    void saveNewUserPrivateRole(long userId);
 
     @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     int deleteUserRoles(UserDeletingRequest request);

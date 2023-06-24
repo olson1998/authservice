@@ -13,29 +13,22 @@ import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
-
-import static java.util.Map.entry;
 
 @Slf4j
 
 @Component(value = "localThreadTenantDataSource")
 public class LocalThreadTenantDataSource implements DataSource {
 
-    private static final String SELF_TENANT = "SELF_TENANT";
-
-    private static final JdbcDataSource IN_MEMORY_DATA_SOURCE = selfTenantHost();
+    private static final String SELF_TENANT = "MYSELF";
 
     private static final ThreadLocal<DataSource> CURRENT_THREAD_TENANT_DATASOURCE = new ThreadLocal<>();
 
     private static final ConcurrentMap<String, DataSource> TENANTS_DATA_SOURCES =
-            new ConcurrentHashMap<>(Map.ofEntries(
-                    entry(SELF_TENANT, IN_MEMORY_DATA_SOURCE)
-            ));
+            new ConcurrentHashMap<>();
 
     private final String tenantDataSourceChangelog;
 
@@ -60,9 +53,11 @@ public class LocalThreadTenantDataSource implements DataSource {
 
     @SneakyThrows
     public void appendDataSource(String tid, DataSource dataSource){
+        log.debug("Appending new data source of tenant: '{}'", tid);
         var liquiParams = new HashMap<String, String>();
         liquiParams.put("tenant.id", tid);
         liquiParams.put("service.ip", localServiceInstanceSign.getValue());
+        springLiquibase.setContexts("TENANT:"+tid);
         springLiquibase.setChangeLog(tenantDataSourceChangelog);
         springLiquibase.setShouldRun(true);
         springLiquibase.setDefaultSchema(null);
@@ -153,5 +148,6 @@ public class LocalThreadTenantDataSource implements DataSource {
         this.tenantDataSourceChangelog = dataSourceChangelogProps.getTenantDataBase().getChangeLog();
         this.tenantSqlDataSourceRepository = tenantSqlDataSourceRepository;
         this.localServiceInstanceSign = localServiceInstanceSign;
+        this.appendDataSource(SELF_TENANT, selfTenantHost());
     }
 }

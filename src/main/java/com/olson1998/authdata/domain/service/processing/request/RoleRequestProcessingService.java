@@ -8,6 +8,7 @@ import com.olson1998.authdata.domain.model.processing.report.DomainRoleSavingRep
 import com.olson1998.authdata.domain.model.processing.request.LinkedAuthoritySavingRequest;
 import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBindingClaim;
 import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBoundsDeletingRequest;
+import com.olson1998.authdata.domain.model.processing.request.payload.PrivateRoleDetails;
 import com.olson1998.authdata.domain.port.data.exception.DeletedRolesQtyDoesntMuchRequestedQty;
 import com.olson1998.authdata.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.RoleDataSourceRepository;
@@ -125,6 +126,11 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
                 request.getId(),
                 roleDeletedBoundsQty
         );
+    }
+
+    @Override
+    public void saveNewUserPrivateRole(long userId) {
+        roleDataSourceRepository.saveRole(new PrivateRoleDetails(userId));
     }
 
     @Override

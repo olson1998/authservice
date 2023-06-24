@@ -3,61 +3,28 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_NUM_SEQ" author="olson1998">
+    <changeSet id="24/06/2023/tenant_data_source/SQL_VENDORS" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="TENANT_DS_ID_SEQ"/>
+                <tableExists tableName="SQL_VENDORS"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="TENANT_DS_ID_SEQ" startValue="1" incrementBy="1"/>
-    </changeSet>
-    <changeSet id="18/06/2023/global_data_source/TNTDS" author="${service.ip}">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="TNTDS"/>
-            </not>
-        </preConditions>
-        <createTable tableName="TNTDS">
-            <column name="TNTDSID" type="bigint">
+        <createTable tableName="SQL_VENDORS">
+            <column name="VENDOR" type="varchar(10)">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="TNTID" type="varchar(15)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TNTDSTMP" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TNTDSTYPE" type="varchar(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TNTDSDB" type="varchar(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TNTDSHOST" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TNTDSPORT" type="int"/>
-            <column name="TNTDSDBSCHEMA" type="varchar(255)"/>
-            <column name="TNTDSCONNTIMEOUT" type="int"/>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/global_data_source/TNTNDSUSR" author="${service.ip}">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="TNTNDSUSR"/>
-            </not>
-        </preConditions>
-        <createTable tableName="TNTNDSUSR">
-            <column name="TNTID" type="varchar(15)">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="TNTUSRNM" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TNTDSUSRSEC" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet id="24/06/2023/tenant_data_source/SQL_VENDORS-INSERT" author="${service.ip}">
+        <insert tableName="SQL_VENDORS">
+            <column name="VENDOR" value="SQL_SERVER"/>
+        </insert>
+        <insert tableName="SQL_VENDORS">
+            <column name="VENDOR" value="MARIA_DB"/>
+        </insert>
+        <insert tableName="SQL_VENDORS">
+            <column name="VENDOR" value="POSTGRES"/>
+        </insert>
     </changeSet>
     <changeSet id="18/06/2023/global_data_source/TNTSC" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
@@ -80,6 +47,63 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/TENANT_DS_ID_SEQ" author="${service.ip}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="TENANT_DS_ID_SEQ"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="TENANT_DS_ID_SEQ" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="18/06/2023/global_data_source/TNTDS" author="${service.ip}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TNTDS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TNTDS">
+            <column name="TNTDSID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TNTID" type="varchar(15)">
+                <constraints nullable="false" foreignKeyName="TNTID" referencedColumnNames="TNTID" referencedTableName="TNTSC"/>
+            </column>
+            <column name="TNTDSTMP" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSTYPE" type="varchar(8)">
+                <constraints nullable="false" foreignKeyName="VENDOR" referencedColumnNames="VENDOR" referencedTableName="SQL_VENDORS"/>
+            </column>
+            <column name="TNTDSDB" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSHOST" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSPORT" type="int"/>
+            <column name="TNTDSDBSCHEMA" type="varchar(255)"/>
+            <column name="TNTDSCONNTIMEOUT" type="int"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/global_data_source/TNTNDSUSR" author="${service.ip}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="TNTNDSUSR"/>
+            </not>
+        </preConditions>
+        <createTable tableName="TNTNDSUSR">
+            <column name="TNTDSID" type="bigint">
+                <constraints nullable="false" foreignKeyName="TNTNDSUSR_DSID" referencedColumnNames="TNTDSID" referencedTableName="TNTDS"/>
+            </column>
+            <column name="TNTUSRNM" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TNTDSUSRSEC" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="TNTNDSUSR" columnNames="TNTDSID,TNTUSRNM" constraintName="TNTNDSUSRID"/>
+    </changeSet>
     <changeSet id="18/06/2023/global_data_source/TNTTRUSTISS" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -87,10 +111,11 @@
             </not>
         </preConditions>
         <createTable tableName="TNTTRUSTISS">
-            <column name="TNTID" type="varchar(15)"/>
-            <column name="TNTTRUSTISS" type="varchar(255)">
-                <constraints primaryKey="true"/>
+            <column name="TNTID" type="varchar(15)">
+                <constraints nullable="false" foreignKeyName="CLAIMING_TENANT_ID" referencedColumnNames="TNTID" referencedTableName="TNTSC"/>
             </column>
+            <column name="TNTTRUSTISS" type="varchar(255)"/>
         </createTable>
+        <addPrimaryKey tableName="TNTTRUSTISS" columnNames="TNTID,TNTTRUSTISS" constraintName="TNTTRUSTISSID"/>
     </changeSet>
 </databaseChangeLog>

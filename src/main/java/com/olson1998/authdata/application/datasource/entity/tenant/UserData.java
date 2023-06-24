@@ -16,7 +16,7 @@ import static com.olson1998.authdata.application.datasource.entity.tenant.values
 
 @Entity
 @Table(name = "AUTHUSER")
-@SequenceGenerator(name = "AUTH_USER_NUM_SEQ", sequenceName = "AUTH_USER_NUM_SEQ", allocationSize = 1)
+@SequenceGenerator(name = "AUTH_USER_ID_SEQ", sequenceName = "AUTH_USER_ID_SEQ", allocationSize = 1)
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class UserData implements Persistable<Long>, User {
 
     @Id
     @Column(name = "USERID")
-    @GeneratedValue(generator = "AUTH_USER_NUM_SEQ", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "AUTH_USER_ID_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "USERNM", unique = true, nullable = false, updatable = false)

@@ -57,6 +57,7 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         var encryptor = user.getSecretEncryptor();
         var passBytes = encryptor.encrypt(details.getPassword());
         userSecretDataSourceRepository.saveUserSecret(user.getId(), passBytes);
+        roleRequestProcessor.saveNewUserPrivateRole(userId);
         if(request.getMembershipClaims() != null){
             var size = membershipClaims.size();
             userMembershipDataSourceRepository.saveUserMemberships(userId, membershipClaims);

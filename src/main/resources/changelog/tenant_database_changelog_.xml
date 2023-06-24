@@ -3,14 +3,13 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_NUM_SEQ" author="${service.ip}">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_ID_SEQ" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="AUTH_USER_NUM_SEQ"/>
-                <tableExists tableName="AUTHUSER"/>
+                <sequenceExists sequenceName="AUTH_USER_ID_SEQ"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="AUTH_USER_NUM_SEQ" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="AUTH_USER_ID_SEQ" startValue="1" incrementBy="1"/>
     </changeSet>
     <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSER" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
@@ -38,7 +37,7 @@
         </preConditions>
         <createTable tableName="AUTHUSERSEC">
             <column name="USERID" type="bigint">
-                <constraints foreignKeyName="USERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
+                <constraints foreignKeyName="SECRETUSERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
             </column>
             <column name="USERSECBYTEORDINAL" type="int">
                 <constraints nullable="false"/>
@@ -47,6 +46,52 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERMEM" author="${service.ip}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHUSERMEM"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHUSERMEM">
+            <column name="USERMEMID" type="varchar(31)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USERID" type="bigint">
+                <constraints foreignKeyName="MEMBERSHIPUSERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
+            </column>
+            <column name="MEMCONO" type="bigint">
+            </column>
+            <column name="MEMGRPID" type="bigint">
+            </column>
+            <column name="MEMREGID" type="varchar(30)">
+            </column>
+            <column name="MEMTMID" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="24/06/2023/tenant_data_source/${tenant.id}/ROLESUB" author="${service.ip}">
+        <createTable tableName="ROLESUB">
+            <column name="SUBJECT" type="varchar(7)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="24/06/2023/tenant_data_source/${tenant.id}/ROLESUB-INSERT" author="${service.ip}">
+        <insert tableName="ROLESUB">
+            <column name="SUBJECT" value="PRIVATE"/>
+        </insert>
+        <insert tableName="ROLESUB">
+            <column name="SUBJECT" value="COMPANY"/>
+        </insert>
+        <insert tableName="ROLESUB">
+            <column name="SUBJECT" value="REGION"/>
+        </insert>
+        <insert tableName="ROLESUB">
+            <column name="SUBJECT" value="GROUP"/>
+        </insert>
+        <insert tableName="ROLESUB">
+            <column name="SUBJECT" value="TEAM"/>
+        </insert>
     </changeSet>
     <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLE" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
@@ -62,13 +107,13 @@
                 <constraints nullable="false"/>
             </column>
             <column name="ROLESUB" type="varchar(7)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" foreignKeyName="ROLESUB" referencedColumnNames="SUBJECT" referencedTableName="ROLESUB"/>
             </column>
             <column name="ROLETMP" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="ROLESUBUSERID" type="bigint">
-                <constraints nullable="false"/>
+            <column name="USERID" type="bigint">
+                <constraints foreignKeyName="AUTHROLEUSERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
             </column>
             <column name="ROLESUBCONO" type="bigint"/>
             <column name="ROLESUBREGID" type="varchar(30)"/>
@@ -94,28 +139,6 @@
             <column name="AUTHORITYEXP" type="bigint"/>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERMEM" author="${service.ip}">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="AUTHUSERMEM"/>
-            </not>
-        </preConditions>
-        <createTable tableName="AUTHUSERMEM">
-            <column name="USERMEMID" type="varchar(31)">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="USERID" type="bigint">
-            </column>
-            <column name="MEMCONO" type="bigint">
-            </column>
-            <column name="MEMGRPID" type="bigint">
-            </column>
-            <column name="MEMREGID" type="varchar(30)">
-            </column>
-            <column name="MEMTMID" type="bigint">
-            </column>
-        </createTable>
-    </changeSet>
     <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHROLEBIND" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -127,7 +150,7 @@
                 <constraints foreignKeyName="ROLEID" referencedColumnNames="ROLEID" referencedTableName="AUTHROLE"/>
             </column>
             <column name="AUTHORITYID" type="varchar(17)">
-                <constraints foreignKeyName="AUTHORITYID" referencedColumnNames="AUTHORITYID" referencedTableName="ROLEAUTHORITY"/>
+                <constraints foreignKeyName="BOUNDED_AUTHORITYID" referencedColumnNames="AUTHORITYID" referencedTableName="ROLEAUTHORITY"/>
             </column>
         </createTable>
     </changeSet>

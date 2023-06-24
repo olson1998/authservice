@@ -22,6 +22,7 @@ public class LiquiBaseConfig {
         var springLiquibaseBean = new SpringLiquibase();
         var globalChangeLog = dataSourceChangelogProps.getGlobalDataBase().getChangeLog();
         liquiParams.put("service.ip", localServiceInstanceSign.getValue());
+        springLiquibaseBean.setContexts("GLOBAL");
         springLiquibaseBean.setShouldRun(true);
         springLiquibaseBean.setChangeLogParameters(liquiParams);
         springLiquibaseBean.setChangeLog(globalChangeLog);

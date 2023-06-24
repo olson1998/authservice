@@ -15,19 +15,19 @@ import lombok.NonNull;
 public class TenantDataSourceUserData implements TenantDataSourceUser {
 
     @EmbeddedId
-    private TenantDataSourceUserId tenantDataSourceUserId;
+    private TenantDataSourceUserId userId;
 
     @Column(name = "TNTDSUSRSEC", nullable = false)
     private String password;
 
     @Override
-    public String getTid() {
-        return tenantDataSourceUserId.getTid();
+    public Long getDataSourceId() {
+        return userId.getDataSourceId();
     }
 
     @Override
     public String getUsername() {
-        return tenantDataSourceUserId.getUsername();
+        return userId.getUsername();
     }
 
     @Override
@@ -37,13 +37,13 @@ public class TenantDataSourceUserData implements TenantDataSourceUser {
 
     @Override
     public boolean isMatching(@NonNull TenantDataSourceUser tenantDataSourceUser) {
-        return this.tenantDataSourceUserId.getTid().equals(tenantDataSourceUser.getTid()) &&
-                this.tenantDataSourceUserId.getUsername().equals(tenantDataSourceUser.getUsername()) &&
+        return this.userId.getDataSourceId().equals(tenantDataSourceUser.getDataSourceId()) &&
+                this.userId.getUsername().equals(tenantDataSourceUser.getUsername()) &&
                 this.password.equals(tenantDataSourceUser.getPassword());
     }
 
-    public TenantDataSourceUserData(String tid, String username, String password) {
+    public TenantDataSourceUserData(Long dataSourceId, String username, String password) {
         this.password = password;
-        this.tenantDataSourceUserId = new TenantDataSourceUserId(tid, username);
+        this.userId = new TenantDataSourceUserId(dataSourceId, username);
     }
 }

@@ -24,7 +24,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
     @Query("SELECT r FROM UserData u " +
             "LEFT OUTER JOIN UserMembershipData mb ON u.id=mb.junction.userId " +
             "LEFT OUTER JOIN RoleData r ON " +
-            "(mb.junction.userId=r.userId AND r.subject='PRIVATE') OR " +
+            "(u.id=r.userId AND r.subject='PRIVATE') OR " +
             "(mb.junction.companyNumber=r.companyNumber AND r.subject='COMPANY') OR " +
             "(mb.junction.regionId=r.regionId AND r.subject='REGION') OR " +
             "(mb.junction.groupId=r.groupId AND r.subject='GROUP') OR " +
@@ -37,7 +37,7 @@ public interface UserJpaRepository extends JpaRepository<UserData, Long> {
             "FROM UserData u " +
             "LEFT OUTER JOIN UserMembershipData mb ON u.id=mb.junction.userId " +
             "LEFT OUTER JOIN RoleData r ON " +
-            "(mb.junction.userId=r.userId AND r.subject='PRIVATE') OR " +
+            "(u.id=r.userId AND r.subject='PRIVATE') OR " +
             "(mb.junction.companyNumber=r.companyNumber AND r.subject='COMPANY') OR " +
             "(mb.junction.regionId=r.regionId AND r.subject='REGION') OR " +
             "(mb.junction.groupId=r.groupId AND r.subject='GROUP') OR " +

@@ -1,36 +1,39 @@
 package com.olson1998.authdata.application.datasource.entity.global;
 
-import jakarta.persistence.Column;
+import com.olson1998.authdata.application.datasource.entity.global.id.TrustedIssuerId;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.data.domain.Persistable;
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
 @Table(name = "TNTTRUSTISS")
-public class TrustedIssuerData implements Persistable<String> {
+public class TrustedIssuerData implements Persistable<TrustedIssuerId> {
 
-    @Id
-    @Column(name = "TNTTRUSTISS", nullable = false, updatable = false, unique = true)
-    private String name;
-
-    @Column(name = "TNTID", nullable = false, updatable = false)
-    private String tenantId;
+    @EmbeddedId
+    private TrustedIssuerId trustedIssuerId;
 
     @Override
-    public String getId() {
-        return name;
+    public TrustedIssuerId getId() {
+        return trustedIssuerId;
+    }
+
+    public String getName(){
+        return trustedIssuerId.getName();
     }
 
     @Override
     public boolean isNew() {
         return true;
+    }
+
+    public TrustedIssuerData(@NonNull String name, @NonNull String tid) {
+        this.trustedIssuerId = new TrustedIssuerId(name, tid);
     }
 }

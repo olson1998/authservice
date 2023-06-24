@@ -118,8 +118,9 @@ public class TenantDataSourceData implements TenantDataSource {
         boolean sameSchema;
         boolean sameInstance = false;
         boolean sameUsers = false;
-        if(this.port != null && tenantDataSource.getPort() != null){
-            samePort = this.port.equals(tenantDataSource.getPort());
+        if(this.port != null && tenantDataSource.getPort().isPresent()){
+            tenantDataSource.getPort();
+            samePort = false;
         }else {
             samePort = false;
         }
@@ -129,20 +130,16 @@ public class TenantDataSourceData implements TenantDataSource {
             sameSchema = false;
         }
         switch (sqlDataSource){
-            case MS_SQL -> sameInstance = tenantDataSource.getSqlDataSourceType().isMsSql();
+            case SQL_SERVER -> sameInstance = tenantDataSource.getSqlDataSourceType().isMsSql();
             case POSTGRES -> sameInstance = tenantDataSource.getSqlDataSourceType().isPostgres();
             case MARIA_DB -> sameInstance = tenantDataSource.getSqlDataSourceType().isMariaDb();
         }
         sameUsers = tenantDataSourceUsers.stream()
                 .allMatch(user -> containsMatching(user, users));
-        return this.id.equals(tenantDataSource.getId()) &&
-                this.tid.equals(tenantDataSource.getTid()) &&
-                this.host.equals(tenantDataSource.getHost()) &&
-                this.database.equals(tenantDataSource.getDatabase()) &&
-                sameInstance &&
-                samePort &&
-                sameSchema &&
-                sameUsers;
+        if (this.id.equals(tenantDataSource.getId()) && this.tid.equals(tenantDataSource.getTid()) && this.host.equals(tenantDataSource.getHost())) {
+            tenantDataSource.getDatabase();
+        }
+        return false;
     }
 
     private boolean containsMatching(TenantDataSourceUser user, List<TenantDataSourceUser> tenantDataSourceUsers){

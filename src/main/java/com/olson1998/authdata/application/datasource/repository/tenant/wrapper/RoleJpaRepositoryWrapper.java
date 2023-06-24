@@ -45,6 +45,12 @@ public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
     }
 
     @Override
+    public Role saveRole(RoleDetails roleDetails) {
+        var roleData = new RoleData(roleDetails);
+        return roleJpaRepository.save(roleData);
+    }
+
+    @Override
     public int updateRoleTimestamp(@NonNull Set<String> rolesIdsSet, long timestamp) {
         return roleJpaRepository.updateRoleTimestamps(rolesIdsSet, timestamp);
     }
