@@ -1,23 +1,18 @@
 package com.olson1998.authdata.domain.model.exception.security;
 
-import com.olson1998.authdata.domain.port.security.exception.TokenVerificationException;
-import lombok.NoArgsConstructor;
+import com.olson1998.authdata.domain.port.checkpoint.excpetion.CheckpointVerificationException;
+import lombok.Getter;
 
-@NoArgsConstructor
-public class CheckpointTokenVerificationException extends TokenVerificationException {
+@Getter
+public class CheckpointTokenVerificationException extends CheckpointVerificationException {
 
-    @Override
-    public String getMessage() {
-        return "failed to verify given token";
-    }
+    private static final String CHECKPOINT_VERIFICATION_FAILED = "checkpoint verification failed";
 
-    @Override
-    public int getStatusCode() {
-        return 401;
-    }
+    private final int statusCode = 403;
 
-    @Override
-    public String getDisplayName() {
-        return "checkpoint verification failed";
+    private final String headerValue = CHECKPOINT_VERIFICATION_FAILED;
+
+    public CheckpointTokenVerificationException(Throwable cause) {
+        super(CHECKPOINT_VERIFICATION_FAILED, cause);
     }
 }

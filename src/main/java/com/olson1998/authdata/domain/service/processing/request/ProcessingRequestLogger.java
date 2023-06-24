@@ -2,6 +2,7 @@ package com.olson1998.authdata.domain.service.processing.request;
 
 import com.olson1998.authdata.domain.port.data.stereotype.*;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.Request;
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public abstract class ProcessingRequestLogger {
     protected enum RequestType{
         SAVE("save"),
         UPDATE("update"),
-        DELETE("delete");
+        DELETE("delete"),
+        OBTAIN("obtain");
 
         private final String displayName;
     }
@@ -38,6 +40,8 @@ public abstract class ProcessingRequestLogger {
             displayName = "role bindings";
         } else if (Authority.class.equals(clazz)){
             displayName = "authorities";
+        } else if (AuthUser.class.equals(clazz)) {
+            displayName = "user auth data";
         }
         return displayName;
     }

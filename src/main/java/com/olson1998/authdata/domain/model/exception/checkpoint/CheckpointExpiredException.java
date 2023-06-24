@@ -1,10 +1,8 @@
 package com.olson1998.authdata.domain.model.exception.checkpoint;
 
-import com.olson1998.authdata.domain.port.checkpoint.excpetion.CheckpointVerificationException;
-
 import java.util.Date;
 
-public class CheckpointExpiredException extends CheckpointVerificationException {
+public class CheckpointExpiredException extends SecurityException {
 
     public static final String EXCEPTION_MESSAGE = "checkpoint expired";
 
@@ -13,11 +11,6 @@ public class CheckpointExpiredException extends CheckpointVerificationException 
     public CheckpointExpiredException(Long expireTime) {
         super(EXCEPTION_MESSAGE, new SecurityException());
         this.expireTime = expireTime;
-    }
-
-    @Override
-    public String getHeaderValue() {
-        return EXCEPTION_MESSAGE;
     }
 
     @Override

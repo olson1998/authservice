@@ -1,6 +1,5 @@
 package com.olson1998.authdata.domain.service.security;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.olson1998.authdata.domain.port.caching.repository.impl.CheckpointCacheRepository;
 import com.olson1998.authdata.domain.port.caching.stereotype.CheckpointTimestamp;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
@@ -23,13 +22,12 @@ public class CheckpointProvidingService implements CheckpointProvider {
     }
 
     @Override
-    public Optional<Checkpoint> getCheckpoint(String xCheckpointToken, CheckpointTimestamp checkpointTimestamp, Algorithm algorithm) {
+    public Optional<Checkpoint> getCheckpoint(String xCheckpointToken, CheckpointTimestamp checkpointTimestamp) {
         var tid = checkpointTimestamp.getTenantId();
         var key = checkpointRepository.writeCheckpointCacheKey(
                 tid,
                 checkpointTimestamp.getUserId(),
-                xCheckpointToken,
-                algorithm
+                xCheckpointToken
         );
         return checkpointCacheRepository.getValue(key);
     }

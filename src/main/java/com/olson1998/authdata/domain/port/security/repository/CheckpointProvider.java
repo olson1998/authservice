@@ -10,6 +10,6 @@ public interface CheckpointProvider {
 
     Optional<CheckpointTimestamp> getCheckpointTimestamp(String xCheckpointToken);
 
-    Optional<Checkpoint> getCheckpoint(String xCheckpointToken, CheckpointTimestamp checkpointTimestamp, Algorithm algorithm);
+    Optional<Checkpoint> getCheckpoint(String xCheckpointToken, CheckpointTimestamp checkpointTimestamp);
 
 }

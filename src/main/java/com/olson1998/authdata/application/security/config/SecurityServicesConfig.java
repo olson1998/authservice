@@ -11,12 +11,8 @@ import com.olson1998.authdata.domain.port.security.repository.TokenVerifier;
 import com.olson1998.authdata.domain.service.security.CheckpointProvidingService;
 import com.olson1998.authdata.domain.service.security.RequestContextFabricationService;
 import com.olson1998.authdata.domain.service.security.TenantSecretProvidingService;
-import com.olson1998.authdata.domain.service.security.TokenVerifyingService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.net.InetAddress;
 
 @Configuration
 public class SecurityServicesConfig {
@@ -44,17 +40,5 @@ public class SecurityServicesConfig {
         );
     }
 
-    @Bean
-    public TokenVerifier tokenVerifier(RequestContextFactory requestContextFactory,
-                                       TenantSecretProvider tenantSecretProvider,
-                                       CheckpointProvider checkpointProvider,
-                                       LocalServiceInstanceSign localServiceInstanceSign){
-        return new TokenVerifyingService(
-                localServiceInstanceSign,
-                checkpointProvider,
-                requestContextFactory,
-                tenantSecretProvider
-        );
-    }
 
 }

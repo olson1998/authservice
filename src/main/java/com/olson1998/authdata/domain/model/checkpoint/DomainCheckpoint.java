@@ -48,6 +48,8 @@ public class DomainCheckpoint implements Checkpoint {
 
     private int usageCount = 0;
 
+    private boolean verified;
+
     @Override
     public boolean isExpiring() {
         return expireTime != null;
@@ -77,37 +79,38 @@ public class DomainCheckpoint implements Checkpoint {
     }
 
     @Override
-    public void verifyCheckpointToken(@NonNull String checkpointToken, @NonNull String sign) {
-        verifyToken(checkpointToken, sign);
+    public boolean verifyCheckpointToken(@NonNull String checkpointToken, @NonNull String sign) {
+        return verifyToken(checkpointToken, sign);
     }
 
     private String digest(String token){
         return DigestUtils.sha256Hex(token);
     }
 
-    private void verifyToken(String xCheckpointToken, String secret){
+    private boolean verifyToken(String xCheckpointToken, String secret){
         logs.add(log(CheckpointStatus.VERIFIED, "checkpoint verification"));
         var expectedToken = writeCheckpointToken(secret);
         if(isExpiring()){
             if(expireTime < System.currentTimeMillis()){
                 var e = new CheckpointExpiredException(expireTime);
-                logs.add(log(CheckpointStatus.EXPIRED, e.getHeaderValue()));
-                throw e;
+                logs.add(log(CheckpointStatus.EXPIRED, e.getMessage()));
+                throw new CheckpointTokenVerificationException(e);
             }
         }
         if(isUsageCount()){
             usageCount++;
             if(usageCount > maxUsageCount){
                 var e = new CheckpointUsageExceedingException(maxUsageCount);
-                logs.add(log(CheckpointStatus.EXPIRED, e.getHeaderValue()));
-                throw e;
+                logs.add(log(CheckpointStatus.EXPIRED, e.getMessage()));
+                throw new CheckpointTokenVerificationException(e);
             }
         }
         if(!expectedToken.equals(xCheckpointToken)){
-            var e = new CheckpointTokenVerificationException();
-            logs.add(log(CheckpointStatus.ERROR, e.getDisplayName()));
-            throw e;
+            var e = new CheckpointTokenVerificationException(new SecurityException("tokens are not matching"));
+            logs.add(log(CheckpointStatus.ERROR, e.getMessage()));
+            throw new CheckpointTokenVerificationException(e);
         }
+        return true;
     }
 
     private String log(CheckpointStatus status, String message){

@@ -15,6 +15,6 @@ public interface Checkpoint extends CheckpointValues{
 
     String writeCheckpointToken(String sign);
 
-    void verifyCheckpointToken(String checkpointToken, String sign);
+    boolean verifyCheckpointToken(String checkpointToken, String sign);
 
 }

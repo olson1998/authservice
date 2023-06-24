@@ -7,6 +7,11 @@ import com.olson1998.authdata.domain.port.processing.request.repository.AuthUser
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthUserObtainRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthUser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static com.olson1998.authdata.domain.service.processing.request.ProcessingRequestLogger.RequestType.OBTAIN;
+
+@Slf4j
 
 @RequiredArgsConstructor
 public class AuthUserProcessingService implements AuthUserRequestProcessor {
@@ -17,6 +22,7 @@ public class AuthUserProcessingService implements AuthUserRequestProcessor {
 
     @Override
     public AuthUser getAuthUser(AuthUserObtainRequest authUserObtainRequest) {
+        ProcessingRequestLogger.log(log, authUserObtainRequest, OBTAIN, AuthUser.class);
         var userId = authUserObtainRequest.getUserId();
         var user = userDataSourceRepository.getUser(userId)
                 .orElseThrow();

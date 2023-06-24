@@ -4,6 +4,8 @@ import org.springframework.security.core.AuthenticationException;
 
 public abstract class CheckpointVerificationException extends AuthenticationException {
 
+    public abstract int getStatusCode();
+
     public abstract String getHeaderValue();
 
     public CheckpointVerificationException(String msg, Throwable cause) {
