@@ -7,4 +7,6 @@ public interface UserSecretDataSourceRepository {
     LinkedList<Byte> getUserSecretBytes(String username);
 
     int saveUserSecret(long userId, byte[] secretBytes);
+
+    int deleteUserSecret(long userId);
 }

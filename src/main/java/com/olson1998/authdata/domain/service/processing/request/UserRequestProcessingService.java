@@ -9,6 +9,7 @@ import com.olson1998.authdata.domain.model.processing.report.DomainUserSavingRep
 import com.olson1998.authdata.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authdata.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.UserMembershipDataSourceRepository;
+import com.olson1998.authdata.domain.port.data.repository.UserSecretDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
 import com.olson1998.authdata.domain.port.data.stereotype.UserMembership;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
@@ -42,6 +43,8 @@ public class UserRequestProcessingService implements UserRequestProcessor {
 
     private final UserDataSourceRepository userDataSourceRepository;
 
+    private final UserSecretDataSourceRepository userSecretDataSourceRepository;
+
     private final UserMembershipDataSourceRepository userMembershipDataSourceRepository;
 
     @Override
@@ -51,6 +54,9 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         var membershipClaims = request.getMembershipClaims();
         var user = userDataSourceRepository.saveUser(details);
         var userId = user.getId();
+        var encryptor = user.getSecretEncryptor();
+        var passBytes = encryptor.encrypt(details.getPassword());
+        userSecretDataSourceRepository.saveUserSecret(user.getId(), passBytes);
         if(request.getMembershipClaims() != null){
             var size = membershipClaims.size();
             userMembershipDataSourceRepository.saveUserMemberships(userId, membershipClaims);
@@ -66,6 +72,7 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         var userId = request.getUserId();
         ProcessingRequestLogger.log(log, request, DELETE, UserMembershipClaim.class);
         var deletedMembershipsQty = userMembershipDataSourceRepository.deleteAllUserMemberships(userId);
+        var deletedBytes = userSecretDataSourceRepository.deleteUserSecret(userId);
         var deletedPrivateRolesQty = roleRequestProcessor.deleteUserRoles(request);
         ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var deletedUsers = userDataSourceRepository.deleteUser(userId);

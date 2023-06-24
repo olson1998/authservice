@@ -33,4 +33,9 @@ public class UserSecretByteJpaRepositoryWrapper implements UserSecretDataSourceR
         }
         return userSecretByteJpaRepository.saveAll(userSecretBytes).size();
     }
+
+    @Override
+    public int deleteUserSecret(long userId) {
+        return userSecretByteJpaRepository.deleteUserSecretByUserId(userId);
+    }
 }

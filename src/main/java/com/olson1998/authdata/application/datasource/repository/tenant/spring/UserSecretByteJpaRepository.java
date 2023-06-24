@@ -17,4 +17,7 @@ public interface UserSecretByteJpaRepository extends JpaRepository<UserSecretByt
             "WHERE u.username=:username " +
             "ORDER BY usb.byteId.byteOrdinal ASC")
     List<Byte> selectUserSecretBytesByUsername(String username);
+
+    @Query("DELETE FROM UserSecretByteData usb WHERE usb.byteId.userId=:userId")
+    int deleteUserSecretByUserId(long userId);
 }

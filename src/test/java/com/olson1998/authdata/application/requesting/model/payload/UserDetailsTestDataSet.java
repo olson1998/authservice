@@ -3,6 +3,7 @@ package com.olson1998.authdata.application.requesting.model.payload;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import static com.olson1998.authdata.application.datasource.entity.UserSecretDataSet.TEST_USER_PASSWORD;
 import static com.olson1998.authdata.application.datasource.entity.UserTestDataSet.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

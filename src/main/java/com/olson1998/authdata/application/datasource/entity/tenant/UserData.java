@@ -2,8 +2,10 @@ package com.olson1998.authdata.application.datasource.entity.tenant;
 
 import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
+import com.olson1998.authdata.domain.port.data.utils.SecretEncryption;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserDetails;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Persistable;
@@ -17,21 +19,19 @@ import static com.olson1998.authdata.application.datasource.entity.tenant.values
 @SequenceGenerator(name = "AUTH_USER_NUM_SEQ", sequenceName = "AUTH_USER_NUM_SEQ", allocationSize = 1)
 
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserData implements Persistable<Long>, User {
 
     @Id
-    @Column(name = "USERNUM")
+    @Column(name = "USERID")
     @GeneratedValue(generator = "AUTH_USER_NUM_SEQ", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "USERNM", unique = true, nullable = false, updatable = false)
     private String username;
 
-    @Column(name = "USERPASS", nullable = false)
-    private String password;
-
     @Column(name = "USERPASSALG", nullable = false, updatable = false)
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
     private SecretDigest secretDigest;
 
     @Override
@@ -50,10 +50,8 @@ public class UserData implements Persistable<Long>, User {
     }
 
     @Override
-    public boolean verify(String password) {
-        return this.password.equals(
-                secretDigest.encrypt(password)
-        );
+    public SecretEncryption getSecretEncryptor() {
+        return secretDigest;
     }
 
     public UserData(@NonNull UserDetails userDetails) {
@@ -62,14 +60,7 @@ public class UserData implements Persistable<Long>, User {
                 DEFAULT_DIGEST
         );
         this.username = userDetails.getUsername();
-        this.password = digest.encrypt(userDetails.getPassword());
         this.secretDigest = digest;
     }
 
-    public UserData(Long id, String username, String password, SecretDigest secretDigest) {
-        this.id = id;
-        this.username = username;
-        this.password = secretDigest.encrypt(password);
-        this.secretDigest = secretDigest;
-    }
 }

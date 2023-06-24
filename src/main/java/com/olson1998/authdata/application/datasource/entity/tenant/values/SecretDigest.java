@@ -68,13 +68,12 @@ public enum SecretDigest implements SecretEncryption, SecretAlgorithm {
     }
 
     @Override
-    public String encrypt(@NonNull String password){
+    public byte[] encrypt(@NonNull String password){
         if(!this.equals(NONE)){
             var digest = toMessageDigest();
-            var encPassBytes = DigestUtils.digest(digest, password.getBytes(UTF_8));
-            return new String(encPassBytes, UTF_8);
+            return DigestUtils.digest(digest, password.getBytes(UTF_8));
         }else {
-            return password;
+            return password.getBytes();
         }
     }
 
