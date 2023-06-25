@@ -8,12 +8,17 @@ public class MissingXCheckpointTokenHeader extends CheckpointVerificationExcepti
 
     private static final String MISSING_X_CHECKPOINT_HEADER = "missing x-checkpoint-token header";
 
-    private final int statusCode = 200;
+    private final int statusCode = 401;
 
     private final String headerValue = MISSING_X_CHECKPOINT_HEADER;
 
 
     public MissingXCheckpointTokenHeader(Throwable cause) {
         super(MISSING_X_CHECKPOINT_HEADER, cause);
+    }
+
+    @Override
+    public String getMessage() {
+        return MISSING_X_CHECKPOINT_HEADER;
     }
 }

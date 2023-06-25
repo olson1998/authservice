@@ -3,7 +3,6 @@ package com.olson1998.authdata.domain.service.checkpoint;
 import com.olson1998.authdata.domain.model.checkpoint.DomainCheckpoint;
 import com.olson1998.authdata.domain.model.checkpoint.DomainCheckpointTimestamp;
 import com.olson1998.authdata.domain.model.checkpoint.DomainCheckpointTokenHolder;
-import com.olson1998.authdata.domain.model.exception.security.CheckpointRequiredException;
 import com.olson1998.authdata.domain.port.caching.repository.impl.CheckpointCacheRepository;
 import com.olson1998.authdata.domain.port.caching.stereotype.CheckpointTimestamp;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
@@ -36,17 +35,17 @@ public class CheckpointService implements CheckpointRepository {
         if(ctx instanceof CheckpointContext checkpointContext){
             var token = checkpointContext.getToken();
             var checkpointTimestamp = checkpointCacheRepository.getHashValue(token)
-                    .orElseThrow(CheckpointRequiredException::new);
+                    .orElseThrow();
             var tid = checkpointTimestamp.getTenantId();
             var tenantSecret = tenantSecretProvider.getTenantSecret(tid)
-                    .orElseThrow(CheckpointRequiredException::new);
+                    .orElseThrow();
             var alg = tenantSecret.toAlgorithm();
             var key = createCheckpointKey(checkpointTimestamp, token);
             return checkpointCacheRepository.getValue(key)
-                    .orElseThrow(CheckpointRequiredException::new)
+                    .orElseThrow()
                     .getLogs();
         }else {
-            throw new CheckpointRequiredException();
+            throw new UnknownError("given context does not come from checkpoint");
         }
     }
 

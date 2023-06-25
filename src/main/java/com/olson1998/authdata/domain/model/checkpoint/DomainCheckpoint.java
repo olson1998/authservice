@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -38,7 +39,7 @@ public class DomainCheckpoint implements Checkpoint {
 
     private final long userId;
 
-    private final long timestamp = System.currentTimeMillis();
+    private final long timestamp;
 
     private final Long expireTime;
 
@@ -94,7 +95,7 @@ public class DomainCheckpoint implements Checkpoint {
             if(expireTime < System.currentTimeMillis()){
                 var e = new CheckpointExpiredException(expireTime);
                 logs.add(log(CheckpointStatus.EXPIRED, e.getMessage()));
-                throw new CheckpointTokenVerificationException(e);
+                throw e;
             }
         }
         if(isUsageCount()){
@@ -102,13 +103,13 @@ public class DomainCheckpoint implements Checkpoint {
             if(usageCount > maxUsageCount){
                 var e = new CheckpointUsageExceedingException(maxUsageCount);
                 logs.add(log(CheckpointStatus.EXPIRED, e.getMessage()));
-                throw new CheckpointTokenVerificationException(e);
+                throw e;
             }
         }
         if(!expectedToken.equals(xCheckpointToken)){
-            var e = new CheckpointTokenVerificationException(new SecurityException("tokens are not matching"));
+            var e = new CheckpointTokenVerificationException("tokens are not matching");
             logs.add(log(CheckpointStatus.ERROR, e.getMessage()));
-            throw new CheckpointTokenVerificationException(e);
+            throw e;
         }
         return true;
     }
@@ -122,8 +123,13 @@ public class DomainCheckpoint implements Checkpoint {
         this.id = id;
         this.tenantId = tenantId;
         this.userId = userId;
-        this.expireTime = expireTime;
+        this.timestamp = System.currentTimeMillis();
         this.maxUsageCount = maxUsageCount;
         this.logs.add(log(CheckpointStatus.CREATED, "checkpoint created"));
+        if(expireTime != null){
+            this.expireTime = this.timestamp + Duration.ofMillis(expireTime).toMillis();
+        }else {
+            this.expireTime = null;
+        }
     }
 }

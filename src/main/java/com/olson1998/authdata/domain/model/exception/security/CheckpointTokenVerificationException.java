@@ -12,7 +12,12 @@ public class CheckpointTokenVerificationException extends CheckpointVerification
 
     private final String headerValue = CHECKPOINT_VERIFICATION_FAILED;
 
-    public CheckpointTokenVerificationException(Throwable cause) {
-        super(CHECKPOINT_VERIFICATION_FAILED, cause);
+    public CheckpointTokenVerificationException(String securityWarn) {
+        super(CHECKPOINT_VERIFICATION_FAILED, new SecurityException(securityWarn));
+    }
+
+    @Override
+    public String getMessage() {
+        return CHECKPOINT_VERIFICATION_FAILED;
     }
 }

@@ -1,7 +1,6 @@
 package com.olson1998.authdata.domain.service.security;
 
-import com.olson1998.authdata.domain.model.exception.security.CheckpointNotFoundException;
-import com.olson1998.authdata.domain.model.exception.security.CheckpointTimestampNotFound;
+import com.olson1998.authdata.domain.model.exception.security.CheckpointRequiredException;
 import com.olson1998.authdata.domain.model.exception.security.MissingXCheckpointTokenHeader;
 import com.olson1998.authdata.domain.model.security.CheckpointAuthentication;
 import com.olson1998.authdata.domain.port.caching.stereotype.CheckpointTimestamp;
@@ -49,7 +48,7 @@ public class CheckpointAuthenticationConvertingService implements CheckpointAuth
             return checkpointProvider.getCheckpointTimestamp(token)
                     .orElseThrow();
         }catch (NoSuchElementException e){
-            throw new CheckpointTimestampNotFound(e);
+            throw new CheckpointRequiredException(e);
         }
     }
 
@@ -58,7 +57,7 @@ public class CheckpointAuthenticationConvertingService implements CheckpointAuth
             return checkpointProvider.getCheckpoint(token, timestamp)
                     .orElseThrow();
         }catch (NoSuchElementException e){
-            throw new CheckpointNotFoundException(e);
+            throw new CheckpointRequiredException(e);
         }
     }
 }

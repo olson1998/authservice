@@ -16,4 +16,8 @@ public class TenantSecretNotFound extends CheckpointVerificationException {
         super(TENANT_SECRET_NOT_FOUND, cause);
     }
 
+    @Override
+    public String getMessage() {
+        return TENANT_SECRET_NOT_FOUND;
+    }
 }

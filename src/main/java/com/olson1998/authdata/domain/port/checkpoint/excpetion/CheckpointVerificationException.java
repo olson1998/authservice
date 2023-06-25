@@ -8,6 +8,9 @@ public abstract class CheckpointVerificationException extends AuthenticationExce
 
     public abstract String getHeaderValue();
 
+    @Override
+    public abstract String getMessage();
+
     public CheckpointVerificationException(String msg, Throwable cause) {
         super(msg, cause);
     }
