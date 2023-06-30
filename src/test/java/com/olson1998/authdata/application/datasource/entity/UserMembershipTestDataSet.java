@@ -4,6 +4,8 @@ import com.olson1998.authdata.application.datasource.entity.tenant.UserMembershi
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 import static com.olson1998.authdata.application.datasource.entity.UserTestDataSet.TEST_USER_ID;
 import static com.olson1998.authdata.application.requesting.model.payload.UserMembershipClaimTestDataSet.*;
 
@@ -37,4 +39,12 @@ public abstract class UserMembershipTestDataSet {
             TEST_USER_ID,
             TEST_USER_TEAM_MEMBERSHIP_CLAIM
     );
+
+    public static final String TEST_USER_COMPANY_MEMBERSHIP_ID = Objects.requireNonNull(TEST_USER_COMPANY_MEMBERSHIP.getId());
+
+    public static final String TEST_USER_REGION_MEMBERSHIP_ID = Objects.requireNonNull(TEST_USER_REGION_MEMBERSHIP.getId());
+
+    public static final String TEST_USER_GROUP_MEMBERSHIP_ID = Objects.requireNonNull(TEST_USER_GROUP_MEMBERSHIP.getId());
+
+    public static final String TEST_USER_TEAM_MEMBERSHIP_ID = Objects.requireNonNull(TEST_USER_TEAM_MEMBERSHIP.getId());
 }

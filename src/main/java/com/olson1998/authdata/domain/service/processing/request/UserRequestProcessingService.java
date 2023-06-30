@@ -1,12 +1,10 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
-import com.olson1998.authdata.domain.model.exception.data.NoUserDeletedException;
-import com.olson1998.authdata.domain.model.exception.processing.UserPolicyViolationException;
+import com.olson1998.authdata.domain.model.exception.data.DifferentAffectedRowsThanRequired;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserMembershipDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserMembershipSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainUserSavingReport;
-import com.olson1998.authdata.domain.port.data.exception.RollbackRequiredException;
 import com.olson1998.authdata.domain.port.data.repository.UserDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.UserMembershipDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.UserSecretDataSourceRepository;
@@ -75,14 +73,8 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         ProcessingRequestLogger.log(log, request, DELETE, User.class);
         var deletedUsers = userDataSourceRepository.deleteUser(userId);
         if(deletedUsers == 0){
-            throw new NoUserDeletedException(log, request.getId());
+            throw new DifferentAffectedRowsThanRequired(log, request.getId(), 1, 0);
         }
-        log.debug(
-                "deleted {} memberships and {} private roles of user: '{}'",
-                deletedMembershipsQty,
-                deletedPrivateRolesQty,
-                userId
-        );
         return new DomainUserDeletingReport(
                 request.getId(),
                 userId,
@@ -140,21 +132,4 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         return savedMemberships;
     }
 
-    private void checkUserReq(UserSavingRequest request) throws RollbackRequiredException {
-        var id = request.getId();
-        var username = request.getUserDetails().getUsername();
-        var pass = request.getUserDetails().getPassword();
-        if(username == null){
-            throw new UserPolicyViolationException(id, 0);
-        }
-        if(pass == null){
-            throw new UserPolicyViolationException(id, 1);
-        }
-        if(username.length() < 8){
-            throw new UserPolicyViolationException(id, 2);
-        }
-        if(pass.length() < 6){
-            throw new UserPolicyViolationException(id, 3);
-        }
-    }
 }

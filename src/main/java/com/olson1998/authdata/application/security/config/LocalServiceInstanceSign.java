@@ -24,6 +24,6 @@ public class LocalServiceInstanceSign implements ServiceInstanceSign {
             signBuild.append(':').append(port);
         }
         this.value = signBuild.toString();
-        log.info("Microservice will sig as '{}'", this.value);
+        log.info("Microservice will sign as '{}'", this.value);
     }
 }

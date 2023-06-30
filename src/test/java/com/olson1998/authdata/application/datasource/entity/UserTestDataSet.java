@@ -5,6 +5,8 @@ import com.olson1998.authdata.application.datasource.entity.tenant.values.Secret
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import static com.olson1998.authdata.application.datasource.entity.UserSecretDataSet.TEST_USER_PASSWORD;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class UserTestDataSet {
 
@@ -13,6 +15,8 @@ public abstract class UserTestDataSet {
     public static final String TEST_USER_USERNAME = "username";
 
     public static final SecretDigest TEST_USER_SECRET_DIGEST = SecretDigest.SHA256;
+
+    public static final byte[] TEST_USER_ENC_PASSWORD = TEST_USER_SECRET_DIGEST.encrypt(TEST_USER_PASSWORD);
 
     public static final UserData TEST_USER_DATA = new UserData(
             TEST_USER_ID,

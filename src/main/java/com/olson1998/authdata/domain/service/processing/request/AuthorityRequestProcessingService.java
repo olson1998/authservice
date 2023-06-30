@@ -1,6 +1,6 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
-import com.olson1998.authdata.domain.model.exception.data.DifferentUpdatedEntitiesTimestampsException;
+import com.olson1998.authdata.domain.model.exception.data.DifferentAffectedRowsThanRequired;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthoritiesSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.data.exception.NoAuthorityDetailsFoundForPersistedEntity;
@@ -57,7 +57,7 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
         var deletedBounds = roleBindingDataSourceRepository.deleteRoleBoundsOfAuthorities(authoritiesIds);
         var deletedAuthorities = authorityDataSourceRepository.deleteAuthorities(authorityDeletingRequest.getAuthoritiesIds());
         if(deletedAuthorities != authoritiesIds.size()){
-            throw new DifferentUpdatedEntitiesTimestampsException(
+            throw new DifferentAffectedRowsThanRequired(
                     log,
                     authorityDeletingRequest.getId(),
                     authoritiesIds.size(),
@@ -66,7 +66,7 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
         }
         var updatedRoles = roleDataSourceRepository.updateRoleTimestamp(boundedRolesIds, System.currentTimeMillis());
         if(updatedRoles != boundedRolesIds.size()){
-            throw new DifferentUpdatedEntitiesTimestampsException(
+            throw new DifferentAffectedRowsThanRequired(
                     log,
                     authorityDeletingRequest.getId(),
                     boundedRolesIds.size(),

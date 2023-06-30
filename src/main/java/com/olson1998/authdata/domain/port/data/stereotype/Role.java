@@ -1,5 +1,7 @@
 package com.olson1998.authdata.domain.port.data.stereotype;
 
+import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.RoleDetails;
+
 public interface Role {
 
     String getId();
@@ -19,4 +21,6 @@ public interface Role {
     Long getTeamId();
 
     Long getTimestamp();
+
+    boolean isMatching(RoleDetails roleDetails);
 }

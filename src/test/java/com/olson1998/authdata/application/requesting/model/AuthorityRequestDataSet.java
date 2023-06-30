@@ -26,7 +26,7 @@ public abstract class AuthorityRequestDataSet {
             TEST_AUTHORITY_DETAILS_FORM_3
     );
 
-    public static final Set<String> TEST_AUTHORITY_DELETING_REQUEST_AUTHORITIES_IDS = Set.of(
+    public static final Set<String> TEST_AUTHORITY_DEL_REQ_AUTHORITIES_IDS = Set.of(
             TEST_AUTHORITY_1_ID,
             TEST_AUTHORITY_2_ID,
             TEST_AUTHORITY_3_ID
@@ -47,7 +47,7 @@ public abstract class AuthorityRequestDataSet {
     public static final AuthorityDeletingRequest TEST_AUTHORITY_DELETING_REQUEST = new AuthorityDeletingRequest() {
         @Override
         public Set<String> getAuthoritiesIds() {
-            return TEST_AUTHORITY_DELETING_REQUEST_AUTHORITIES_IDS;
+            return TEST_AUTHORITY_DEL_REQ_AUTHORITIES_IDS;
         }
 
         @Override

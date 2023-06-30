@@ -11,7 +11,7 @@ import org.springframework.data.domain.Persistable;
 @Entity
 @Table(name = "AUTHROLE")
 
-@Builder(access = AccessLevel.PACKAGE)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleData implements Persistable<String>, Role{
@@ -93,6 +93,46 @@ public class RoleData implements Persistable<String>, Role{
     @Override
     public Long getTimestamp() {
         return timestamp;
+    }
+
+    @Override
+    public boolean isMatching(RoleDetails roleDetails) {
+        var matchingUserId = false;
+        var matchingCono = false;
+        var matchingRegionId = false;
+        var matchingGroupId = false;
+        var matchingTeamId = false;
+        if(this.userId != null && roleDetails.getUserId() != null){
+            matchingUserId = this.userId.equals(roleDetails.getUserId());
+        }else {
+            matchingUserId = true;
+        }
+        if(this.companyNumber != null && roleDetails.getCompanyNumber() != null){
+            matchingCono = this.companyNumber.equals(roleDetails.getCompanyNumber());
+        }else {
+            matchingCono = true;
+        }
+        if(this.regionId != null && roleDetails.getRegionId() != null){
+            matchingRegionId = this.regionId.equals(roleDetails.getRegionId());
+        }else {
+            matchingRegionId = true;
+        }
+        if(this.groupId != null && roleDetails.getGroupId() != null){
+            matchingGroupId = this.groupId.equals(roleDetails.getGroupId());
+        }else {
+            matchingGroupId = true;
+        }
+        if(this.teamId != null && roleDetails.getTeamId() != null){
+            matchingTeamId = this.teamId.equals(roleDetails.getTeamId());
+        }else {
+            matchingTeamId = true;
+        }return matchingUserId &&
+                matchingCono &&
+                matchingGroupId &&
+                matchingRegionId &&
+                matchingTeamId &&
+                this.name.equals(roleDetails.getName()) &&
+                this.subject.equals(roleDetails.getSubject());
     }
 
     public RoleData(@NonNull RoleDetails roleDetails) {
