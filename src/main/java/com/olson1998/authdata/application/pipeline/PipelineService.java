@@ -27,7 +27,6 @@ public class PipelineService implements PipelineFactory {
     @Override
     public <R extends Request> CompletableFuture<R> fabricate(R request) {
         var requestContextRef = new AtomicReference<>(requestContextHolder.getRequestContext());
-        requestContextHolder.clean();
         return CompletableFuture.runAsync(()-> inheritRequestContext(request, requestContextRef))
                 .thenApplyAsync(runnable -> createRequestPipeline(request));
     }
@@ -35,7 +34,6 @@ public class PipelineService implements PipelineFactory {
     @Override
     public CompletableFuture<Void> fabricate() {
         var requestContextRef = new AtomicReference<>(requestContextHolder.getRequestContext());
-        requestContextHolder.clean();
         return CompletableFuture.runAsync(()-> inheritRequestContext(requestContextRef));
     }
 
@@ -49,7 +47,7 @@ public class PipelineService implements PipelineFactory {
     private <R extends Request> R inheritRequestContext(R request,
                                                         AtomicReference<RequestContext> requestContextRef){
         var contextRef = requestContextRef.get();
-        log.debug("Inherit context of '{}' on thread: '{}'", contextRef.getTenantId(), Thread.currentThread().getId());
+        log.debug("Inherit context of '{}'", contextRef.getTenantId());
         requestContextHolder.setCurrentContext(requestContextRef.get());
         localThreadTenantDataSource.setCurrentThreadTenantDatasource(contextRef.getTenantId());
         return request;
@@ -62,7 +60,7 @@ public class PipelineService implements PipelineFactory {
 
     private <R extends Request> R createRequestPipeline(R request){
         if(request != null){
-            //log.debug("fabricating pipeline for request '{}' of class: {}", request.getId(), request.getClass().getSimpleName());
+            log.debug("fabricating pipeline for request of class: {}", request.getClass().getName());
             return request;
         }else {
             throw new PipelineFabricationException(log);
