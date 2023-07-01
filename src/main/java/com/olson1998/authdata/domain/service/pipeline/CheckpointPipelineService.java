@@ -23,15 +23,16 @@ public class CheckpointPipelineService implements CheckpointPipeline {
     @Override
     public CompletableFuture<LinkedList<String>> runGetCheckpointLogsPipeline() {
         return pipelineFactory.fabricate()
-                .thenApply(empty -> checkpointRepository.getLogs())
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(empty -> checkpointRepository.getLogs())
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<ResponseEntity<CheckpointValues>> runCreateCheckpointPipeline(Long expireTime, Integer maxUsages) {
         return pipelineFactory.fabricate()
-                .thenApply(empty -> checkpointRepository.create(expireTime, maxUsages))
-                .thenApply(checkpointResponseEntityMapper::map);
+                .thenApplyAsync(empty -> checkpointRepository.create(expireTime, maxUsages))
+                .thenApplyAsync(checkpointResponseEntityMapper::map)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
 

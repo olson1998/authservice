@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+
 @Component
 public class AdapterRequestContextHolder implements RequestContextHolder {
 
@@ -16,15 +17,15 @@ public class AdapterRequestContextHolder implements RequestContextHolder {
     }
 
     public static UUID getLocalThreadRequestId(){
-        return THREAD_LOCAL_REQUEST_CONTEXT_HOLDER.get().getId();
+        return getLocalThreadRequestContext().getId();
     }
 
     public static String getLocalThreadTenantId(){
-        return THREAD_LOCAL_REQUEST_CONTEXT_HOLDER.get().getTenantId();
+        return getLocalThreadRequestContext().getTenantId();
     }
 
     public static long getLocalThreadUserId(){
-        return THREAD_LOCAL_REQUEST_CONTEXT_HOLDER.get().getUserId();
+        return getLocalThreadRequestContext().getUserId();
     }
 
     public static void setLocalThreadRequestContext(RequestContext requestContext){
@@ -53,5 +54,15 @@ public class AdapterRequestContextHolder implements RequestContextHolder {
     @Override
     public long getUserId() {
         return getLocalThreadUserId();
+    }
+
+    @Override
+    public void setCurrentContext(RequestContext requestContext) {
+        setLocalThreadRequestContext(requestContext);
+    }
+
+    @Override
+    public void clean() {
+        cleanContext();
     }
 }

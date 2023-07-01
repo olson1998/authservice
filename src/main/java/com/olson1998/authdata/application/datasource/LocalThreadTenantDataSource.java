@@ -1,12 +1,16 @@
 package com.olson1998.authdata.application.datasource;
 
 import com.olson1998.authdata.application.datasource.properties.DataSourceChangelogProps;
+import com.olson1998.authdata.application.datasource.properties.TenantDataSourceDiscoveryProps;
 import com.olson1998.authdata.application.security.config.LocalServiceInstanceSign;
+import com.olson1998.authdata.domain.port.processing.datasource.TenantDataSourceDiscovery;
 import com.olson1998.authdata.domain.port.processing.datasource.TenantSqlDataSourceRepository;
 import liquibase.integration.spring.SpringLiquibase;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.jdbcx.JdbcDataSource;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -20,14 +24,12 @@ import java.util.logging.Logger;
 
 @Slf4j
 
-@Component(value = "localThreadTenantDataSource")
+@Component
 public class LocalThreadTenantDataSource implements DataSource {
-
-    private static final String SELF_TENANT = "MYSELF";
 
     private static final ThreadLocal<DataSource> CURRENT_THREAD_TENANT_DATASOURCE = new ThreadLocal<>();
 
-    private static final ConcurrentMap<String, DataSource> TENANTS_DATA_SOURCES =
+    private final ConcurrentMap<String, DataSource> tenantDataSources =
             new ConcurrentHashMap<>();
 
     private final String tenantDataSourceChangelog;
@@ -39,7 +41,7 @@ public class LocalThreadTenantDataSource implements DataSource {
     private final TenantSqlDataSourceRepository tenantSqlDataSourceRepository;
 
     public void setCurrentThreadTenantDatasource(String tid){
-        var optionalDs = Optional.ofNullable(TENANTS_DATA_SOURCES.get(tid));
+        var optionalDs = Optional.ofNullable(tenantDataSources.get(tid));
         DataSource ds = null;
         if(optionalDs.isPresent()){
             ds = optionalDs.get();
@@ -65,7 +67,7 @@ public class LocalThreadTenantDataSource implements DataSource {
         springLiquibase.setDataSource(dataSource);
         springLiquibase.afterPropertiesSet();
         springLiquibase.setShouldRun(false);
-        TENANTS_DATA_SOURCES.put(tid, dataSource);
+        tenantDataSources.put(tid, dataSource);
     }
 
     public void clean(){
@@ -73,8 +75,7 @@ public class LocalThreadTenantDataSource implements DataSource {
     }
 
     public DataSource getCurrentThreadTenantDataSource(){
-        return Optional.ofNullable(CURRENT_THREAD_TENANT_DATASOURCE.get())
-                .orElse(TENANTS_DATA_SOURCES.get(SELF_TENANT));
+        return CURRENT_THREAD_TENANT_DATASOURCE.get();
     }
 
     @Override
@@ -132,22 +133,37 @@ public class LocalThreadTenantDataSource implements DataSource {
         return getCurrentThreadTenantDataSource().isWrapperFor(iface);
     }
 
-    private static JdbcDataSource selfTenantHost(){
-        var ds = new JdbcDataSource();
-        ds.setUser("user");
-        ds.setPassword("pass");
-        ds.setUrl("jdbc:h2:mem:self-tenant");
-        return ds;
+    @EventListener(ApplicationStartedEvent.class)
+    public void cleanupAfterStartup(){
+        this.clean();
     }
 
-    public LocalThreadTenantDataSource(DataSourceChangelogProps dataSourceChangelogProps,
-                                       SpringLiquibase springLiquibase,
-                                       TenantSqlDataSourceRepository tenantSqlDataSourceRepository,
-                                       LocalServiceInstanceSign localServiceInstanceSign) {
+    public LocalThreadTenantDataSource(@NonNull DataSourceChangelogProps dataSourceChangelogProps,
+                                       @NonNull TenantDataSourceDiscoveryProps tenantDataSourceDiscoveryProps,
+                                       @NonNull SpringLiquibase springLiquibase,
+                                       @NonNull TenantDataSourceDiscovery tenantDataSourceDiscovery,
+                                       @NonNull TenantSqlDataSourceRepository tenantSqlDataSourceRepository,
+                                       @NonNull LocalServiceInstanceSign localServiceInstanceSign) {
         this.springLiquibase = springLiquibase;
         this.tenantDataSourceChangelog = dataSourceChangelogProps.getTenantDataBase().getChangeLog();
         this.tenantSqlDataSourceRepository = tenantSqlDataSourceRepository;
         this.localServiceInstanceSign = localServiceInstanceSign;
-        this.appendDataSource(SELF_TENANT, selfTenantHost());
+        var tenants = tenantDataSourceDiscoveryProps.getTenants();
+        var discovery = tenantDataSourceDiscovery.discoverTenantDataSources(tenants);
+        discovery.forEach((tid, ds) ->{
+            if(tenantDataSourceDiscoveryProps.isEnabled()){
+                this.appendDataSource(tid, ds);
+            }else {
+                tenantDataSources.put(tid, ds);
+            }
+        });
+        var startupTenant = getAnyTenant();
+        setCurrentThreadTenantDatasource(startupTenant);
+    }
+
+    private String getAnyTenant(){
+        return tenantDataSources.keySet().stream()
+                .findAny()
+                .orElseThrow();
     }
 }

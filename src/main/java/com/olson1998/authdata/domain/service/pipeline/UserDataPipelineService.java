@@ -25,28 +25,28 @@ public class UserDataPipelineService implements UserDatabaseOperationsPipeline {
     @Override
     public CompletableFuture<UserSavingReport> runSaveUserPipeline(UserSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::saveUser)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(userRequestProcessor::saveUser)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<UserDeletingReport> runUserDeletePipeline(UserDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::deleteUser)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(userRequestProcessor::deleteUser)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<UserMembershipBindReport> runUserMembershipBindPipeline(UserMembershipSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::bindMemberships)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(userRequestProcessor::bindMemberships)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<UserMembershipDeletingReport> runUserMembershipDeletingPipeline(UserMembershipDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(userRequestProcessor::deleteMemberships)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(userRequestProcessor::deleteMemberships)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 }

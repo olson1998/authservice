@@ -1,9 +1,9 @@
 package com.olson1998.authdata.domain.service.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.domain.model.security.CheckpointAuthentication;
 import com.olson1998.authdata.domain.model.security.JwtAuthentication;
+import com.olson1998.authdata.domain.port.processing.request.repository.RequestContextHolder;
 import com.olson1998.authdata.domain.port.security.repository.AuthDataAuthenticationSuccessHandler;
 import com.olson1998.authdata.domain.port.security.repository.RequestContextFactory;
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
@@ -26,6 +26,8 @@ public class SuccessfulAuthenticationService implements AuthDataAuthenticationSu
 
     private static final String REQUEST_CONTEXT_USER = "X-Request-user";
 
+    private final RequestContextHolder requestContextHolder;
+
     private final RequestContextFactory requestContextFactory;
 
     @Override
@@ -47,7 +49,7 @@ public class SuccessfulAuthenticationService implements AuthDataAuthenticationSu
             response.addHeader(REQUEST_CONTEXT_ID, context.getId().toString());
             response.addHeader(REQUEST_CONTEXT_TENANT, context.getTenantId());
             response.addHeader(REQUEST_CONTEXT_USER, String.valueOf(context.getUserId()));
-            AdapterRequestContextHolder.setLocalThreadRequestContext(context);
+            requestContextHolder.setCurrentContext(context);
         }
     }
 }

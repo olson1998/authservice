@@ -25,28 +25,28 @@ public class RoleDataPipelineService implements RoleDatabaseOperationsPipeline {
     @Override
     public CompletableFuture<RoleSavingReport> runRoleSavingRequestPipeline(RoleSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(roleRequestProcessor::saveNewRoles)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(roleRequestProcessor::saveNewRoles)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<RoleBindingReport> runRoleBindingPipeline(RoleBoundSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(roleRequestProcessor::saveNewRoleBounds)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(roleRequestProcessor::saveNewRoleBounds)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<RoleDeletingReport> runRoleDeletingPipeline(RoleDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(roleRequestProcessor::deleteRoles)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(roleRequestProcessor::deleteRoles)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 
     @Override
     public CompletableFuture<RoleBoundsDeletingReport> runRoleBoundsDeletingPipeline(RoleBoundDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApply(roleRequestProcessor::deleteRoleBounds)
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(roleRequestProcessor::deleteRoleBounds)
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 }

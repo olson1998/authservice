@@ -14,4 +14,8 @@ public interface RequestContextHolder {
 
     long getUserId();
 
+    void setCurrentContext(RequestContext requestContext);
+
+    void clean();
+
 }

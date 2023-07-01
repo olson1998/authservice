@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.pipeline.config;
 
-import com.olson1998.authdata.application.pipeline.ApplicationPipelineFactory;
+import com.olson1998.authdata.application.pipeline.PipelineService;
 import com.olson1998.authdata.domain.port.checkpoint.repository.CheckpointRepository;
 import com.olson1998.authdata.domain.port.pipeline.CheckpointPipeline;
 import com.olson1998.authdata.domain.service.pipeline.CheckpointPipelineService;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class CheckpointPipelineFactory {
 
     @Bean
-    public CheckpointPipeline checkpointPipeline(ApplicationPipelineFactory applicationPipelineFactory,
+    public CheckpointPipeline checkpointPipeline(PipelineService applicationPipelineFactory,
                                                  CheckpointRepository checkpointRepository
                                                  ){
         return new CheckpointPipelineService(

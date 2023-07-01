@@ -19,7 +19,7 @@ public class AuthDataPipelineService implements AuthDataPipeline {
     @Override
     public CompletableFuture<AuthUser> runGetAuthUserPipeline(AuthUserObtainRequest authUserObtainRequest) {
         return pipelineFactory.fabricate(authUserObtainRequest)
-                .thenApply(empty -> authUserRequestProcessor.getAuthUser(authUserObtainRequest))
-                .thenApply(pipelineFactory::dematerializeContext);
+                .thenApplyAsync(empty -> authUserRequestProcessor.getAuthUser(authUserObtainRequest))
+                .thenApplyAsync(pipelineFactory::dematerializeContext);
     }
 }

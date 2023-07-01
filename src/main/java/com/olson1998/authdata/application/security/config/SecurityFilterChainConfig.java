@@ -1,5 +1,6 @@
 package com.olson1998.authdata.application.security.config;
 
+import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.application.security.filter.CheckpointAuthenticationFilter;
 import com.olson1998.authdata.application.security.filter.CheckpointRequestFilter;
 import com.olson1998.authdata.application.security.filter.JwtAuthenticationFilter;
@@ -39,8 +40,9 @@ public class SecurityFilterChainConfig {
     };
 
     @Bean
-    public AuthDataAuthenticationSuccessHandler authDataAuthenticationSuccessHandler(@NonNull RequestContextFactory requestContextFactory){
-        return new SuccessfulAuthenticationService(requestContextFactory);
+    public AuthDataAuthenticationSuccessHandler authDataAuthenticationSuccessHandler(@NonNull AdapterRequestContextHolder adapterRequestContextHolder,
+                                                                                     @NonNull RequestContextFactory requestContextFactory){
+        return new SuccessfulAuthenticationService(adapterRequestContextHolder, requestContextFactory);
     }
 
     @Bean

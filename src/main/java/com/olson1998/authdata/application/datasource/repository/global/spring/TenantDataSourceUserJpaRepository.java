@@ -14,6 +14,6 @@ public interface TenantDataSourceUserJpaRepository extends JpaRepository<TenantD
     @Query("SELECT usr FROM TenantDataSourceUserData usr " +
             "LEFT OUTER JOIN TenantDataSourceData ds " +
             "ON usr.userId.dataSourceId=ds.id " +
-            "WHERE ds.tid=:tid")
-    List<TenantDataSourceUserData> selectTenantDataSourceUsersByTenantId(String tid);
+            "WHERE ds.tid IN :tenants")
+    List<TenantDataSourceUserData> selectTenantDataSourceUsersOfTenants(String[] tenants);
 }

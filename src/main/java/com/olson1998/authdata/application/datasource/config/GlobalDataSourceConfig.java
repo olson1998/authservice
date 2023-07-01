@@ -29,7 +29,7 @@ public class GlobalDataSourceConfig {
 
     @Bean
     public DataSource globalDataSource(@NonNull GlobalDatasourceProperties datasourceProperties,
-                                       @NonNull SqlDataSourceFactory sqlDataSourceFactory) throws SQLException {
+                                       @NonNull SqlDataSourceFactory sqlDataSourceFactory) {
         return sqlDataSourceFactory.fabricate(datasourceProperties);
     }
 

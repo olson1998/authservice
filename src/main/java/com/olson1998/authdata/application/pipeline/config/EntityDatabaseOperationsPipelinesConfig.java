@@ -1,6 +1,6 @@
 package com.olson1998.authdata.application.pipeline.config;
 
-import com.olson1998.authdata.application.pipeline.ApplicationPipelineFactory;
+import com.olson1998.authdata.application.pipeline.PipelineService;
 import com.olson1998.authdata.domain.port.pipeline.AuthorityDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.pipeline.RoleDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.pipeline.UserDatabaseOperationsPipeline;
@@ -19,7 +19,7 @@ public class EntityDatabaseOperationsPipelinesConfig {
 
     @Bean
     public UserDatabaseOperationsPipeline userDatabaseOperationsPipeline(@NonNull UserRequestProcessor userRequestProcessor,
-                                                                         @NonNull ApplicationPipelineFactory applicationPipelineFactory){
+                                                                         @NonNull PipelineService applicationPipelineFactory){
         return new UserDataPipelineService(
                 applicationPipelineFactory,
                 userRequestProcessor
@@ -28,7 +28,7 @@ public class EntityDatabaseOperationsPipelinesConfig {
 
     @Bean
     public RoleDatabaseOperationsPipeline roleDatabaseOperationsPipeline(@NonNull RoleRequestProcessor roleRequestProcessor,
-                                                                         @NonNull ApplicationPipelineFactory applicationPipelineFactory){
+                                                                         @NonNull PipelineService applicationPipelineFactory){
         return new RoleDataPipelineService(
                 applicationPipelineFactory,
                 roleRequestProcessor
@@ -37,7 +37,7 @@ public class EntityDatabaseOperationsPipelinesConfig {
 
     @Bean
     public AuthorityDatabaseOperationsPipeline authorityDatabaseOperationsPipeline(@NonNull AuthorityRequestProcessor authorityRequestProcessor,
-                                                                                   @NonNull ApplicationPipelineFactory applicationPipelineFactory){
+                                                                                   @NonNull PipelineService applicationPipelineFactory){
         return new AuthorityDataPipelineService(
                 applicationPipelineFactory,
                 authorityRequestProcessor
