@@ -5,8 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.olson1998.authdata.domain.model.exception.security.JwtVerificationFailed;
-import com.olson1998.authdata.domain.model.exception.security.TenantSecretNotFound;
-import com.olson1998.authdata.domain.model.security.CheckpointAuthentication;
 import com.olson1998.authdata.domain.port.security.repository.JwtAuthenticationManager;
 import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
 import com.olson1998.authdata.domain.port.security.stereotype.ServiceInstanceSign;
@@ -47,7 +45,7 @@ public class JwtAuthenticationService implements JwtAuthenticationManager {
                     e
             );
         }catch (NoSuchElementException e){
-            throw new TenantSecretNotFound(e);
+            throw new IllegalStateException(e);
         }catch (JWTVerificationException e){
             throw new JwtVerificationFailed(e);
         }

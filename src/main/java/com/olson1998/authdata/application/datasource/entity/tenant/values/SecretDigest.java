@@ -2,13 +2,11 @@ package com.olson1998.authdata.application.datasource.entity.tenant.values;
 
 import com.olson1998.authdata.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authdata.domain.port.data.utils.SecretEncryption;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserDetails;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.MessageDigest;
-import java.util.Objects;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -74,23 +72,6 @@ public enum SecretDigest implements SecretEncryption, SecretAlgorithm {
             return DigestUtils.digest(digest, password.getBytes(UTF_8));
         }else {
             return password.getBytes();
-        }
-    }
-
-    /**
-     * Returns Password digest of user details
-     * @param userDetails User details object
-     * @return Password digest of user details
-     */
-    public static SecretDigest ofUserDetails(@NonNull UserDetails userDetails){
-        var alg = Objects.
-                requireNonNullElse(userDetails.getSecretDigestAlgorithm(), NONE)
-                .getAlgorithm();
-        try{
-            return SecretDigest.valueOf(alg);
-        }catch (IllegalArgumentException e){
-            log.warn("Could not read password digest, falling to default");
-            return DEFAULT_DIGEST;
         }
     }
 

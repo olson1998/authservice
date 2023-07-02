@@ -1,7 +1,6 @@
 package com.olson1998.authdata.domain.service.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.olson1998.authdata.domain.model.security.CheckpointAuthentication;
 import com.olson1998.authdata.domain.model.security.JwtAuthentication;
 import com.olson1998.authdata.domain.port.processing.request.repository.RequestContextHolder;
 import com.olson1998.authdata.domain.port.security.repository.AuthDataAuthenticationSuccessHandler;
@@ -33,14 +32,7 @@ public class SuccessfulAuthenticationService implements AuthDataAuthenticationSu
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         RequestContext context = null;
-        if(authentication instanceof CheckpointAuthentication checkpointAuthentication){
-            log.debug("Attempt building request context base on checkpoint: '{}'", checkpointAuthentication.getCheckpoint().getId());
-            context = requestContextFactory.fabricate(
-                    checkpointAuthentication.getxCheckpointToken(),
-                    checkpointAuthentication.getCheckpointTimestamp(),
-                    checkpointAuthentication.getCheckpoint()
-            );
-        } else if (authentication instanceof JwtAuthentication jwtAuthentication) {
+        if (authentication instanceof JwtAuthentication jwtAuthentication) {
             var decodedJwt = (DecodedJWT) jwtAuthentication.getPrincipal();
             log.debug("Attempt building request context base on json web token: '{}'",decodedJwt.getId());
             context = requestContextFactory.fabricate(decodedJwt);

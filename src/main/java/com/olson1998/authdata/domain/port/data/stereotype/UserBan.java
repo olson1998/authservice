@@ -1,7 +1,5 @@
 package com.olson1998.authdata.domain.port.data.stereotype;
 
-import java.time.LocalDateTime;
-
 public interface UserBan {
 
     String getId();
@@ -10,5 +8,5 @@ public interface UserBan {
 
     String getReason();
 
-    LocalDateTime getBanTimestamp();
+    Long getBanTimestamp();
 }

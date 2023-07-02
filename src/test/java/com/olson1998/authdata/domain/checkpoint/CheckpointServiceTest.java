@@ -1,6 +1,5 @@
 package com.olson1998.authdata.domain.checkpoint;
 
-import com.olson1998.authdata.domain.port.caching.repository.impl.CheckpointCacheRepository;
 import com.olson1998.authdata.domain.port.caching.stereotype.CheckpointTimestamp;
 import com.olson1998.authdata.domain.port.checkpoint.stereotype.Checkpoint;
 import com.olson1998.authdata.domain.port.processing.request.repository.RequestContextHolder;

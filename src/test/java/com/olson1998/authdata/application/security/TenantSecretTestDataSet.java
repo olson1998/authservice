@@ -1,7 +1,6 @@
 package com.olson1998.authdata.application.security;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.olson1998.authdata.domain.model.security.MappedTenantSecret;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

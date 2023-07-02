@@ -3,16 +3,11 @@ package com.olson1998.authdata.application.datasource.entity.tenant;
 import com.olson1998.authdata.domain.port.data.stereotype.UserBan;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.Duration;
 import java.time.temporal.TemporalUnit;
-
-@Getter
-@Setter
 
 @Entity
 @Table(name = "AUTHUSERBAN")
@@ -57,4 +52,49 @@ public class UserBansData implements UserBan {
                 .append(RandomStringUtils.randomAlphanumeric(4))
                 .toString();
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    @Override
+    public Long getBanTimestamp() {
+        return banTimestamp;
+    }
+
+    public void setBanTimestamp(Long banTimestamp) {
+        this.banTimestamp = banTimestamp;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
 }

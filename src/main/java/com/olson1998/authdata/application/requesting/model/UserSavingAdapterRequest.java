@@ -3,6 +3,7 @@ package com.olson1998.authdata.application.requesting.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
+import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.application.requesting.model.payload.UserDetailsForm;
 import com.olson1998.authdata.application.requesting.model.payload.UserMembershipForm;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
@@ -50,4 +51,8 @@ public class UserSavingAdapterRequest extends AbstractAdapterRequest implements 
         return form;
     }
 
+    @Override
+    public String getTenantId() {
+        return AdapterRequestContextHolder.getLocalThreadTenantId();
+    }
 }

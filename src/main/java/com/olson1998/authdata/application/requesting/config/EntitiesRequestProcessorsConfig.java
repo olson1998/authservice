@@ -36,16 +36,4 @@ public class EntitiesRequestProcessorsConfig {
         );
     }
 
-    @Bean
-    public UserRequestProcessor userRequestProcessor(@NonNull RoleRequestProcessor roleRequestProcessor,
-                                                     @NonNull UserJpaRepositoryWrapper userJpaRepositoryWrapper,
-                                                     @NonNull UserSecretByteJpaRepositoryWrapper userSecretByteJpaRepositoryWrapper,
-                                                     @NonNull UserMembershipJpaRepositoryWrapper userMembershipJpaRepositoryWrapper){
-        return new UserRequestProcessingService(
-                roleRequestProcessor,
-                userJpaRepositoryWrapper,
-                userSecretByteJpaRepositoryWrapper,
-                userMembershipJpaRepositoryWrapper
-        );
-    }
 }

@@ -1,7 +1,6 @@
 package com.olson1998.authdata.application.requesting.model.payload;
 
 import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
-import com.olson1998.authdata.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserDetails;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,9 +17,5 @@ public class UserDetailsForm implements UserDetails {
 
     private final SecretDigest passwordDigest;
 
-    @Override
-    public SecretAlgorithm getSecretDigestAlgorithm() {
-        return passwordDigest;
-    }
 
 }
