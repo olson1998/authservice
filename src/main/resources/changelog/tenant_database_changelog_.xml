@@ -21,30 +21,52 @@
             <column name="USERID" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="USERIDISSTIME" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="USERNM" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="USERPASSALG" type="varchar(10)">
+            <column name="USERENABLED" type="bit">
                 <constraints nullable="false"/>
             </column>
+            <column name="USEREXPTIME" type="bigint"/>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERSEC" author="${service.ip}">
+    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERSECRET" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="AUTHUSERSEC"/>
+                <tableExists tableName="AUTHUSERSECRET"/>
             </not>
         </preConditions>
-        <createTable tableName="AUTHUSERSEC">
+        <createTable tableName="AUTHUSERSECRET">
             <column name="USERID" type="bigint">
-                <constraints foreignKeyName="SECRETUSERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
+                <constraints primaryKey="true" foreignKeyName="SECRETUSERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
             </column>
-            <column name="USERSECBYTEORDINAL" type="int">
+            <column name="USERSECRET" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="USERSECBYTE" type="int">
+            <column name="USERSECRETEXP" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="02/07/2023/tenant_data_source/${tenant.id}/AUTHUSERBAN" author="${service.ip}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="AUTHUSERBAN"/>
+            </not>
+        </preConditions>
+        <createTable tableName="AUTHUSERBAN">
+            <column name="BANID" type="varchar(30)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="USERID" type="bigint">
+                <constraints foreignKeyName="BANNEDUSERID" referencedColumnNames="USERID" referencedTableName="AUTHUSER"/>
+            </column>
+            <column name="BANREASON" type="varchar(255)"/>
+            <column name="BANTMP" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="BANENDTM" type="bigint"/>
         </createTable>
     </changeSet>
     <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSERMEM" author="${service.ip}">

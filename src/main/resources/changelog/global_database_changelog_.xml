@@ -36,13 +36,16 @@
             <column name="TNTID" type="varchar(15)">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="TNTSCVAL" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="TNTSCTMP" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="TNTSCALG" type="int">
+            <column name="TNTUSRPASSALG" type="varchar(7)">
                 <constraints nullable="false"/>
             </column>
-            <column name="TNTSCVAL" type="varchar(255)">
+            <column name="TNTSCALG" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>

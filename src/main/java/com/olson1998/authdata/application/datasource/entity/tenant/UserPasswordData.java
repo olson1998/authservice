@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
 
 @Entity
-@Table(name = "USERSECRET")
+@Table(name = "AUTHUSERSECRET")
 
 @NoArgsConstructor
 @AllArgsConstructor
