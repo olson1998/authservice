@@ -1,6 +1,7 @@
 package com.olson1998.authdata.domain.model.security;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.olson1998.authdata.domain.port.data.utils.PasswordEncryptionType;
 import com.olson1998.authdata.domain.port.data.utils.SecretAlgorithm;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.Builder;
@@ -19,6 +20,11 @@ public class MappedTenantSecret implements TenantSecret {
     private String[] trustedIssuers;
 
     @Override
+    public PasswordEncryptionType getPasswordEncryptionType() {
+        return null;
+    }
+
+    @Override
     public Algorithm toAlgorithm() {
         return algorithm;
     }
@@ -33,8 +39,4 @@ public class MappedTenantSecret implements TenantSecret {
         return algorithm.toString();
     }
 
-    @Override
-    public SecretAlgorithm getSecretDigestAlgorithm() {
-        return null;
-    }
 }
