@@ -52,16 +52,18 @@ public class UserRequestProcessingService implements UserRequestProcessor {
     @Override
     public UserSavingReport saveUser(@NonNull UserSavingRequest request) {
         ProcessingRequestLogger.log(log, request, SAVE, User.class);
+        var timestamp = System.currentTimeMillis();
         var tid = request.getTenantId();
         var details = request.getUserDetails();
         var password = details.getPassword();
         var membershipClaims = request.getMembershipClaims();
         var secret = tenantSecretProvider.getTenantSecret(tid)
                 .orElseThrow();
-        var user = userDataSourceRepository.saveUser(details);
+        var user = userDataSourceRepository.saveUser(details, timestamp);
         var userId = user.getId();
         var encryptedPass = userPasswordEnigma.getEncryptedPassword(secret.getPasswordEncryptionType(), password);
-        userSecretDataSourceRepository.saveUserSecret(userId, encryptedPass);
+        var passExpTime = timestamp + details.getPasswordExpDuration().toMillis();
+        userSecretDataSourceRepository.saveUserSecret(userId, encryptedPass, passExpTime);
         roleRequestProcessor.saveNewUserPrivateRole(userId);
         if(request.getMembershipClaims() != null){
             var size = membershipClaims.size();

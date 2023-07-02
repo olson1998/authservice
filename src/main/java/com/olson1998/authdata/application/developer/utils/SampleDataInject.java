@@ -4,7 +4,7 @@ import com.olson1998.authdata.application.datasource.entity.global.TenantDataSou
 import com.olson1998.authdata.application.datasource.entity.global.TenantDataSourceUserData;
 import com.olson1998.authdata.application.datasource.entity.global.TenantSecretData;
 import com.olson1998.authdata.application.datasource.entity.global.TrustedIssuerData;
-import com.olson1998.authdata.application.datasource.entity.tenant.values.UserPasswordEncryption;
+import com.olson1998.authdata.application.datasource.entity.global.values.UserPasswordEncryption;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantDataSourceJpaRepository;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantDataSourceUserJpaRepository;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantSecretJpaRepository;
@@ -18,7 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.olson1998.authdata.application.datasource.entity.global.values.SqlDataSource.MARIA_DB;
-import static com.olson1998.authdata.application.datasource.entity.tenant.values.JwtAlgorithm.HMAC256;
+import static com.olson1998.authdata.application.datasource.entity.global.values.JwtAlgorithm.HMAC256;
+import static com.olson1998.authdata.application.datasource.entity.global.values.UserPasswordEncryption.ARGON2;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @Slf4j
@@ -72,7 +73,7 @@ public class SampleDataInject {
                 DEV_TID,
                 System.currentTimeMillis(),
                 randomAlphanumeric(10),
-                UserPasswordEncryption.ARGON2,
+                ARGON2,
                 HMAC256)
         );
         trustedIssuerDataJpaRepository.save(new TrustedIssuerData(jwtTokenFactory.getServiceIpPort(), DEV_TID));
@@ -83,7 +84,6 @@ public class SampleDataInject {
                 "mysql"
         );
         var dbUser = tenantDataSourceUserJpaRepository.save(ds);
-        var dataSource = tenantSqlDataSourceRepository.getForTenant(DEV_TID);
     }
 
 }

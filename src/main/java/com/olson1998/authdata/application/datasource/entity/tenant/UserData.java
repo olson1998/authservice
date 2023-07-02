@@ -69,7 +69,12 @@ public class UserData implements Persistable<Long>, User {
         return true;
     }
 
-    public UserData(UserDetails userDetails) {
+    public UserData(UserDetails userDetails, long timestamp) {
         this.username = userDetails.getUsername();
+        this.idIssueTime = timestamp;
+        this.enabled = userDetails.isEnabled();
+        if(userDetails.isUserExpiring()){
+            this.expireTime = timestamp + userDetails.getUserExpDuration().toMillis();
+        }
     }
 }

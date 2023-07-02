@@ -1,8 +1,8 @@
 package com.olson1998.authdata.application.datasource.entity.global;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.olson1998.authdata.application.datasource.entity.tenant.values.JwtAlgorithm;
-import com.olson1998.authdata.application.datasource.entity.tenant.values.UserPasswordEncryption;
+import com.olson1998.authdata.application.datasource.entity.global.values.JwtAlgorithm;
+import com.olson1998.authdata.application.datasource.entity.global.values.UserPasswordEncryption;
 import com.olson1998.authdata.domain.port.data.stereotype.TenantAlgorithm;
 import com.olson1998.authdata.domain.port.data.utils.PasswordEncryptionType;
 import jakarta.persistence.*;

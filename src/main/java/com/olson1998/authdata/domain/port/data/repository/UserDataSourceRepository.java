@@ -17,7 +17,7 @@ public interface UserDataSourceRepository {
 
     Set<ExtendedAuthorityTimestamp> getAuthorityTimestamps(long userId);
 
-    User saveUser(UserDetails userDetails);
+    User saveUser(UserDetails userDetails, long timestamp);
 
     int deleteUser(long userId);
 }

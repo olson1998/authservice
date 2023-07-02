@@ -2,6 +2,7 @@ package com.olson1998.authdata.domain.service.security;
 
 import com.olson1998.authdata.domain.port.data.utils.PasswordEncryptionType;
 import com.olson1998.authdata.domain.port.security.repository.UserPasswordEnigma;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,7 +15,7 @@ public class UserPasswordEncryptionService implements UserPasswordEnigma {
     private final Argon2PasswordEncoder argon2PasswordEncoder;
 
     @Override
-    public String getEncryptedPassword(PasswordEncryptionType encryptionType, String password) {
+    public String getEncryptedPassword(@NonNull PasswordEncryptionType encryptionType,@NonNull String password) {
         if(encryptionType.isBcrypt()){
             return bCryptPasswordEncoder.encode(password);
         } else if (encryptionType.isArgon2()) {

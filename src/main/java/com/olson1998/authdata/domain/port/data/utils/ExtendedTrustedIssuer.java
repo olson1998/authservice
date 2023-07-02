@@ -10,4 +10,6 @@ public interface ExtendedTrustedIssuer extends TenantTrustedIssuer {
     String getTenantId();
 
     Algorithm getAlgorithm();
+
+    PasswordEncryptionType getUserPasswordEncryptionType();
 }

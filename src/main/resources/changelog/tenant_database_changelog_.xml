@@ -25,7 +25,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="USERNM" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="USERENABLED" type="bit">
                 <constraints nullable="false"/>

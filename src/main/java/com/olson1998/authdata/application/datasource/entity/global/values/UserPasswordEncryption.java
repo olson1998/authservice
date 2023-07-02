@@ -1,4 +1,4 @@
-package com.olson1998.authdata.application.datasource.entity.tenant.values;
+package com.olson1998.authdata.application.datasource.entity.global.values;
 
 import com.olson1998.authdata.domain.port.data.utils.PasswordEncryptionType;
 

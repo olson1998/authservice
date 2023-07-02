@@ -20,19 +20,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 public class SecurityFilterChainConfig {
 
-    private static final String[] CHECKPOINT_TOKEN_AUTH_PATHS = {
+    private static final String[] JWT_TOKEN_AUTH_PATHS = {
             "/authority/data/**",
             "/role/data/**",
             "/user/data/**",
             "/auth/data/**"
-    };
-
-    private static final String[] CHECKPOINT_REQUEST_PATHS = {
-            "/checkpoint/logs"
-    };
-
-    private static final String[] JWT_TOKEN_AUTH_PATHS = {
-            "/checkpoint/create"
     };
 
     @Bean

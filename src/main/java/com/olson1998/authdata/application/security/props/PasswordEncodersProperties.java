@@ -8,29 +8,26 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Getter
-@Setter
 
 @Configuration
 @ConfigurationProperties(prefix = "com.olson1998.authdata.application.security.encoder")
 public class PasswordEncodersProperties {
 
-    private Argon2 argon2 = new Argon2();
+    private final Argon2 argon2 = new Argon2();
 
     @Getter
     @Setter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Argon2{
 
-        private int saltLength;
+        private int saltLength = 16;
 
-        private int hashLength;
+        private int hashLength = 32;
 
-        private int length;
+        private int parallelism = 1;
 
-        private int parallelism;
+        private int memory =16384;
 
-        private int memory;
-
-        private int iterations;
+        private int iterations = 2;
     }
 }

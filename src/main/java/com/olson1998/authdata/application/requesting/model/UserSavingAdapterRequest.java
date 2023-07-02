@@ -12,6 +12,7 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,12 +28,20 @@ public class UserSavingAdapterRequest extends AbstractAdapterRequest implements 
     @JsonCreator
     public UserSavingAdapterRequest(@JsonProperty(value = "username", required = true) String username,
                                     @JsonProperty(value = "password", required = true) String password,
-                                    @JsonProperty(value = "digest", required = true) SecretDigest passwordDigest,
+                                    @JsonProperty(value = "enabled", required = true) boolean enabled,
+                                    @JsonProperty(value = "user_exp_time") Long userExpTime,
+                                    @JsonProperty(value = "user_exp_time_unit") ChronoUnit userExpTimeUnit,
+                                    @JsonProperty(value = "pass_exp_time") Long passExpTime,
+                                    @JsonProperty(value = "pass_exp_time_unit") ChronoUnit passExpTimeUnit,
                                     @JsonProperty(value = "membership") Set<UserMembershipForm> membershipClaimsForm) {
         this.userDetails = new UserDetailsForm(
+                enabled,
                 username,
                 password,
-                passwordDigest
+                userExpTime,
+                userExpTimeUnit,
+                passExpTime,
+                passExpTimeUnit
         );
         if(membershipClaimsForm != null){
             this.membershipClaims = mapUserMembershipClaims(membershipClaimsForm);

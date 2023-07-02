@@ -2,12 +2,14 @@ package com.olson1998.authdata.application.developer.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.olson1998.authdata.application.datasource.LocalThreadTenantDataSource;
 import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
 import com.olson1998.authdata.domain.port.security.stereotype.TenantSecret;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

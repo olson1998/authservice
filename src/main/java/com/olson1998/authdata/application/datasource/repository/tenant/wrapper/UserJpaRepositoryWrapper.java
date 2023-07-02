@@ -45,8 +45,8 @@ public class UserJpaRepositoryWrapper implements UserDataSourceRepository {
     }
 
     @Override
-    public User saveUser(UserDetails userDetails) {
-        var userData = new UserData(userDetails);
+    public User saveUser(UserDetails userDetails, long timestamp) {
+        var userData = new UserData(userDetails, timestamp);
         return userJpaRepository.save(userData);
     }
 

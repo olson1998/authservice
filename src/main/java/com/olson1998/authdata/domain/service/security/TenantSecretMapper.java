@@ -30,6 +30,10 @@ public class TenantSecretMapper {
                     .findFirst()
                     .orElseThrow();
             tenantSecretBuilder.algorithm(alg);
+            var passAlg = extendedTrustedIssuerList.stream().map(ExtendedTrustedIssuer::getUserPasswordEncryptionType)
+                    .findFirst()
+                    .orElseThrow();
+            tenantSecretBuilder.passwordEncryptionType(passAlg);
             var tmp = extendedTrustedIssuerList.stream().map(ExtendedTrustedIssuer::getTimestamp)
                     .findFirst()
                     .orElseThrow();
