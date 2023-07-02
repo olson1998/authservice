@@ -2,7 +2,7 @@ package com.olson1998.authdata.domain.service.processing.request;
 
 import com.olson1998.authdata.domain.port.data.stereotype.*;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.Request;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthUser;
+import com.olson1998.authdata.domain.port.security.stereotype.AuthUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;

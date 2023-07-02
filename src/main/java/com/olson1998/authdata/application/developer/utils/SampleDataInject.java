@@ -4,6 +4,7 @@ import com.olson1998.authdata.application.datasource.entity.global.TenantDataSou
 import com.olson1998.authdata.application.datasource.entity.global.TenantDataSourceUserData;
 import com.olson1998.authdata.application.datasource.entity.global.TenantSecretData;
 import com.olson1998.authdata.application.datasource.entity.global.TrustedIssuerData;
+import com.olson1998.authdata.application.datasource.entity.tenant.values.UserPasswordEncryption;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantDataSourceJpaRepository;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantDataSourceUserJpaRepository;
 import com.olson1998.authdata.application.datasource.repository.global.spring.TenantSecretJpaRepository;
@@ -67,7 +68,13 @@ public class SampleDataInject {
     @Transactional(transactionManager = "globalDatasourceTransactionManager")
     public void injectTestTenant(){
         log.info("Injecting developer's test data set");
-        tenantSecretJpaRepository.save(new TenantSecretData(DEV_TID, System.currentTimeMillis(), randomAlphanumeric(10), HMAC256));
+        tenantSecretJpaRepository.save(new TenantSecretData(
+                DEV_TID,
+                System.currentTimeMillis(),
+                randomAlphanumeric(10),
+                UserPasswordEncryption.ARGON2,
+                HMAC256)
+        );
         trustedIssuerDataJpaRepository.save(new TrustedIssuerData(jwtTokenFactory.getServiceIpPort(), DEV_TID));
         var db = tenantDataSourceJpaRepository.save(DEV_DB);
         var ds = new TenantDataSourceUserData(

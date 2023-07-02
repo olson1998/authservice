@@ -9,15 +9,11 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.UserDele
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface UserRequestProcessor {
+public interface UserRequestProcessor extends RegisteredClientRepository {
 
-    /**
-     * Save new user and all bindings
-     * @param request Request containing all required data to perform persisting
-     * @return save user
-     */
     @Transactional(rollbackFor = RollbackRequiredException.class, transactionManager = "tenantDatasourceTransactionManager")
     UserSavingReport saveUser(UserSavingRequest request);
 

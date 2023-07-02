@@ -1,19 +1,13 @@
 package com.olson1998.authdata.application.datasource.entity.tenant;
 
-import com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
-import com.olson1998.authdata.domain.port.data.utils.SecretAlgorithm;
-import com.olson1998.authdata.domain.port.data.utils.SecretEncryption;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.data.domain.Persistable;
 
 import java.util.Objects;
-
-import static com.olson1998.authdata.application.datasource.entity.tenant.values.SecretDigest.DEFAULT_DIGEST;
 
 @Entity
 @Table(name = "AUTHUSER")
@@ -31,9 +25,39 @@ public class UserData implements Persistable<Long>, User {
     @Column(name = "USERNM", unique = true, nullable = false, updatable = false)
     private String username;
 
-    @Column(name = "USERPASSALG", nullable = false, updatable = false)
-    @Enumerated(value = EnumType.ORDINAL)
-    private SecretDigest secretDigest;
+    @Column(name = "USERENABLED", nullable = false)
+    private Boolean enabled;
+
+    @Column(name = "USEREXPTIME")
+    private Long expireTime;
+
+    @Column(name = "USERIDISSTIME", nullable = false, updatable = false)
+    private Long idIssueTime;
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public Long getExpireTime() {
+        return expireTime;
+    }
+
+    @Override
+    public Long getIdIssuingTime() {
+        return idIssueTime;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return Objects.requireNonNullElse(enabled, false);
+    }
+
+    @Override
+    public boolean isExpiring() {
+        return expireTime != null;
+    }
 
     @Override
     public Long getId() {
@@ -45,23 +69,7 @@ public class UserData implements Persistable<Long>, User {
         return true;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public SecretEncryption getSecretEncryptor() {
-        return secretDigest;
-    }
-
-    public UserData(@NonNull UserDetails userDetails) {
-        var digest = Objects.requireNonNullElse(
-                SecretDigest.ofUserDetails(userDetails),
-                DEFAULT_DIGEST
-        );
+    public UserData(UserDetails userDetails) {
         this.username = userDetails.getUsername();
-        this.secretDigest = digest;
     }
-
 }

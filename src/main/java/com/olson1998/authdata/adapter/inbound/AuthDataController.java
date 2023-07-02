@@ -2,7 +2,6 @@ package com.olson1998.authdata.adapter.inbound;
 
 import com.olson1998.authdata.application.requesting.model.AuthUserObtainAdapterRequest;
 import com.olson1998.authdata.domain.port.pipeline.AuthDataPipeline;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;

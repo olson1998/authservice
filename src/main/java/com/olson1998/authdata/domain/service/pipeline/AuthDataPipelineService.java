@@ -4,7 +4,6 @@ import com.olson1998.authdata.domain.port.pipeline.AuthDataPipeline;
 import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthUserRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.AuthUserObtainRequest;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthUser;
 import lombok.RequiredArgsConstructor;
 
 import java.util.concurrent.CompletableFuture;

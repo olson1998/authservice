@@ -21,9 +21,12 @@ import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMemb
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserMembershipDeletingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.UserSavingRequest;
 import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.UserMembershipClaim;
+import com.olson1998.authdata.domain.port.security.repository.TenantSecretProvider;
+import com.olson1998.authdata.domain.port.security.repository.UserPasswordEnigma;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
 import java.util.*;
 
@@ -33,6 +36,10 @@ import static com.olson1998.authdata.domain.service.processing.request.Processin
 @Slf4j
 @RequiredArgsConstructor
 public class UserRequestProcessingService implements UserRequestProcessor {
+
+    private final TenantSecretProvider tenantSecretProvider;
+
+    private final UserPasswordEnigma userPasswordEnigma;
 
     private final RoleRequestProcessor roleRequestProcessor;
 
@@ -45,13 +52,16 @@ public class UserRequestProcessingService implements UserRequestProcessor {
     @Override
     public UserSavingReport saveUser(@NonNull UserSavingRequest request) {
         ProcessingRequestLogger.log(log, request, SAVE, User.class);
+        var tid = request.getTenantId();
         var details = request.getUserDetails();
+        var password = details.getPassword();
         var membershipClaims = request.getMembershipClaims();
+        var secret = tenantSecretProvider.getTenantSecret(tid)
+                .orElseThrow();
         var user = userDataSourceRepository.saveUser(details);
         var userId = user.getId();
-        var encryptor = user.getSecretEncryptor();
-        var passBytes = encryptor.encrypt(details.getPassword());
-        userSecretDataSourceRepository.saveUserSecret(user.getId(), passBytes);
+        var encryptedPass = userPasswordEnigma.getEncryptedPassword(secret.getPasswordEncryptionType(), password);
+        userSecretDataSourceRepository.saveUserSecret(userId, encryptedPass);
         roleRequestProcessor.saveNewUserPrivateRole(userId);
         if(request.getMembershipClaims() != null){
             var size = membershipClaims.size();
@@ -132,4 +142,19 @@ public class UserRequestProcessingService implements UserRequestProcessor {
         return savedMemberships;
     }
 
+    @Override
+    public void save(RegisteredClient registeredClient) {
+
+    }
+
+    @Override
+    public RegisteredClient findById(String id) {
+        return userDataSourceRepository.getAuthUserByUsername(id)
+                .orElseThrow();
+    }
+
+    @Override
+    public RegisteredClient findByClientId(String clientId) {
+        return findById(clientId);
+    }
 }

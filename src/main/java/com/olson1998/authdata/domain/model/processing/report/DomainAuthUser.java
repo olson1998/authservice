@@ -3,7 +3,6 @@ package com.olson1998.authdata.domain.model.processing.report;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.olson1998.authdata.domain.port.data.stereotype.User;
 import com.olson1998.authdata.domain.port.data.utils.SecretEncryption;
-import com.olson1998.authdata.domain.port.processing.request.stereotype.payload.AuthUser;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

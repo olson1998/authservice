@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface UserSavingRequest extends Request{
 
+    String getTenantId();
+
     UserDetails getUserDetails();
 
     Set<UserMembershipClaim> getMembershipClaims();
