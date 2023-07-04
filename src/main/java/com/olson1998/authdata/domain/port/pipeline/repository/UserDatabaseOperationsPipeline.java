@@ -1,4 +1,4 @@
-package com.olson1998.authdata.domain.port.pipeline;
+package com.olson1998.authdata.domain.port.pipeline.repository;
 
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.UserMembershipBindReport;

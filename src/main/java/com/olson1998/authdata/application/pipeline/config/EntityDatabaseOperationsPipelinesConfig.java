@@ -1,9 +1,9 @@
 package com.olson1998.authdata.application.pipeline.config;
 
-import com.olson1998.authdata.application.pipeline.PipelineService;
-import com.olson1998.authdata.domain.port.pipeline.AuthorityDatabaseOperationsPipeline;
-import com.olson1998.authdata.domain.port.pipeline.RoleDatabaseOperationsPipeline;
-import com.olson1998.authdata.domain.port.pipeline.UserDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.service.pipeline.PipelineService;
+import com.olson1998.authdata.domain.port.pipeline.repository.AuthorityDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.repository.RoleDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.repository.UserDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.RoleRequestProcessor;
 import com.olson1998.authdata.domain.port.processing.request.repository.UserRequestProcessor;

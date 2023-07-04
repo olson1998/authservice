@@ -19,7 +19,7 @@ public class DeveloperDataSourceDiscoveryConfig {
     public TenantDataSourceDiscovery tenantDataSourceDiscovery(@NonNull SampleDataInject sampleDataInject,
                                                                @NonNull SqlDataSourceFactory sqlDataSourceFactory,
                                                                @NonNull TenantSqlDbPropertiesDataSourceRepository tenantSqlDbPropertiesDataSourceRepository){
-        //sampleDataInject.injectTestTenant();
+        sampleDataInject.injectTestTenant();
         return new TenantDataSourceDiscoveryService(
                 sqlDataSourceFactory,
                 tenantSqlDbPropertiesDataSourceRepository

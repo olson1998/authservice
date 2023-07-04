@@ -1,9 +1,9 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
 import com.olson1998.authdata.domain.model.exception.data.DifferentAffectedRowsThanRequired;
+import com.olson1998.authdata.domain.model.exception.processing.NoAuthorityDetailsFoundForPersistedEntity;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthoritiesSavingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainAuthorityDeletingReport;
-import com.olson1998.authdata.domain.port.data.exception.NoAuthorityDetailsFoundForPersistedEntity;
 import com.olson1998.authdata.domain.port.data.repository.AuthorityDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.RoleDataSourceRepository;
@@ -100,7 +100,7 @@ public class AuthorityRequestProcessingService implements AuthorityRequestProces
                     .findFirst()
                     .orElseThrow();
         }catch (NoSuchElementException e){
-            throw new NoAuthorityDetailsFoundForPersistedEntity(log, authoritySavingRequest.getId());
+            throw new NoAuthorityDetailsFoundForPersistedEntity(log);
         }
     }
 

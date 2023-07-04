@@ -2,9 +2,12 @@ package com.olson1998.authdata.application.datasource;
 
 import com.olson1998.authdata.application.datasource.properties.DataSourceChangelogProps;
 import com.olson1998.authdata.application.datasource.properties.TenantDataSourceDiscoveryProps;
+import com.olson1998.authdata.application.pipeline.exception.CouldNotEstablishConnectionToTenantDataSource;
+import com.olson1998.authdata.application.requesting.AdapterRequestContextHolder;
 import com.olson1998.authdata.application.security.config.LocalServiceInstanceSign;
 import com.olson1998.authdata.domain.port.processing.datasource.TenantDataSourceDiscovery;
 import com.olson1998.authdata.domain.port.processing.datasource.TenantSqlDataSourceRepository;
+import com.olson1998.authdata.domain.port.processing.datasource.TenantThreadDataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -25,7 +28,7 @@ import java.util.logging.Logger;
 @Slf4j
 
 @Component
-public class LocalThreadTenantDataSource implements DataSource {
+public class LocalThreadTenantDataSource implements TenantThreadDataSource, DataSource {
 
     private static final ThreadLocal<DataSource> CURRENT_THREAD_TENANT_DATASOURCE = new ThreadLocal<>();
 
@@ -40,7 +43,8 @@ public class LocalThreadTenantDataSource implements DataSource {
 
     private final TenantSqlDataSourceRepository tenantSqlDataSourceRepository;
 
-    public void setCurrentThreadTenantDatasource(String tid){
+    @Override
+    public void setCurrentForTenant(String tid){
         var optionalDs = Optional.ofNullable(tenantDataSources.get(tid));
         DataSource ds = null;
         if(optionalDs.isPresent()){
@@ -51,6 +55,11 @@ public class LocalThreadTenantDataSource implements DataSource {
         }
         CURRENT_THREAD_TENANT_DATASOURCE.set(ds);
         log.debug("Setting local thread data source of tenant: '{}', instance: '{}'", tid, ds.getClass().getName());
+    }
+
+    @Override
+    public void clean(){
+        CURRENT_THREAD_TENANT_DATASOURCE.remove();
     }
 
     @SneakyThrows
@@ -70,22 +79,32 @@ public class LocalThreadTenantDataSource implements DataSource {
         tenantDataSources.put(tid, dataSource);
     }
 
-    public void clean(){
-        CURRENT_THREAD_TENANT_DATASOURCE.remove();
-    }
-
     public DataSource getCurrentThreadTenantDataSource(){
         return CURRENT_THREAD_TENANT_DATASOURCE.get();
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        return getCurrentThreadTenantDataSource().getConnection();
+        log.trace("Performing connection on Thread: {}", Thread.currentThread().getId());
+        try{
+            return getCurrentThreadTenantDataSource().getConnection();
+        }catch (NullPointerException e){
+            try{
+                var tenant = AdapterRequestContextHolder.getLocalThreadTenantId();
+                throw new CouldNotEstablishConnectionToTenantDataSource(log, tenant);
+            }catch (NullPointerException nullPointerException){
+                throw new CouldNotEstablishConnectionToTenantDataSource(log, "?");
+            }
+        }
     }
 
     @Override
-    public Connection getConnection(String username, String password) throws SQLException {
-        return getCurrentThreadTenantDataSource().getConnection(username, password);
+    public Connection getConnection(String username, String password) {
+        try{
+            return getCurrentThreadTenantDataSource().getConnection(username, password);
+        }catch (SQLException e){
+            throw new CouldNotEstablishConnectionToTenantDataSource(log, e);
+        }
     }
 
     @Override
@@ -158,7 +177,7 @@ public class LocalThreadTenantDataSource implements DataSource {
             }
         });
         var startupTenant = getAnyTenant();
-        setCurrentThreadTenantDatasource(startupTenant);
+        this.setCurrentForTenant(startupTenant);
     }
 
     private String getAnyTenant(){

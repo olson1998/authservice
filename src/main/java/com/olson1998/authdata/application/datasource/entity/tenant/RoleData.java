@@ -132,7 +132,7 @@ public class RoleData implements Persistable<String>, Role{
                 matchingRegionId &&
                 matchingTeamId &&
                 this.name.equals(roleDetails.getName()) &&
-                this.subject.equals(roleDetails.getSubject());
+                this.subject.name().equals(roleDetails.getSubject());
     }
 
     public RoleData(@NonNull RoleDetails roleDetails) {

@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "TNTDS")
-@SequenceGenerator(name = "TENANT_DS_ID_SEQ", sequenceName = "TENANT_DS_ID_SEQ", allocationSize = 1)
 
 @Builder
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class TenantDataSourceData implements TenantDataSource {
 
     @Id
     @Column(name = "TNTDSID")
-    @GeneratedValue(generator = "TENANT_DS_ID_SEQ", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "TNTID", nullable = false, updatable = false, unique = true)

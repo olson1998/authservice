@@ -3,7 +3,7 @@ package com.olson1998.authdata.adapter.inbound;
 import com.olson1998.authdata.application.requesting.model.AuthorityDeletingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.AuthoritySavingAdapterRequest;
 import com.olson1998.authdata.application.requesting.model.payload.AuthorityDetailsForm;
-import com.olson1998.authdata.domain.port.pipeline.AuthorityDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.repository.AuthorityDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
 import lombok.RequiredArgsConstructor;

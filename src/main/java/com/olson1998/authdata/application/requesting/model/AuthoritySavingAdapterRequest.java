@@ -16,7 +16,7 @@ public class AuthoritySavingAdapterRequest extends AbstractAdapterRequest implem
     public AuthoritySavingAdapterRequest(Set<AuthorityDetailsForm> authorityDetails) {
         this.authoritiesDetails = authorityDetails.stream()
                 .map(this::mapAuthorityDetails)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toSet());
     }
 
     private AuthorityDetails mapAuthorityDetails(AuthorityDetailsForm authorityDetailsForm){

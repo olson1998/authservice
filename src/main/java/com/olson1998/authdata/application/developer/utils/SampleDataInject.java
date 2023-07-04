@@ -1,5 +1,6 @@
 package com.olson1998.authdata.application.developer.utils;
 
+import com.olson1998.authdata.application.datasource.LocalThreadTenantDataSource;
 import com.olson1998.authdata.application.datasource.entity.global.TenantDataSourceData;
 import com.olson1998.authdata.application.datasource.entity.global.TenantDataSourceUserData;
 import com.olson1998.authdata.application.datasource.entity.global.TenantSecretData;
@@ -11,7 +12,9 @@ import com.olson1998.authdata.application.datasource.repository.global.spring.Te
 import com.olson1998.authdata.application.datasource.repository.global.spring.TrustedIssuerDataJpaRepository;
 import com.olson1998.authdata.domain.port.processing.datasource.TenantSqlDataSourceRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Component;
@@ -49,41 +52,39 @@ public class SampleDataInject {
 
     private final TenantDataSourceUserJpaRepository tenantDataSourceUserJpaRepository;
 
-    private final TenantSqlDataSourceRepository tenantSqlDataSourceRepository;
-
     public SampleDataInject(JwtTokenFactory jwtTokenFactory,
                             TenantSecretJpaRepository tenantSecretJpaRepository,
                             TrustedIssuerDataJpaRepository trustedIssuerDataJpaRepository,
                             TenantDataSourceJpaRepository tenantDataSourceJpaRepository,
-                            TenantDataSourceUserJpaRepository tenantDataSourceUserJpaRepository,
-                            TenantSqlDataSourceRepository tenantSqlDataSourceRepository) {
+                            TenantDataSourceUserJpaRepository tenantDataSourceUserJpaRepository) {
         this.jwtTokenFactory = jwtTokenFactory;
         this.tenantSecretJpaRepository = tenantSecretJpaRepository;
         this.trustedIssuerDataJpaRepository = trustedIssuerDataJpaRepository;
         this.tenantDataSourceJpaRepository = tenantDataSourceJpaRepository;
         this.tenantDataSourceUserJpaRepository = tenantDataSourceUserJpaRepository;
-        this.tenantSqlDataSourceRepository = tenantSqlDataSourceRepository;
     }
 
     @Modifying
     @Transactional(transactionManager = "globalDatasourceTransactionManager")
     public void injectTestTenant(){
-        log.info("Injecting developer's test data set");
-        tenantSecretJpaRepository.save(new TenantSecretData(
-                DEV_TID,
-                System.currentTimeMillis(),
-                randomAlphanumeric(10),
-                ARGON2,
-                HMAC256)
-        );
-        trustedIssuerDataJpaRepository.save(new TrustedIssuerData(jwtTokenFactory.getServiceIpPort(), DEV_TID));
-        var db = tenantDataSourceJpaRepository.save(DEV_DB);
-        var ds = new TenantDataSourceUserData(
-                db.getId(),
-                "user",
-                "mysql"
-        );
-        var dbUser = tenantDataSourceUserJpaRepository.save(ds);
+        if(!tenantSecretJpaRepository.isTenantExisting(DEV_TID)){
+            log.info("Injecting developer's test data set");
+            tenantSecretJpaRepository.save(new TenantSecretData(
+                    DEV_TID,
+                    System.currentTimeMillis(),
+                    randomAlphanumeric(10),
+                    ARGON2,
+                    HMAC256)
+            );
+            trustedIssuerDataJpaRepository.save(new TrustedIssuerData(jwtTokenFactory.getServiceIpPort(), DEV_TID));
+            var db = tenantDataSourceJpaRepository.save(DEV_DB);
+            var ds = new TenantDataSourceUserData(
+                    db.getId(),
+                    "user",
+                    "mysql"
+            );
+            var dbUser = tenantDataSourceUserJpaRepository.save(ds);
+        }
     }
 
 }

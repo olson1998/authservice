@@ -3,14 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTH_USER_ID_SEQ" author="${service.ip}">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <sequenceExists sequenceName="AUTH_USER_ID_SEQ"/>
-            </not>
-        </preConditions>
-        <createSequence sequenceName="AUTH_USER_ID_SEQ" startValue="1" incrementBy="1"/>
-    </changeSet>
     <changeSet id="18/06/2023/tenant_data_source/${tenant.id}/AUTHUSER" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -18,7 +10,7 @@
             </not>
         </preConditions>
         <createTable tableName="AUTHUSER">
-            <column name="USERID" type="bigint">
+            <column name="USERID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="USERIDISSTIME" type="bigint">
@@ -175,5 +167,6 @@
                 <constraints foreignKeyName="BOUNDED_AUTHORITYID" referencedColumnNames="AUTHORITYID" referencedTableName="ROLEAUTHORITY"/>
             </column>
         </createTable>
+        <addPrimaryKey tableName="AUTHROLEBIND" columnNames="ROLEID,AUTHORITYID" constraintName="AUTHROLEBINDID"/>
     </changeSet>
 </databaseChangeLog>

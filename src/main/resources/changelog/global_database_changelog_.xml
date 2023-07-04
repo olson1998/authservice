@@ -50,14 +50,6 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="18/06/2023/tenant_data_source/TENANT_DS_ID_SEQ" author="${service.ip}">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <sequenceExists sequenceName="TENANT_DS_ID_SEQ"/>
-            </not>
-        </preConditions>
-        <createSequence sequenceName="TENANT_DS_ID_SEQ" startValue="1" incrementBy="1"/>
-    </changeSet>
     <changeSet id="18/06/2023/global_data_source/TNTDS" author="${service.ip}">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -65,7 +57,7 @@
             </not>
         </preConditions>
         <createTable tableName="TNTDS">
-            <column name="TNTDSID" type="bigint">
+            <column name="TNTDSID" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="TNTID" type="varchar(15)">
@@ -95,7 +87,7 @@
             </not>
         </preConditions>
         <createTable tableName="TNTNDSUSR">
-            <column name="TNTDSID" type="bigint">
+            <column name="TNTDSID" type="bigint" >
                 <constraints nullable="false" foreignKeyName="TNTNDSUSR_DSID" referencedColumnNames="TNTDSID" referencedTableName="TNTDS"/>
             </column>
             <column name="TNTUSRNM" type="varchar(30)">

@@ -1,6 +1,7 @@
 package com.olson1998.authdata.domain.service.processing.request;
 
 import com.olson1998.authdata.domain.model.exception.data.DifferentAffectedRowsThanRequired;
+import com.olson1998.authdata.domain.model.exception.pipeline.NoMatchingRoleDetailsFound;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingDeletingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleBindingReport;
 import com.olson1998.authdata.domain.model.processing.report.DomainRoleDeletingReport;
@@ -9,7 +10,7 @@ import com.olson1998.authdata.domain.model.processing.request.LinkedAuthoritySav
 import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBindingClaim;
 import com.olson1998.authdata.domain.model.processing.request.LinkedRoleBoundsDeletingRequest;
 import com.olson1998.authdata.domain.model.processing.request.payload.PrivateRoleDetails;
-import com.olson1998.authdata.domain.port.data.exception.DeletedRolesQtyDoesntMuchRequestedQty;
+import com.olson1998.authdata.domain.model.exception.data.DeletedRolesQtyDoesntMuchRequestedQty;
 import com.olson1998.authdata.domain.port.data.repository.RoleBindingDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.repository.RoleDataSourceRepository;
 import com.olson1998.authdata.domain.port.data.stereotype.Role;
@@ -178,7 +179,7 @@ public class RoleRequestProcessingService implements RoleRequestProcessor {
         return request.getDetails().stream()
                 .filter(role::isMatching)
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(()-> new NoMatchingRoleDetailsFound(log, request.getId(), role));
     }
 
 }

@@ -19,7 +19,7 @@ public class RequestContextFabricationService implements RequestContextFactory {
     @Override
     public RequestContext fabricate(@NonNull DecodedJWT jwt) {
         return DomainRequestContext.builder()
-                .id(UUID.fromString(jwt.getId()))
+                .id(UUID.randomUUID())
                 .tenantId(jwt.getClaim(TENANT_ID).asString())
                 .userId(jwt.getClaim(USER_ID).asLong())
                 .build();

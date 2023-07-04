@@ -1,7 +1,7 @@
 package com.olson1998.authdata.domain.service.pipeline;
 
-import com.olson1998.authdata.domain.port.pipeline.AuthorityDatabaseOperationsPipeline;
-import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
+import com.olson1998.authdata.domain.port.pipeline.repository.AuthorityDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.repository.PipelineFactory;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthorityDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.AuthoritySavingReport;
 import com.olson1998.authdata.domain.port.processing.request.repository.AuthorityRequestProcessor;
@@ -21,14 +21,14 @@ public class AuthorityDataPipelineService implements AuthorityDatabaseOperations
     @Override
     public CompletableFuture<AuthoritySavingReport> runAuthoritySavingPipeline(AuthoritySavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApplyAsync(authorityRequestProcessor::saveAuthorities)
-                .thenApplyAsync(pipelineFactory::dematerializeContext);
+                .job(authorityRequestProcessor::saveAuthorities)
+                .end();
     }
 
     @Override
     public CompletableFuture<AuthorityDeletingReport> runAuthorityDeletingPipeline(AuthorityDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApplyAsync(authorityRequestProcessor::deleteAuthorities)
-                .thenApplyAsync(pipelineFactory::dematerializeContext);
+                .job(authorityRequestProcessor::deleteAuthorities)
+                .end();
     }
 }

@@ -1,7 +1,7 @@
 package com.olson1998.authdata.domain.service.pipeline;
 
-import com.olson1998.authdata.domain.port.pipeline.PipelineFactory;
-import com.olson1998.authdata.domain.port.pipeline.RoleDatabaseOperationsPipeline;
+import com.olson1998.authdata.domain.port.pipeline.repository.PipelineFactory;
+import com.olson1998.authdata.domain.port.pipeline.repository.RoleDatabaseOperationsPipeline;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBindingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleBoundsDeletingReport;
 import com.olson1998.authdata.domain.port.processing.report.stereotype.RoleDeletingReport;
@@ -25,28 +25,28 @@ public class RoleDataPipelineService implements RoleDatabaseOperationsPipeline {
     @Override
     public CompletableFuture<RoleSavingReport> runRoleSavingRequestPipeline(RoleSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApplyAsync(roleRequestProcessor::saveNewRoles)
-                .thenApplyAsync(pipelineFactory::dematerializeContext);
+                .job(roleRequestProcessor::saveNewRoles)
+                .end();
     }
 
     @Override
     public CompletableFuture<RoleBindingReport> runRoleBindingPipeline(RoleBoundSavingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApplyAsync(roleRequestProcessor::saveNewRoleBounds)
-                .thenApplyAsync(pipelineFactory::dematerializeContext);
+                .job(roleRequestProcessor::saveNewRoleBounds)
+                .end();
     }
 
     @Override
     public CompletableFuture<RoleDeletingReport> runRoleDeletingPipeline(RoleDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApplyAsync(roleRequestProcessor::deleteRoles)
-                .thenApplyAsync(pipelineFactory::dematerializeContext);
+                .job(roleRequestProcessor::deleteRoles)
+                .end();
     }
 
     @Override
     public CompletableFuture<RoleBoundsDeletingReport> runRoleBoundsDeletingPipeline(RoleBoundDeletingRequest request) {
         return pipelineFactory.fabricate(request)
-                .thenApplyAsync(roleRequestProcessor::deleteRoleBounds)
-                .thenApplyAsync(pipelineFactory::dematerializeContext);
+                .job(roleRequestProcessor::deleteRoleBounds)
+                .end();
     }
 }
