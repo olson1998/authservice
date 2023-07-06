@@ -85,7 +85,6 @@ public class LocalThreadTenantDataSource implements TenantThreadDataSource, Data
 
     @Override
     public Connection getConnection() throws SQLException {
-        log.trace("Performing connection on Thread: {}", Thread.currentThread().getId());
         try{
             return getCurrentThreadTenantDataSource().getConnection();
         }catch (NullPointerException e){

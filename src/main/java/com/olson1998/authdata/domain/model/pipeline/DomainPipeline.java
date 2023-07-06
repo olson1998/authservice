@@ -6,14 +6,12 @@ import com.olson1998.authdata.domain.port.processing.request.repository.RequestC
 import com.olson1998.authdata.domain.port.security.stereotype.RequestContext;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-@Slf4j
 @RequiredArgsConstructor
 public class DomainPipeline<T> implements Pipeline<T> {
 
@@ -43,14 +41,12 @@ public class DomainPipeline<T> implements Pipeline<T> {
     }
 
     private T inheritRequestContext(T value){
-        log.trace("Running next job on thread: '{}'", Thread.currentThread().getId());
         requestContextHolder.setCurrentContext(requestContextRef.get());
         tenantThreadDataSource.setCurrentForTenant(requestContextRef.get().getTenantId());
         return value;
     }
 
     private <S> S cleanJobContext(S value){
-        log.trace("Cleaning thread: '{}'", Thread.currentThread().getId());
         requestContextHolder.clean();
         tenantThreadDataSource.clean();
         return value;
